@@ -2,9 +2,7 @@ run: build
     open 'build/Build/Products/Release/Hacker News Menu Feed.app'
 
 build:
-    rm -rf build
-
-    xcrun xcodebuild \
+    xcrun xcodebuild clean build analyze \
         -project 'Hacker News Menu Feed.xcodeproj' \
         -scheme 'Hacker News Menu Feed' \
         -configuration Release \
