@@ -49,7 +49,7 @@ struct ContentView: App {
     .menuBarExtraStyle(.window)
     .onChange(of: isFetching) {
       if !isFetching && posts.count > 0 {
-        truncatedTitle = posts[0].title!
+        truncatedTitle = posts[0].title!.trimmingCharacters(in: .whitespacesAndNewlines).filter{!$0.isNewline}
         adjustTitleForMenuBar()
       }
     }

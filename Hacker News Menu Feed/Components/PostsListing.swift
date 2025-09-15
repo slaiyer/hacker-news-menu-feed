@@ -34,14 +34,16 @@ struct PostsListing: View {
         }
 
         VStack(alignment: .leading) {
+          let title = (post.title ?? "􀉣").trimmingCharacters(in: .whitespacesAndNewlines).filter{!$0.isNewline}
+
           if let url = post.url {
-            CustomLink(title: post.title ?? "", link: url)
+            CustomLink(title: title, link: url)
               .foregroundColor(.primary)
-              .help("\(post.title ?? "")\n\n\(url)")
+              .help("\(title)\n\n\(url)")
           } else {
-            Text(post.title ?? "")
+            Text(title)
               .foregroundColor(.primary)
-              .help(post.title ?? "")
+              .help(title)
           }
 
           Link(destination: URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!) {
