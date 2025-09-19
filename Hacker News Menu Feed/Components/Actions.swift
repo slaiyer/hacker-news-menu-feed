@@ -38,5 +38,6 @@ struct Actions: View {
     .onAppear {
       focusedField = .reload
     }
+    .focusEffectDisabled(true)
   }
 }

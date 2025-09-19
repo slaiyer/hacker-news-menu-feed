@@ -32,6 +32,7 @@ struct PostsListing: View {
             NSCursor.pop()
           }
         }
+        .focusEffectDisabled(true)
 
         VStack(alignment: .leading) {
           let title = (post.title ?? "􀉣").trimmingCharacters(in: .whitespacesAndNewlines).filter{!$0.isNewline}
