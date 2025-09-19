@@ -45,6 +45,8 @@ struct PostsListing: View {
               .help("\(title)\n\n\(url)")
           } else {
             Text(title)
+              .lineLimit(1)
+              .truncationMode(.middle)
               .foregroundStyle(.primary)
               .help(title)
           }
