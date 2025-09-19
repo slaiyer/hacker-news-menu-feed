@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 import AppKit
 
+@available(macOS 26.0, *)
 struct PostsListing: View {
   var posts: [StoryFetchResponse]
 
@@ -24,7 +25,8 @@ struct PostsListing: View {
             .font(.system(size: 10))
             .frame(maxHeight: .infinity)
         }
-        .tint(.orange)
+        .buttonStyle(.glass)
+        .foregroundStyle(.orange)
         .onHover { hovering in
           if hovering {
             NSCursor.pointingHand.push()
@@ -32,18 +34,18 @@ struct PostsListing: View {
             NSCursor.pop()
           }
         }
-        .focusEffectDisabled(true)
+        .focusEffectDisabled()
 
         VStack(alignment: .leading) {
           let title = (post.title ?? "􀉣").trimmingCharacters(in: .whitespacesAndNewlines).filter{!$0.isNewline}
 
           if let url = post.url {
             CustomLink(title: title, link: url)
-              .foregroundColor(.primary)
+              .foregroundStyle(.primary)
               .help("\(title)\n\n\(url)")
           } else {
             Text(title)
-              .foregroundColor(.primary)
+              .foregroundStyle(.primary)
               .help(title)
           }
 
@@ -56,7 +58,7 @@ struct PostsListing: View {
                 .frame(minWidth: 50, alignment: .leading)
             }
             .font(.system(size: 10))
-            .foregroundColor(.secondary)
+            .foregroundStyle(Color(.secondaryLabelColor))
           }
           .onHover { hovering in
             if hovering {

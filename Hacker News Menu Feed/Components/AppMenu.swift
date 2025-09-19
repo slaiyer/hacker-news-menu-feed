@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@available(macOS 26.0, *)
 struct AppMenu: View {
   @Binding var posts: [StoryFetchResponse]
   @Binding var isFetching: Bool
@@ -10,10 +11,9 @@ struct AppMenu: View {
   var body: some View {
     VStack(alignment: .leading) {
       if isFetching {
-        Divider()
-
         Text("Loading feed…")
-          .foregroundColor(.secondary)
+          .foregroundStyle(.tertiary)
+          .padding()
       } else {
         PostsListing(posts: posts)
       }

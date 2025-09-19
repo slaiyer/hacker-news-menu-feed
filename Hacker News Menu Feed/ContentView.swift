@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(macOS 26.0, *)
 @main
 struct ContentView: App {
   private static let numPosts = 100
@@ -31,7 +32,6 @@ struct ContentView: App {
       }
       .padding()
       .frame(width: 500.0)
-      .tint(.orange)
     } label: {
       if showHeadline {
         Text(truncatedTitle)

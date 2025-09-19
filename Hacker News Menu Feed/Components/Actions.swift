@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@available(macOS 26.0, *)
 struct Actions: View {
   var onReload: () -> Void
   var onQuit: () -> Void
@@ -19,25 +20,30 @@ struct Actions: View {
     HStack(alignment: .top) {
       Button(action: onReload) {
         Image(systemName: "arrow.clockwise")
+          .foregroundStyle(.tertiary)
       }
+      .buttonStyle(.glass)
       .focused($focusedField, equals: .reload)
 
       Spacer()
 
       Toggle("Headline", isOn: $showHeadline)
         .toggleStyle(.button)
+        .tint(.orange)
         .focused($focusedField, equals: .headline)
 
       Spacer()
 
       Button(action: onQuit) {
         Image(systemName: "power")
+          .foregroundStyle(.tertiary)
       }
+      .buttonStyle(.glass)
       .focused($focusedField, equals: .quit)
     }
     .onAppear {
       focusedField = .reload
     }
-    .focusEffectDisabled(true)
+    .focusEffectDisabled()
   }
 }
