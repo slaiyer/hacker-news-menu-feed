@@ -12,3 +12,5 @@ build:
         CODE_SIGN_IDENTITY='' \
         DEVELOPMENT_TEAM='' \
         -arch arm64
+
+    du -hs 'build/Build/Products/Release/Hacker News Menu Feed.app'
