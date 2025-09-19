@@ -10,6 +10,8 @@ struct PostsListing: View {
       Array(posts.enumerated()),
       id: \.element.id
     ) { _, post in
+      Divider()
+
       HStack(alignment: .center) {
         Button {
           if let raw = post.url, let extURL = URL(string: raw) {
@@ -20,11 +22,9 @@ struct PostsListing: View {
         } label: {
           Text("􀉣")
             .font(.system(size: 10))
-            .foregroundColor(.secondary)
             .frame(maxHeight: .infinity)
         }
-        .buttonStyle(.link)
-        .contentShape(.rect)
+        .tint(.orange)
         .onHover { hovering in
           if hovering {
             NSCursor.pointingHand.push()
@@ -50,6 +50,7 @@ struct PostsListing: View {
             HStack {
               Text("􀆇 \(post.score)")
                 .frame(minWidth: 50, alignment: .leading)
+
               Text("􀌲 \(post.comments ?? 0)")
                 .frame(minWidth: 50, alignment: .leading)
             }

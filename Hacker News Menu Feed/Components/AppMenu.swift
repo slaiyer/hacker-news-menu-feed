@@ -10,7 +10,10 @@ struct AppMenu: View {
   var body: some View {
     VStack(alignment: .leading) {
       if isFetching {
+        Divider()
+
         Text("Loading feed…")
+          .foregroundColor(.secondary)
       } else {
         PostsListing(posts: posts)
       }

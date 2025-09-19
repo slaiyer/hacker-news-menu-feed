@@ -21,8 +21,6 @@ struct ContentView: App {
           showHeadline: $showHeadline
         )
 
-        Divider()
-
         ScrollView {
           AppMenu(
             posts: $posts,
@@ -33,6 +31,7 @@ struct ContentView: App {
       }
       .padding()
       .frame(width: 500.0)
+      .tint(.orange)
     } label: {
       if showHeadline {
         Text(truncatedTitle)
