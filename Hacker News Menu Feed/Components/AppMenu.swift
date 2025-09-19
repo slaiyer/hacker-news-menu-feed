@@ -9,12 +9,13 @@ struct AppMenu: View {
   var onReloadTapped: () -> Void
 
   var body: some View {
-    VStack(alignment: .leading) {
-      if isFetching {
-        Text("Loading feed…")
-          .foregroundStyle(.tertiary)
-          .padding()
-      } else {
+    if isFetching {
+      Text("…")
+        .frame(maxWidth: .infinity, alignment: .center)
+        .padding()
+        .foregroundStyle(.tertiary)
+    } else {
+      VStack(alignment: .leading) {
         PostsListing(posts: posts)
       }
     }
