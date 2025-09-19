@@ -1,9 +1,10 @@
 run: build
-    -killall 'Hacker News Menu Feed' && wait
-    open 'build/Build/Products/Release/Hacker News Menu Feed.app'
+    @-killall 'Hacker News Menu Feed' \
+      && sleep 1 \
+      && open 'build/Build/Products/Release/Hacker News Menu Feed.app'
 
 build:
-    xcrun xcodebuild clean build analyze \
+    @xcrun xcodebuild clean build analyze \
         -project 'Hacker News Menu Feed.xcodeproj' \
         -scheme 'Hacker News Menu Feed' \
         -configuration Release \
@@ -14,4 +15,4 @@ build:
         DEVELOPMENT_TEAM='' \
         -arch arm64
 
-    du -hs 'build/Build/Products/Release/Hacker News Menu Feed.app'
+    @du -hs 'build/Build/Products/Release/Hacker News Menu Feed.app'
