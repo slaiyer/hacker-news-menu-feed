@@ -102,36 +102,52 @@ struct ContentView: App {
     isFetching = true
 
     Task {
-      do {
-        try await fetchFeed()
-      } catch {
-        print("Error: \(error)")
-      }
+      await fetchFeed()
 
       isFetching = false
     }
   }
 
-  func fetchFeed() async throws {
-    let postsIds = try await fetchTopPostsIDs()
+  func fetchFeed() async {
+    let postIds: [Int]
+    do {
+      postIds = try await fetchTopPostsIDs()
+    } catch {
+      return
+    }
 
-    posts = try await withThrowingTaskGroup(of: (Int, StoryFetchResponse).self) {
-      group -> [StoryFetchResponse] in
-      for (index, postId) in postsIds.enumerated() {
+    guard postIds.count > 0 else {
+      return
+    }
+
+    let newPosts = await withTaskGroup(of: (Int, StoryFetchResponse)?.self) { group in
+      for (index, postId) in postIds.enumerated() {
         group.addTask {
-          let post = try await self.fetchPostById(postId: postId)
-          return (index, post)
+          do {
+            let post = try await self.fetchPostById(postId: postId)
+            return (index, post)
+          } catch {
+            return nil
+          }
         }
       }
 
-      var collectedPosts = [StoryFetchResponse?](repeating: nil, count: postsIds.count)
+      var orderedPosts = [StoryFetchResponse?](repeating: nil, count: postIds.count)
 
-      for try await (index, post) in group {
-        collectedPosts[index] = post
+      for await result in group {
+        if let (index, post) = result {
+          orderedPosts[index] = post
+        }
       }
 
-      return collectedPosts.compactMap { $0 }
+      return orderedPosts.compactMap { $0 }
     }
+
+    guard newPosts.count > 0 else {
+      return
+    }
+
+    posts = newPosts
   }
 
   func fetchTopPostsIDs() async throws -> [Int] {
