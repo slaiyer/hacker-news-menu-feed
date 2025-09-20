@@ -50,6 +50,8 @@ struct ContentView: App {
       if !isFetching && posts.count > 0 {
         truncatedTitle = posts[0].title!.trimmingCharacters(in: .whitespacesAndNewlines).filter{!$0.isNewline}
         adjustTitleForMenuBar()
+      } else {
+        truncatedTitle = "Reading HN…"
       }
     }
     .onChange(of: showHeadline) {
