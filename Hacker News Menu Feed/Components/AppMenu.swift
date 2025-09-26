@@ -10,7 +10,7 @@ struct AppMenu: View {
   
   var body: some View {
     if posts.count > 0 {
-      VStack(alignment: .leading) {
+      LazyVStack(alignment: .leading) {
         PostsListing(posts: posts)
       }
       .animation(.easeInOut(duration: fadeDuration), value: isFadingOut)
