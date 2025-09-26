@@ -35,7 +35,7 @@ struct ContentView: App {
         }
       }
       .padding()
-      .frame(width: 500.0)
+      .frame(width: 500)
     } label: {
       if showHeadline {
         Text(truncatedTitle)
