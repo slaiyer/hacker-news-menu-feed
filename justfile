@@ -1,5 +1,5 @@
 run: build
-    @-killall 'Hacker News Menu Feed'  && sleep 1
+    @-killall 'Hacker News Menu Feed' && sleep 1
     open 'build/Build/Products/Release/Hacker News Menu Feed.app'
 
 build:
