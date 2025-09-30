@@ -2,6 +2,8 @@ app := 'Hacker News Menu Feed'
 
 run: build
     #!/usr/bin/env bash
+    set -eEuo pipefail
+
     kill_wait() {
         while pgrep "${1}" >/dev/null; do
             killall "${1}"
@@ -10,9 +12,10 @@ run: build
     }
     export -f kill_wait
 
-    echo 'Restarting {{app}}...'
+    printf 'Restarting {{app}}...'
     timeout 5 bash -c "kill_wait '{{app}}'"
     open 'build/Build/Products/Release/{{app}}.app'
+    echo ' done.'
 
 build:
     @xcrun xcodebuild clean build analyze \
