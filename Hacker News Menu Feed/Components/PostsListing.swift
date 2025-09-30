@@ -57,10 +57,10 @@ struct PostsListing: View {
 
           Link(destination: URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!) {
             HStack {
-              Text("􀆇 \(post.score)")
+              Text("􀆇 \(abbreviatedNumberString(number: post.score))")
                 .frame(minWidth: 50, alignment: .leading)
 
-              Text("􀌲 \(post.comments ?? 0)")
+              Text("􀌲 \(abbreviatedNumberString(number: post.comments))")
                 .frame(minWidth: 50, alignment: .leading)
             }
             .font(.subheadline)
@@ -76,5 +76,28 @@ struct PostsListing: View {
         }
       }
     }
+  }
+}
+
+func abbreviatedNumberString(number: Int?) -> String {
+  guard let number = number else {
+    return "—"
+  }
+
+  switch number {
+    case 0...999:
+      return String(number)
+    case 1_000..<1_000_000:
+      let value = Double(number) / 1_000
+      return String(format: "%.1fK", value)
+    case 1_000_000..<1_000_000_000:
+      let value = Double(number) / 1_000_000
+      return String(format: "%.1fM", value)
+    case 1_000_000_000..<1_000_000_000_000:
+      let value = Double(number) / 1_000_000_000
+      return String(format: "%.1fB", value)
+    default:
+      let value = Double(number) / 1_000_000_000_000
+      return String(format: "%.1fT", value)
   }
 }
