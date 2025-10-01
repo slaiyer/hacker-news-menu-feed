@@ -96,8 +96,10 @@ func abbreviatedNumberString(number: Int?) -> String {
     case 1_000_000_000..<1_000_000_000_000:
       let value = Double(number) / 1_000_000_000
       return String(format: "%.1fB", value)
-    default:
+    case 1_000_000_000_000..<1_000_000_000_000_000:
       let value = Double(number) / 1_000_000_000_000
       return String(format: "%.1fT", value)
+    default:
+      return "!"
   }
 }
