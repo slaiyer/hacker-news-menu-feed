@@ -55,8 +55,10 @@ struct Actions: View {
           try? await Task.sleep(for: .seconds(spinnerAnimationDuration))
 
           if !isFetching {
-            isCoolingDown = false
-            focusedField = .reload
+            await MainActor.run {
+              isCoolingDown = false
+              focusedField = .reload
+            }
           }
         }
       }
@@ -96,10 +98,10 @@ struct Spinner: View {
 
       animationTask = Task {
         while !Task.isCancelled {
-          if Task.isCancelled { break }
-
-          withAnimation(.linear(duration: spinnerAnimationDuration)) {
-            rotation += 180
+          await MainActor.run {
+            withAnimation(.linear(duration: spinnerAnimationDuration)) {
+              rotation += 180
+            }
           }
 
           try? await Task.sleep(until: sleepUntil)
