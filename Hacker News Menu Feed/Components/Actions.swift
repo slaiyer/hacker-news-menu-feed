@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-let reloadSymbol = "arrow.trianglehead.2.clockwise.rotate.90"
+let reloadSymbol = "arrow.trianglehead.2.clockwise"
 let spinnerAnimationDuration = 1.0
 
 @available(macOS 26.0, *)
