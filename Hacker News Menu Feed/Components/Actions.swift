@@ -2,7 +2,8 @@ import Foundation
 import SwiftUI
 
 let reloadSymbol = "arrow.trianglehead.2.clockwise"
-let spinnerAnimationDuration = 1.0
+let spinnerAnimationLength = 1.0
+let spinnerAnimationDuration = Duration.seconds(1.0)
 
 @available(macOS 26.0, *)
 struct Actions: View {
@@ -52,7 +53,7 @@ struct Actions: View {
       } else {
         isCoolingDown = true
         Task {
-          try? await Task.sleep(for: .seconds(spinnerAnimationDuration))
+          try? await Task.sleep(for: spinnerAnimationDuration)
 
           if !isFetching {
             await MainActor.run {
@@ -94,18 +95,15 @@ struct Spinner: View {
     if shouldSpin {
       guard animationTask == nil else { return }
 
-      var sleepUntil = ContinuousClock.now + .seconds(spinnerAnimationDuration)
-
       animationTask = Task {
         while !Task.isCancelled {
           await MainActor.run {
-            withAnimation(.linear(duration: spinnerAnimationDuration)) {
+            withAnimation(.linear(duration: spinnerAnimationLength)) {
               rotation += 180
             }
           }
 
-          try? await Task.sleep(until: sleepUntil)
-          sleepUntil += .seconds(spinnerAnimationDuration)
+          try? await Task.sleep(for: spinnerAnimationDuration)
         }
       }
     } else {
