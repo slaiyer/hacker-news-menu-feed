@@ -22,7 +22,7 @@ struct Actions: View {
   @FocusState private var focusedField: FocusField?
 
   var body: some View {
-    HStack(alignment: .top) {
+    HStack(alignment: .center) {
       Button(action: onReload) {
         Spinner(isSpinning: isFetching)
       }

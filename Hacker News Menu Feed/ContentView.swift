@@ -18,7 +18,7 @@ struct ContentView: App {
 
   var body: some Scene {
     MenuBarExtra {
-      VStack(alignment: .leading) {
+      VStack(alignment: .center) {
         Actions(
           onReload: reloadData,
           onQuit: { NSApplication.shared.terminate(nil) },
