@@ -98,7 +98,7 @@ struct Spinner: View {
       animationTask = Task {
         while !Task.isCancelled {
           await MainActor.run {
-            withAnimation(.linear(duration: spinnerAnimationLength)) {
+            withAnimation(.easeInOut(duration: spinnerAnimationLength)) {
               rotation += 180
             }
           }
