@@ -3,7 +3,7 @@ import SwiftUI
 
 let reloadSymbol = "arrow.trianglehead.2.clockwise"
 let spinnerAnimationLength = 1.0
-let spinnerAnimationDuration = Duration.seconds(1.0)
+let spinnerAnimationDuration = Duration.seconds(spinnerAnimationLength)
 
 @available(macOS 26.0, *)
 struct Actions: View {
