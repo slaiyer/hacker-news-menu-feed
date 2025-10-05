@@ -11,8 +11,6 @@ struct PostsListing: View {
       Array(posts.enumerated()),
       id: \.element.id
     ) { _, post in
-      Divider()
-
       HStack(alignment: .center) {
         let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
 
