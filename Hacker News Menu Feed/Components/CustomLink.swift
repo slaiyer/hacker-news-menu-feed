@@ -9,14 +9,10 @@ struct CustomLink: View {
     Link(
       destination: URL(string: link)!,
       label: {
-        HStack {
-          Text(title)
-            .lineLimit(1)
-            .truncationMode(.middle)
-
-          Spacer()
-        }
-      }
+        Text(title)
+          .lineLimit(1)
+          .truncationMode(.middle)
+      },
     )
     .onHover(perform: { hovering in
       if hovering {

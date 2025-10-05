@@ -39,20 +39,20 @@ struct PostsListing: View {
         VStack(alignment: .leading) {
           let title = post.title ?? "􀉣"
 
-          if let url = post.url {
-            CustomLink(title: title, link: url)
-              .foregroundStyle(.primary)
-              .help("\(title)\n\n\(url)")
-          } else {
-            HStack {
+          HStack { // unreliable workaround for leading space
+            if let url = post.url {
+              CustomLink(title: title, link: url)
+                .foregroundStyle(.primary)
+                .help("\(title)\n\n\(url)")
+            } else {
               Text(title)
                 .lineLimit(1)
                 .truncationMode(.middle)
                 .foregroundStyle(.primary)
                 .help(title)
-
-              Spacer()
             }
+
+            Spacer()
           }
 
           Link(destination: URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!) {
