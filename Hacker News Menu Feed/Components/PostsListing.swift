@@ -14,11 +14,13 @@ struct PostsListing: View {
       Divider()
 
       HStack(alignment: .center) {
+        let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
+
         Button {
           if let raw = post.url, let extURL = URL(string: raw) {
             NSWorkspace.shared.open(extURL)
           }
-          let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
+
           NSWorkspace.shared.open(hnURL)
         } label: {
           Text("􀉣")
@@ -40,10 +42,10 @@ struct PostsListing: View {
           let title = post.title ?? "􀉣"
 
           HStack { // unreliable workaround for leading space
-            if let url = post.url {
-              CustomLink(title: title, link: url)
+            if let extURL = post.url {
+              CustomLink(title: title, link: extURL)
                 .foregroundStyle(.primary)
-                .help("\(title)\n\n\(url)")
+                .help("\(title)\n\n\(extURL)")
             } else {
               Text(title)
                 .lineLimit(1)
@@ -55,7 +57,7 @@ struct PostsListing: View {
             Spacer()
           }
 
-          Link(destination: URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!) {
+          Link(destination: hnURL) {
             HStack {
               Text("􀆇 \(abbreviatedNumberString(number: post.score))")
                 .frame(minWidth: 50, alignment: .leading)
