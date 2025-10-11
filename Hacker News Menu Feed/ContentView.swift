@@ -143,7 +143,9 @@ struct ContentView: App {
         }
       }
 
-      return orderedPosts.compactMap { $0 }
+      return orderedPosts
+        .compactMap { $0 }
+        .sorted { $0.time > $1.time }
     }
 
     guard newPosts.count > 0 else {
