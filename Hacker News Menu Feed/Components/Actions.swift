@@ -35,6 +35,9 @@ struct Actions: View {
 
       Toggle("Headline", isOn: $showHeadline)
         .toggleStyle(.button)
+        .contentShape(.capsule)
+        .clipShape(.capsule)
+        .clipped(antialiased: true)
         .tint(.orange)
         .focusEffectDisabled()
 

@@ -27,6 +27,9 @@ struct PostsListing: View {
         }
         .buttonStyle(.glass)
         .foregroundStyle(.orange)
+        .contentShape(.circle)
+        .clipShape(.circle)
+        .clipped(antialiased: true)
         .onHover { hovering in
           if hovering {
             NSCursor.pointingHand.push()
