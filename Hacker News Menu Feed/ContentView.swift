@@ -82,6 +82,10 @@ struct ContentView: App {
   }
 
   func adjustTitleForMenuBar() {
+    guard !posts.isEmpty else {
+      return
+    }
+
     Task { @MainActor in
       truncatedTitle = posts[0].title!
       let maxMenuBarWidth: CGFloat = 250
@@ -134,7 +138,7 @@ struct ContentView: App {
       originalPostIDs = postIds
     }
 
-    guard postIds.count > 0 else {
+    guard !postIds.isEmpty else {
       return
     }
 
@@ -165,7 +169,7 @@ struct ContentView: App {
       )
     }
 
-    guard newPosts.count > 0 else {
+    guard !newPosts.isEmpty else {
       return
     }
 
