@@ -11,6 +11,7 @@ struct ContentView: App {
   @State private var showHeadline = LocalDataSource.getShowHeadline()
   @State private var sortKey = LocalDataSource.getSortKey()
   @State private var truncatedTitle: String = "Reading HN…"
+  @State private var originalPostIDs: [Int] = []
   @State private var posts: [StoryFetchResponse] = []
   @State private var reloadRate = 3600.0
   @State private var isFadingOut = false
@@ -125,6 +126,10 @@ struct ContentView: App {
       return
     }
 
+    await MainActor.run {
+      originalPostIDs = postIds
+    }
+
     guard postIds.count > 0 else {
       return
     }
@@ -152,6 +157,7 @@ struct ContentView: App {
       return sortPosts(
         orderedPosts.compactMap { $0 },
         by: sortKey,
+        originalPostIDs: originalPostIDs,
       )
     }
 
@@ -196,7 +202,33 @@ struct ContentView: App {
 
   func applySort() {
     Task { @MainActor in
-      posts = sortPosts(posts, by: sortKey)
+      posts = sortPosts(
+        posts,
+        by: sortKey,
+        originalPostIDs: originalPostIDs,
+      )
+    }
+  }
+
+  func sortPosts(
+    _ posts: [StoryFetchResponse],
+    by key: SortKey,
+    originalPostIDs: [Int],
+  ) -> [StoryFetchResponse] {
+    switch key {
+      case .upstream:
+        let order = Dictionary(
+          uniqueKeysWithValues: originalPostIDs.enumerated().map { ($1, $0) }
+        )
+        return posts.sorted {
+          (order[$0.id] ?? Int.max) < (order[$1.id] ?? Int.max)
+        }
+      case .time:
+        return posts.sorted { $0.time > $1.time }
+      case .votes:
+        return posts.sorted { $0.score > $1.score }
+      case .comments:
+        return posts.sorted { ($0.comments ?? 0) > ($1.comments ?? 0) }
     }
   }
 }
@@ -216,19 +248,6 @@ enum SortKey: String, Codable, CaseIterable, Identifiable {
       case .votes: return "Votes"
       case .comments: return "Comments"
     }
-  }
-}
-
-func sortPosts(_ posts: [StoryFetchResponse], by key: SortKey) -> [StoryFetchResponse] {
-  switch key {
-    case .upstream:
-      return posts
-    case .time:
-      return posts.sorted { $0.time > $1.time }
-    case .votes:
-      return posts.sorted { $0.score > $1.score }
-    case .comments:
-      return posts.sorted { ($0.comments ?? 0) > ($1.comments ?? 0) }
   }
 }
 

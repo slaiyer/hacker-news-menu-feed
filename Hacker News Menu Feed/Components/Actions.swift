@@ -47,7 +47,7 @@ struct Actions: View {
               sortKey = key
               onSort()
             } label: {
-              Label(key.label, systemImage: sortKey == key ? "checkmark" : "")
+              Label(key.label + "\t", systemImage: sortKey == key ? "checkmark" : "")
             }
             .tint(.orange)
           }
