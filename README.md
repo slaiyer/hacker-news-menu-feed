@@ -2,9 +2,9 @@
 
 ## Keyboard shortcuts
 
-- `⌘r`: Reload feed
-- `⌘h`: Toggle headline
-- `⌘o`: Sort by original order
-- `⌘t`: Sort by latest
-- `⌘s`: Sort by score
-- `⌘c`: Sort by comments
+- `⌘ R`: Reload feed
+- `⌘ H`: Toggle headline
+- `⌘ O`: Sort by original order
+- `⌘ T`: Sort by latest
+- `⌘ S`: Sort by score
+- `⌘ C`: Sort by comments

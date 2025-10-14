@@ -259,7 +259,7 @@ enum SortKey: String, Codable, CaseIterable, Identifiable {
     }
   }
   
-  var cut: Character { label.lowercased().first! }
+  var cut: Character { id.first! }
 }
 
 extension Task where Failure == any Error {
