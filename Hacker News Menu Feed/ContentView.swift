@@ -55,16 +55,17 @@ struct ContentView: App {
     .menuBarExtraStyle(.window)
     .onChange(of: isFetching) {
       if !isFetching && posts.count > 0 {
-        truncatedTitle = posts[0].title!
         adjustTitleForMenuBar()
       }
     }
     .onChange(of: showHeadline) {
       LocalDataSource.saveShowHeadline(value: showHeadline)
+      adjustTitleForMenuBar()
     }
     .onChange(of: sortKey) { _, newKey in
       LocalDataSource.saveSortKey(value: newKey)
       applySort()
+      adjustTitleForMenuBar()
     }
   }
 
@@ -81,11 +82,14 @@ struct ContentView: App {
   }
 
   func adjustTitleForMenuBar() {
-    let maxMenuBarWidth: CGFloat = 250
-    truncatedTitle = truncateStringToFit(
-      truncatedTitle,
-      maxWidth: maxMenuBarWidth
-    )
+    Task { @MainActor in
+      truncatedTitle = posts[0].title!
+      let maxMenuBarWidth: CGFloat = 250
+      truncatedTitle = truncateStringToFit(
+        truncatedTitle,
+        maxWidth: maxMenuBarWidth
+      )
+    }
   }
 
   func truncateStringToFit(_ string: String, maxWidth: CGFloat) -> String {
