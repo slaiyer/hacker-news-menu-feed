@@ -4,7 +4,5 @@
 
 - `⌘ R`: Reload feed
 - `⌘ H`: Toggle headline
-- `⌘ O`: Sort by original order
-- `⌘ T`: Sort by latest
-- `⌘ S`: Sort by score
-- `⌘ C`: Sort by comments
+- `⌘ 1`, ...: Sort by criteria
+
