@@ -8,7 +8,7 @@ class LocalDataSource {
   }
 
   public static func getSortKey() -> SortKey {
-    var sortKey: SortKey = .upstream
+    var sortKey: SortKey = .original
 
     if let data = UserDefaults.standard.data(forKey: "SortKey") {
       if let decoded = try? JSONDecoder().decode(SortKey.self, from: data) {

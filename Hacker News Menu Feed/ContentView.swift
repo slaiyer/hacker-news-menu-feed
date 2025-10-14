@@ -226,7 +226,7 @@ struct ContentView: App {
     originalPostIDs: [Int],
   ) -> [StoryFetchResponse] {
     switch key {
-      case .upstream:
+      case .original:
         let order = Dictionary(
           uniqueKeysWithValues: originalPostIDs.enumerated().map { ($1, $0) }
         )
@@ -235,7 +235,7 @@ struct ContentView: App {
         }
       case .time:
         return posts.sorted { $0.time > $1.time }
-      case .votes:
+      case .score:
         return posts.sorted { $0.score > $1.score }
       case .comments:
         return posts.sorted { ($0.comments ?? 0) > ($1.comments ?? 0) }
@@ -244,18 +244,18 @@ struct ContentView: App {
 }
 
 enum SortKey: String, Codable, CaseIterable, Identifiable {
-  case upstream
+  case original
   case time
-  case votes
+  case score
   case comments
 
   var id: String { rawValue }
 
   var label: String {
     switch self {
-      case .upstream: return "Upstream"
+      case .original: return "Original"
       case .time: return "Time"
-      case .votes: return "Votes"
+      case .score: return "Score"
       case .comments: return "Comments"
     }
   }
