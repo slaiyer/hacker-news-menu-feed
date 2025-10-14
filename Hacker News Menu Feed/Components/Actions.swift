@@ -52,7 +52,7 @@ struct Actions: View {
             sortKey = key
             onSort()
           } label: {
-            Label(key.label + "\t", systemImage: sortKey == key ? "checkmark" : "")
+            Label(key.label, systemImage: sortKey == key ? "checkmark" : "")
           }
           .keyboardShortcut(KeyEquivalent(key.cut))
           .tint(.orange)
