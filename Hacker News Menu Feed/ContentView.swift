@@ -74,6 +74,7 @@ struct ContentView: App {
         }
       }
     }
+    .windowLevel(.floating)
   }
 
   func startApp() {
