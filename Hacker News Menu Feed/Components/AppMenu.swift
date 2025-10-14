@@ -4,7 +4,6 @@ import SwiftUI
 @available(macOS 26.0, *)
 struct AppMenu: View {
   @Binding var posts: [StoryFetchResponse]
-  @Binding var isFadingOut: Bool
 
   var onReloadTapped: () -> Void
   
@@ -13,7 +12,6 @@ struct AppMenu: View {
       LazyVStack(alignment: .center) {
         PostsListing(posts: posts)
       }
-      .animation(.easeInOut(duration: fadeDuration), value: isFadingOut)
     } else {
       Text("…")
         .frame(maxWidth: .infinity, alignment: .center)

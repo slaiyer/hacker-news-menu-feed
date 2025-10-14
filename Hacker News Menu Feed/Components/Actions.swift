@@ -71,14 +71,10 @@ struct Actions: View {
       } else {
         isCoolingDown = true
         Task {
-          try? await Task.sleep(for: spinnerAnimationDuration)
-
-          if !isFetching {
-            await MainActor.run {
-              withAnimation {
-                isCoolingDown = false
-                focusedField = .reload
-              }
+          await MainActor.run {
+            withAnimation {
+              isCoolingDown = false
+              focusedField = .reload
             }
           }
         }

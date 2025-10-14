@@ -1,7 +1,5 @@
 import SwiftUI
 
-let fadeDuration = 0.2
-
 @available(macOS 26.0, *)
 @main
 struct ContentView: App {
@@ -14,7 +12,6 @@ struct ContentView: App {
   @State private var originalPostIDs: [Int] = []
   @State private var posts: [StoryFetchResponse] = []
   @State private var reloadRate = 3600.0
-  @State private var isFadingOut = false
 
   var timer = Timer()
 
@@ -32,7 +29,6 @@ struct ContentView: App {
         ScrollView {
           AppMenu(
             posts: $posts,
-            isFadingOut: $isFadingOut,
             onReloadTapped: reloadData,
           )
         }
@@ -174,17 +170,8 @@ struct ContentView: App {
     }
 
     await MainActor.run {
-      withAnimation(.easeInOut(duration: fadeDuration)) {
-        isFadingOut = true
-      }
-    }
-
-    try? await Task.sleep(nanoseconds: UInt64(fadeDuration * 1_000_000_000))
-
-    await MainActor.run {
-      withAnimation(.easeInOut(duration: fadeDuration)) {
+      withAnimation {
         posts = newPosts
-        isFadingOut = false
       }
     }
   }
