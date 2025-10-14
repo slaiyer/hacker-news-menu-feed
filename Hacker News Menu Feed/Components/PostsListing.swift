@@ -64,6 +64,11 @@ struct PostsListing: View {
 
               Text("􀌲 \(abbreviatedNumberString(number: post.comments))")
                 .frame(minWidth: 50, alignment: .leading)
+
+              if (post.type != "story") {
+                Text("􀈕 \(post.type.uppercased())")
+                  .frame(minWidth: 50, alignment: .leading)
+              }
             }
             .font(.subheadline)
             .foregroundStyle(Color(.secondaryLabelColor))

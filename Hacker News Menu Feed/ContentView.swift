@@ -238,28 +238,32 @@ struct ContentView: App {
         return posts.sorted { $0.score > $1.score }
       case .comments:
         return posts.sorted { ($0.comments ?? 0) > ($1.comments ?? 0) }
+      case .type:
+        return posts.sorted { $0.type < $1.type }
     }
   }
 }
 
-enum SortKey: String, Codable, CaseIterable, Identifiable {
-  case original
+enum SortKey: Int, Codable, CaseIterable, Identifiable {
+  case original = 1
   case time
   case score
   case comments
-  
-  var id: String { rawValue }
-  
+  case type
+
+  var id: Int { rawValue }
+
   var label: String {
     switch self {
       case .original: return "Original"
       case .time: return "Time"
       case .score: return "Score"
       case .comments: return "Comments"
+      case .type: return "Type"
     }
   }
   
-  var cut: Character { id.first! }
+  var cut: Character { String(id).first! }
 }
 
 extension Task where Failure == any Error {
