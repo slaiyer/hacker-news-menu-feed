@@ -8,9 +8,10 @@ let spinnerAnimationDuration = Duration.seconds(spinnerAnimationLength)
 @available(macOS 26.0, *)
 struct Actions: View {
   var onReload: () -> Void
-  var onQuit: () -> Void
+  var onSort: () -> Void
 
   @Binding var showHeadline: Bool
+  @Binding var sortKey: SortKey
   @Binding var isFetching: Bool
 
   @State private var isCoolingDown: Bool = false
@@ -35,14 +36,30 @@ struct Actions: View {
       Toggle("Headline", isOn: $showHeadline)
         .toggleStyle(.button)
         .tint(.orange)
+        .focusEffectDisabled()
 
       Spacer()
 
-      Button(action: onQuit) {
-        Image(systemName: "power")
-          .foregroundStyle(.tertiary)
+      Button(action: {}) {
+        Menu {
+          ForEach(SortKey.allCases) { key in
+            Button {
+              sortKey = key
+              onSort()
+            } label: {
+              Label(key.label, systemImage: sortKey == key ? "checkmark" : "")
+            }
+            .tint(.orange)
+          }
+        } label: {
+          Image(systemName: "arrow.up.arrow.down")
+            .tint(.secondary)
+        }
+        .menuStyle(.borderlessButton)
+        .menuIndicator(.hidden)
       }
       .buttonStyle(.glass)
+      .focusEffectDisabled()
     }
     .onAppear {
       focusedField = .reload
@@ -77,7 +94,7 @@ struct Spinner: View {
 
   var body: some View {
     Image(systemName: reloadSymbol)
-      .foregroundStyle(.tertiary)
+      .foregroundStyle(.secondary)
       .rotationEffect(.degrees(rotation))
       .onChange(of: isSpinning) { _, newValue in
         updateAnimation(shouldSpin: newValue)

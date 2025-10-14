@@ -9,6 +9,7 @@ struct ContentView: App {
 
   @State private var isFetching = false
   @State private var showHeadline = LocalDataSource.getShowHeadline()
+  @State private var sortKey = LocalDataSource.getSortKey()
   @State private var truncatedTitle: String = "Reading HN…"
   @State private var posts: [StoryFetchResponse] = []
   @State private var reloadRate = 3600.0
@@ -21,8 +22,9 @@ struct ContentView: App {
       VStack(alignment: .center) {
         Actions(
           onReload: reloadData,
-          onQuit: { NSApplication.shared.terminate(nil) },
+          onSort: applySort,
           showHeadline: $showHeadline,
+          sortKey: $sortKey,
           isFetching: $isFetching,
         )
 
@@ -58,6 +60,10 @@ struct ContentView: App {
     }
     .onChange(of: showHeadline) {
       LocalDataSource.saveShowHeadline(value: showHeadline)
+    }
+    .onChange(of: sortKey) { _, newKey in
+      LocalDataSource.saveSortKey(value: newKey)
+      applySort()
     }
   }
 
@@ -143,9 +149,10 @@ struct ContentView: App {
         }
       }
 
-      return orderedPosts
-        .compactMap { $0 }
-        .sorted { $0.time > $1.time }
+      return sortPosts(
+        orderedPosts.compactMap { $0 },
+        by: sortKey,
+      )
     }
 
     guard newPosts.count > 0 else {
@@ -185,6 +192,43 @@ struct ContentView: App {
     let (data, _) = try await URLSession.shared.data(from: url)
 
     return try JSONDecoder().decode(StoryFetchResponse.self, from: data)
+  }
+
+  func applySort() {
+    Task { @MainActor in
+      posts = sortPosts(posts, by: sortKey)
+    }
+  }
+}
+
+enum SortKey: String, Codable, CaseIterable, Identifiable {
+  case upstream
+  case time
+  case votes
+  case comments
+
+  var id: String { rawValue }
+
+  var label: String {
+    switch self {
+      case .upstream: return "Upstream"
+      case .time: return "Time"
+      case .votes: return "Votes"
+      case .comments: return "Comments"
+    }
+  }
+}
+
+func sortPosts(_ posts: [StoryFetchResponse], by key: SortKey) -> [StoryFetchResponse] {
+  switch key {
+    case .upstream:
+      return posts
+    case .time:
+      return posts.sorted { $0.time > $1.time }
+    case .votes:
+      return posts.sorted { $0.score > $1.score }
+    case .comments:
+      return posts.sorted { ($0.comments ?? 0) > ($1.comments ?? 0) }
   }
 }
 

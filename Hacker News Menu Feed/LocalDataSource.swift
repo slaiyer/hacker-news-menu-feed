@@ -1,6 +1,23 @@
 import Foundation
 
 class LocalDataSource {
+  public static func saveSortKey(value: SortKey) {
+    if let encoded = try? JSONEncoder().encode(value) {
+      UserDefaults.standard.set(encoded, forKey: "SortKey")
+    }
+  }
+
+  public static func getSortKey() -> SortKey {
+    var sortKey: SortKey = .upstream
+
+    if let data = UserDefaults.standard.data(forKey: "SortKey") {
+      if let decoded = try? JSONDecoder().decode(SortKey.self, from: data) {
+        sortKey = decoded
+      }
+    }
+
+    return sortKey
+  }
 
   public static func saveShowHeadline(value: Bool) {
     if let encoded = try? JSONEncoder().encode(value) {
