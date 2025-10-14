@@ -42,7 +42,7 @@ struct ContentView: App {
             startApp()
           }
       } else {
-        Image(.icon)
+        Text("ℏ")
           .onAppear {
             startApp()
           }
