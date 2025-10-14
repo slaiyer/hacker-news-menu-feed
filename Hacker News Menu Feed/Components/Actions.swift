@@ -27,7 +27,7 @@ struct Actions: View {
       Button(action: onReload) {
         Spinner(isSpinning: isFetching)
       }
-      .buttonStyle(.glass)
+      .buttonStyle(.accessoryBar)
       .disabled(isFetching || isCoolingDown)
       .focused($focusedField, equals: .reload)
 
@@ -40,26 +40,23 @@ struct Actions: View {
 
       Spacer()
 
-      Button(action: {}) {
-        Menu {
-          ForEach(SortKey.allCases) { key in
-            Button {
-              sortKey = key
-              onSort()
-            } label: {
-              Label(key.label + "\t", systemImage: sortKey == key ? "checkmark" : "")
-            }
-            .tint(.orange)
+      Menu {
+        ForEach(SortKey.allCases) { key in
+          Button {
+            sortKey = key
+            onSort()
+          } label: {
+            Label(key.label + "\t", systemImage: sortKey == key ? "checkmark" : "")
           }
-        } label: {
-          Image(systemName: "arrow.up.arrow.down")
-            .tint(.secondary)
+          .tint(.orange)
         }
-        .menuStyle(.borderlessButton)
-        .menuIndicator(.hidden)
+      } label: {
+        Image(systemName: "arrow.up.arrow.down")
+          .tint(.secondary)
       }
-      .buttonStyle(.glass)
-      .focusEffectDisabled()
+      .menuStyle(.borderlessButton)
+      .menuIndicator(.hidden)
+      .padding(.horizontal, 8)
     }
     .onAppear {
       focusedField = .reload
@@ -74,8 +71,10 @@ struct Actions: View {
 
           if !isFetching {
             await MainActor.run {
-              isCoolingDown = false
-              focusedField = .reload
+              withAnimation {
+                isCoolingDown = false
+                focusedField = .reload
+              }
             }
           }
         }
@@ -94,7 +93,6 @@ struct Spinner: View {
 
   var body: some View {
     Image(systemName: reloadSymbol)
-      .foregroundStyle(.secondary)
       .rotationEffect(.degrees(rotation))
       .onChange(of: isSpinning) { _, newValue in
         updateAnimation(shouldSpin: newValue)
