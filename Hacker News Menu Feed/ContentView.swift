@@ -174,8 +174,8 @@ struct ContentView: App {
     try? await Task.sleep(nanoseconds: UInt64(fadeDuration * 1_000_000_000))
 
     await MainActor.run {
-      posts = newPosts
       withAnimation(.easeInOut(duration: fadeDuration)) {
+        posts = newPosts
         isFadingOut = false
       }
     }
@@ -202,11 +202,13 @@ struct ContentView: App {
 
   func applySort() {
     Task { @MainActor in
-      posts = sortPosts(
-        posts,
-        by: sortKey,
-        originalPostIDs: originalPostIDs,
-      )
+      withAnimation {
+        posts = sortPosts(
+          posts,
+          by: sortKey,
+          originalPostIDs: originalPostIDs,
+        )
+      }
     }
   }
 
