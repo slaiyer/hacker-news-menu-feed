@@ -57,6 +57,7 @@ struct Actions: View {
       .menuStyle(.borderlessButton)
       .menuIndicator(.hidden)
       .padding(.horizontal, 8)
+      .focusEffectDisabled()
     }
     .onAppear {
       focusedField = .reload
