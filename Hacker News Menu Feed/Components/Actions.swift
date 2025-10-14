@@ -27,6 +27,7 @@ struct Actions: View {
       Button(action: onReload) {
         Spinner(isSpinning: isFetching)
       }
+      .keyboardShortcut("r")
       .buttonStyle(.accessoryBar)
       .disabled(isFetching || isCoolingDown)
       .focused($focusedField, equals: .reload)
@@ -35,11 +36,13 @@ struct Actions: View {
       Spacer()
 
       Toggle("Headline", isOn: $showHeadline)
+        .keyboardShortcut("h")
         .toggleStyle(.button)
         .contentShape(.capsule)
         .clipShape(.capsule)
         .clipped(antialiased: true)
         .tint(.orange)
+        .focusEffectDisabled()
 
       Spacer()
 
@@ -51,6 +54,7 @@ struct Actions: View {
           } label: {
             Label(key.label + "\t", systemImage: sortKey == key ? "checkmark" : "")
           }
+          .keyboardShortcut(KeyEquivalent(key.cut))
           .tint(.orange)
         }
       } label: {

@@ -63,6 +63,17 @@ struct ContentView: App {
       applySort()
       adjustTitleForMenuBar()
     }
+    .commands {
+      CommandMenu("Sort by…") {
+        ForEach(SortKey.allCases) { key in
+          Button(key.label) {
+            sortKey = key
+            applySort()
+          }
+          .keyboardShortcut(KeyEquivalent(key.cut))
+        }
+      }
+    }
   }
 
   func startApp() {
@@ -235,9 +246,9 @@ enum SortKey: String, Codable, CaseIterable, Identifiable {
   case time
   case score
   case comments
-
+  
   var id: String { rawValue }
-
+  
   var label: String {
     switch self {
       case .original: return "Original"
@@ -246,6 +257,8 @@ enum SortKey: String, Codable, CaseIterable, Identifiable {
       case .comments: return "Comments"
     }
   }
+  
+  var cut: Character { label.lowercased().first! }
 }
 
 extension Task where Failure == any Error {
