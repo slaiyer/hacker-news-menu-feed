@@ -30,6 +30,7 @@ struct Actions: View {
       .buttonStyle(.accessoryBar)
       .disabled(isFetching || isCoolingDown)
       .focused($focusedField, equals: .reload)
+      .focusEffectDisabled()
 
       Spacer()
 
@@ -39,7 +40,6 @@ struct Actions: View {
         .clipShape(.capsule)
         .clipped(antialiased: true)
         .tint(.orange)
-        .focusEffectDisabled()
 
       Spacer()
 
@@ -60,7 +60,6 @@ struct Actions: View {
       .menuStyle(.borderlessButton)
       .menuIndicator(.hidden)
       .padding(.horizontal, 8)
-      .focusEffectDisabled()
     }
     .onAppear {
       focusedField = .reload
@@ -80,7 +79,6 @@ struct Actions: View {
         }
       }
     }
-    .focusEffectDisabled()
   }
 }
 

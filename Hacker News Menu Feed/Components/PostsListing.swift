@@ -37,7 +37,6 @@ struct PostsListing: View {
             NSCursor.pop()
           }
         }
-        .focusEffectDisabled()
 
         VStack(alignment: .leading) {
           let title = post.title ?? "􀉣"
