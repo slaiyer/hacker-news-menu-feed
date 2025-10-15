@@ -1,4 +1,4 @@
-struct StoryFetchResponse: Decodable, Hashable {
+struct StoryFetchResponse: Codable, Hashable {
   let id: Int
   let author: String
   let score: Int
@@ -24,7 +24,7 @@ struct StoryFetchResponse: Decodable, Hashable {
   }
 }
 
-struct Story: Decodable {
+struct Story: Codable {
   var id: Int
   var author: String
   var descendants: Int
@@ -37,7 +37,7 @@ struct Story: Decodable {
   var url: String?
 }
 
-struct Comment: Decodable {
+struct Comment: Codable {
   let id: Int
   let author: String
   let kids: [Int]
@@ -47,7 +47,7 @@ struct Comment: Decodable {
   let type: String
 }
 
-struct Job: Decodable {
+struct Job: Codable {
   let author: String
   let id: Int
   let score: Int

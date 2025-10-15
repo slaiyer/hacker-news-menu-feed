@@ -6,11 +6,11 @@ struct ContentView: App {
   private static let numPosts = 100
 
   @State private var isFetching = false
+  @State private var posts: [StoryFetchResponse] = LocalDataSource.getPosts()
   @State private var showHeadline = LocalDataSource.getShowHeadline()
   @State private var sortKey = LocalDataSource.getSortKey()
   @State private var truncatedTitle: String = "Reading HN…"
   @State private var originalPostIDs: [Int] = []
-  @State private var posts: [StoryFetchResponse] = []
   @State private var reloadRate = 3600.0
 
   var timer = Timer()
@@ -36,23 +36,20 @@ struct ContentView: App {
       .padding()
       .frame(width: 500)
     } label: {
-      if showHeadline {
-        Text(truncatedTitle)
-          .onAppear {
-            startApp()
-          }
-      } else {
-        Text("ℏ")
-          .onAppear {
-            startApp()
-          }
-      }
+      Text(showHeadline ? truncatedTitle: "ℏ")
+        .onAppear {
+          startApp()
+        }
     }
     .menuBarExtraStyle(.window)
     .onChange(of: isFetching) {
       if !isFetching && posts.count > 0 {
         adjustTitleForMenuBar()
       }
+    }
+    .onChange(of: posts) {
+      LocalDataSource.savePosts(value: posts)
+      adjustTitleForMenuBar()
     }
     .onChange(of: showHeadline) {
       LocalDataSource.saveShowHeadline(value: showHeadline)
@@ -78,15 +75,14 @@ struct ContentView: App {
   }
 
   func startApp() {
-    if posts.count == 0 {
-      reloadData()
-      Timer
-        .scheduledTimer(
-          withTimeInterval: reloadRate, repeats: true,
-          block: { _ in
-            reloadData()
-          })
-    }
+    reloadData()
+
+    Timer.scheduledTimer(
+      withTimeInterval: reloadRate, repeats: true,
+      block: { _ in
+        reloadData()
+      }
+    )
   }
 
   func adjustTitleForMenuBar() {

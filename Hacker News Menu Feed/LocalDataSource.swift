@@ -1,6 +1,24 @@
 import Foundation
 
 class LocalDataSource {
+  public static func savePosts(value: [StoryFetchResponse]) {
+    if let encoded = try? JSONEncoder().encode(value) {
+      UserDefaults.standard.set(encoded, forKey: "Posts")
+    }
+  }
+
+  public static func getPosts() -> [StoryFetchResponse] {
+    var posts: [StoryFetchResponse] = []
+
+    if let data = UserDefaults.standard.data(forKey: "Posts") {
+      if let decoded = try? JSONDecoder().decode([StoryFetchResponse].self, from: data) {
+        posts = decoded
+      }
+    }
+
+    return posts
+  }
+
   public static func saveSortKey(value: SortKey) {
     if let encoded = try? JSONEncoder().encode(value) {
       UserDefaults.standard.set(encoded, forKey: "SortKey")
