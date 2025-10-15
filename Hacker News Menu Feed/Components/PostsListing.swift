@@ -15,11 +15,11 @@ struct PostsListing: View {
         let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
 
         Button {
+          NSWorkspace.shared.open(hnURL)
+
           if let raw = post.url, let extURL = URL(string: raw) {
             NSWorkspace.shared.open(extURL)
           }
-
-          NSWorkspace.shared.open(hnURL)
         } label: {
           Text("􀉣")
             .font(.subheadline)
@@ -45,7 +45,7 @@ struct PostsListing: View {
             if let extURL = post.url {
               CustomLink(title: title, link: extURL)
                 .foregroundStyle(.primary)
-                .help("\(title)\n\n\(extURL)")
+                .help("\(title)\n\(extURL)")
             } else {
               Text(title)
                 .lineLimit(1)

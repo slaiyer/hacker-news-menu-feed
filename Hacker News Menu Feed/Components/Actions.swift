@@ -55,7 +55,6 @@ struct Actions: View {
             Label(key.label, systemImage: sortKey == key ? "checkmark" : "")
           }
           .keyboardShortcut(KeyEquivalent(key.cut))
-          .tint(.orange)
         }
       } label: {
         Image(systemName: "arrow.up.arrow.down")
