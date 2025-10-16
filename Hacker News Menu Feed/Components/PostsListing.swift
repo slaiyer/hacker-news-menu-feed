@@ -45,7 +45,7 @@ struct PostsListing: View {
             if let extURL = post.url {
               CustomLink(title: title, link: extURL)
                 .foregroundStyle(.primary)
-                .help("\(title)\n\(extURL)")
+                .help("\(title)\n⸻\n\(extURL)")
             } else {
               Text(title)
                 .lineLimit(1)
