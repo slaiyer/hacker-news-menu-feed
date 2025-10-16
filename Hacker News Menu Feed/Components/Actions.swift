@@ -54,7 +54,8 @@ struct Actions: View {
           } label: {
             Label(key.label, systemImage: sortKey == key ? "checkmark" : "")
           }
-          .keyboardShortcut(KeyEquivalent(key.cut))
+          // TODO: maintain sync with ContentView commands; this is here only for the Menu symbols in the UI
+          .keyboardShortcut(KeyEquivalent(key.cut), modifiers: .option)
         }
       } label: {
         Image(systemName: "arrow.up.arrow.down")
