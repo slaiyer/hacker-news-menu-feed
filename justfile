@@ -18,7 +18,7 @@ run: build
     echo ' done.'
 
 build:
-    @xcrun xcodebuild clean build analyze \
+    @xcrun xcodebuild build analyze \
         -project '{{app}}.xcodeproj' \
         -scheme '{{app}}' \
         -arch arm64 \
@@ -31,3 +31,6 @@ build:
 
     @du -hs 'build/Build/Products/Release/{{app}}.app'
 
+clean:
+  @rm -rf build
+  @xcrun xcodebuild clean
