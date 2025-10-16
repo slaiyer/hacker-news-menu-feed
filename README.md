@@ -4,5 +4,4 @@
 
 - `⌘ R`: Reload feed
 - `⌘ H`: Toggle headline
-- `⌘ 1`, ...: Sort by criteria
-
+- `⌘ 1` – `⌘ 5`: Sort by criterion
