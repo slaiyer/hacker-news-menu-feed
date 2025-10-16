@@ -90,10 +90,14 @@ struct Spinner: View {
   var isSpinning: Bool
 
   @State private var rotation: Double = 0.0
+  @State private var opacity: Double = 0.75
   @State private var animationTask: Task<Void, Never>?
 
   var body: some View {
     Image(systemName: reloadSymbol)
+      .foregroundStyle(.secondary)
+      .opacity(opacity)
+      .tint(.secondary)
       .rotationEffect(.degrees(rotation))
       .onChange(of: isSpinning) { _, newValue in
         updateAnimation(shouldSpin: newValue)
@@ -115,6 +119,7 @@ struct Spinner: View {
         while !Task.isCancelled {
           await MainActor.run {
             withAnimation(.easeInOut(duration: spinnerAnimationLength)) {
+              opacity = 0.5
               rotation += 180
             }
           }
@@ -125,7 +130,11 @@ struct Spinner: View {
     } else {
       animationTask?.cancel()
       animationTask = nil
-      rotation = 0.0
+
+      withAnimation {
+        opacity = 0.75
+        rotation = 0.0
+      }
     }
   }
 }
