@@ -2,6 +2,6 @@
 
 ## Keyboard shortcuts
 
-- `⌘ R`: Reload feed
-- `⌥ H`: Toggle headline
-- `⌥ 1` – `⌥ 5`: Sort by criterion
+- `R`: Reload feed
+- `H`: Toggle headline
+- `1` – `5`: Sort by criterion

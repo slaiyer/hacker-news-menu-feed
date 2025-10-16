@@ -27,7 +27,7 @@ struct Actions: View {
       Button(action: onReload) {
         Spinner(isSpinning: isFetching)
       }
-      .keyboardShortcut("r")
+      .keyboardShortcut("r", modifiers: [])
       .buttonStyle(.accessoryBar)
       .disabled(isFetching || isCoolingDown)
       .focused($focusedField, equals: .reload)
@@ -36,7 +36,7 @@ struct Actions: View {
       Spacer()
 
       Toggle("Headline", isOn: $showHeadline)
-        .keyboardShortcut("h", modifiers: .option)
+        .keyboardShortcut("h", modifiers: [])
         .toggleStyle(.button)
         .contentShape(.capsule)
         .clipShape(.capsule)
@@ -55,7 +55,7 @@ struct Actions: View {
             Label(key.label, systemImage: sortKey == key ? "checkmark" : "")
           }
           // TODO: maintain sync with ContentView commands; this is here only for the Menu symbols in the UI
-          .keyboardShortcut(KeyEquivalent(key.cut), modifiers: .option)
+          .keyboardShortcut(KeyEquivalent(key.cut), modifiers: [])
         }
       } label: {
         Image(systemName: "arrow.up.arrow.down")
