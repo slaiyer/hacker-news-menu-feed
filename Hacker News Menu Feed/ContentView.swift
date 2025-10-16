@@ -67,7 +67,7 @@ struct ContentView: App {
             sortKey = key
             applySort()
           }
-          .keyboardShortcut(KeyEquivalent(key.cut))
+          .keyboardShortcut(KeyEquivalent(key.cut), modifiers: .option)
         }
       }
     }

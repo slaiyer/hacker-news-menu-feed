@@ -36,7 +36,7 @@ struct Actions: View {
       Spacer()
 
       Toggle("Headline", isOn: $showHeadline)
-        .keyboardShortcut("h")
+        .keyboardShortcut("h", modifiers: .option)
         .toggleStyle(.button)
         .contentShape(.capsule)
         .clipShape(.capsule)
