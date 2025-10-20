@@ -65,8 +65,10 @@ struct ContentView: App {
       CommandMenu("Sort by…") {
         ForEach(SortKey.allCases) { key in
           Button(key.label) {
-            sortKey = key
-            applySort()
+            if key != sortKey {
+              sortKey = key
+              applySort()
+            }
           }
           .keyboardShortcut(KeyEquivalent(key.cut), modifiers: [])
         }
