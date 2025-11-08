@@ -7,11 +7,7 @@ struct PostsListing: View {
   var posts: [StoryFetchResponse]
 
   private let now = Date()
-  private let relativeTimeFormatter = {
-    let formatter = RelativeDateTimeFormatter()
-    formatter.unitsStyle = .full
-    return formatter
-  }()
+  private let dateTimeFormatter = RelativeDateTimeFormatter()
 
   var body: some View {
     ForEach(
@@ -81,7 +77,7 @@ struct PostsListing: View {
 
               Spacer()
 
-              Text("\(relativeTimeFormatter.localizedString(for: postTime, relativeTo: now))")
+              Text("\(dateTimeFormatter.localizedString(for: postTime, relativeTo: now))")
                 .help("\(postTime)")
                 .frame(minWidth: 50, alignment: .trailing)
                 .padding(.trailing, 12)
