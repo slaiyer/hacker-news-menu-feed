@@ -6,11 +6,20 @@ import AppKit
 struct PostsListing: View {
   var posts: [StoryFetchResponse]
 
+  private let now = Date()
+  private let relativeTimeFormatter = {
+    let formatter = RelativeDateTimeFormatter()
+    formatter.unitsStyle = .full
+    return formatter
+  }()
+
   var body: some View {
     ForEach(
       Array(posts.enumerated()),
       id: \.element.id
     ) { _, post in
+      let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
+
       HStack(alignment: .center) {
         let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
 
@@ -69,6 +78,13 @@ struct PostsListing: View {
                 Text("􀈕 \(post.type.uppercased())")
                   .frame(minWidth: 50, alignment: .leading)
               }
+
+              Spacer()
+
+              Text("\(relativeTimeFormatter.localizedString(for: postTime, relativeTo: now))")
+                .help("\(postTime)")
+                .frame(minWidth: 50, alignment: .trailing)
+                .padding(.trailing, 12)
             }
             .font(.subheadline)
             .foregroundStyle(Color(.secondaryLabelColor))
