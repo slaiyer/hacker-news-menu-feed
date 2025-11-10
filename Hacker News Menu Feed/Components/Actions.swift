@@ -58,12 +58,12 @@ struct Actions: View {
           .keyboardShortcut(KeyEquivalent(key.cut), modifiers: [])
         }
       } label: {
-        Image(systemName: "arrow.up.arrow.down")
+        Image(systemName: "arrow.up.and.down.text.horizontal")
           .tint(.secondary)
       }
       .menuStyle(.borderlessButton)
       .menuIndicator(.hidden)
-      .padding(.horizontal, 8)
+      .padding(.trailing, 12)
     }
     .onAppear {
       focusedField = .reload
