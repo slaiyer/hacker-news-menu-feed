@@ -63,7 +63,7 @@ struct Actions: View {
       }
       .menuStyle(.borderlessButton)
       .menuIndicator(.hidden)
-      .padding(.trailing, 12)
+      .padding(.trailing, 6)
     }
     .onAppear {
       focusedField = .reload

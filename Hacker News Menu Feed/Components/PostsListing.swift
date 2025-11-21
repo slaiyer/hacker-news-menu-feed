@@ -84,7 +84,7 @@ struct PostsListing: View {
               Text("\(dateTimeFormatter.localizedString(for: postTime, relativeTo: now))")
                 .help("\(postTime)")
                 .frame(minWidth: 100, alignment: .trailing)
-                .padding([.horizontal])
+                .padding([.horizontal], 10)
             }
             .font(.subheadline)
             .foregroundStyle(Color(.secondaryLabelColor))
