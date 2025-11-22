@@ -28,6 +28,7 @@ struct Actions: View {
         Spinner(isSpinning: isFetching)
       }
       .keyboardShortcut("r", modifiers: [])
+      .help("Reload feed (R)")
       .buttonStyle(.accessoryBar)
       .disabled(isFetching || isCoolingDown)
       .focused($focusedField, equals: .reload)
@@ -37,6 +38,7 @@ struct Actions: View {
 
       Toggle("Headline", isOn: $showHeadline)
         .keyboardShortcut("h", modifiers: [])
+        .help("Toggle headline in menu bar (H)")
         .toggleStyle(.button)
         .contentShape(.capsule)
         .clipShape(.capsule)
@@ -61,6 +63,7 @@ struct Actions: View {
         Image(systemName: "arrow.up.and.down.text.horizontal")
           .tint(.secondary)
       }
+      .help("Sort key")
       .menuStyle(.borderlessButton)
       .menuIndicator(.hidden)
       .padding(.trailing, 6)
