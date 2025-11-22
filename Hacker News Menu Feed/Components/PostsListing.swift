@@ -84,11 +84,11 @@ struct PostsListing: View {
               Text("\(dateTimeFormatter.localizedString(for: postTime, relativeTo: now))")
                 .help("\(postTime)")
                 .frame(minWidth: 100, alignment: .trailing)
-                .padding([.horizontal], 10)
             }
             .font(.subheadline)
             .foregroundStyle(Color(.secondaryLabelColor))
           }
+          .padding(.leading)
           .onHover { hovering in
             if hovering {
               NSCursor.pointingHand.push()
@@ -97,6 +97,7 @@ struct PostsListing: View {
             }
           }
         }
+        .padding(.trailing, 10)
       }
     }
   }
