@@ -85,10 +85,10 @@ struct PostsListing: View {
                 .help("\(postTime)")
                 .frame(minWidth: 100, alignment: .trailing)
             }
+            .padding(.leading)
             .font(.subheadline)
             .foregroundStyle(Color(.secondaryLabelColor))
           }
-          .padding(.leading)
           .onHover { hovering in
             if hovering {
               NSCursor.pointingHand.push()
