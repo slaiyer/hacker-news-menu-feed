@@ -86,6 +86,7 @@ struct PostsListing: View {
                 .frame(minWidth: 100, alignment: .trailing)
             }
             .padding(.leading)
+            .padding(.trailing, 10)
             .font(.subheadline)
             .foregroundStyle(Color(.secondaryLabelColor))
           }
@@ -97,7 +98,6 @@ struct PostsListing: View {
             }
           }
         }
-        .padding(.trailing, 10)
       }
     }
   }
