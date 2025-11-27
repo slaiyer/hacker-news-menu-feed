@@ -9,19 +9,19 @@ let spinnerAnimationDuration = Duration.seconds(spinnerAnimationLength)
 struct Actions: View {
   var onReload: () -> Void
   var onSort: () -> Void
-
+  
   @Binding var showHeadline: Bool
   @Binding var sortKey: SortKey
   @Binding var isFetching: Bool
-
+  
   @State private var isCoolingDown: Bool = false
-
+  
   enum FocusField: Hashable {
     case reload
   }
-
+  
   @FocusState private var focusedField: FocusField?
-
+  
   var body: some View {
     HStack(alignment: .center) {
       Button(action: onReload) {
@@ -97,11 +97,11 @@ struct Actions: View {
 @available(macOS 26.0, *)
 struct Spinner: View {
   var isSpinning: Bool
-
+  
   @State private var rotation: Double = 0.0
   @State private var opacity: Double = 0.75
   @State private var animationTask: Task<Void, Never>?
-
+  
   var body: some View {
     Image(systemName: reloadSymbol)
       .foregroundStyle(.secondary)
@@ -119,11 +119,11 @@ struct Spinner: View {
         animationTask = nil
       }
   }
-
+  
   private func updateAnimation(shouldSpin: Bool) {
     if shouldSpin {
       guard animationTask == nil else { return }
-
+      
       animationTask = Task {
         while !Task.isCancelled {
           await MainActor.run {
@@ -132,14 +132,14 @@ struct Spinner: View {
               rotation += 180
             }
           }
-
+          
           try? await Task.sleep(for: spinnerAnimationDuration)
         }
       }
     } else {
       animationTask?.cancel()
       animationTask = nil
-
+      
       withAnimation {
         opacity = 0.75
         rotation = 0.0

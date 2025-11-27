@@ -18,7 +18,7 @@ class LocalDataSource {
 
     return posts
   }
-
+  
   public static func saveSortKey(value: SortKey) {
     if let encoded = try? JSONEncoder().encode(value) {
       UserDefaults.standard.set(encoded, forKey: "SortKey")

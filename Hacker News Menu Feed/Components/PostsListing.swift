@@ -5,27 +5,27 @@ import AppKit
 @available(macOS 26.0, *)
 struct PostsListing: View {
   var posts: [StoryFetchResponse]
-
+  
   private let now = Date()
   private let dateTimeFormatter = {
     let formatter = RelativeDateTimeFormatter()
-      formatter.unitsStyle = .short
-      return formatter
+    formatter.unitsStyle = .short
+    return formatter
   }()
-
+  
   var body: some View {
     ForEach(
       Array(posts.enumerated()),
       id: \.element.id
     ) { _, post in
       let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
-
+      
       HStack(alignment: .center) {
         let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
-
+        
         Button {
           NSWorkspace.shared.open(hnURL)
-
+          
           if let raw = post.url, let extURL = URL(string: raw) {
             NSWorkspace.shared.open(extURL)
           }
@@ -46,10 +46,10 @@ struct PostsListing: View {
             NSCursor.pop()
           }
         }
-
+        
         VStack(alignment: .leading) {
           let title = post.title ?? "􀉣"
-
+          
           HStack { // unreliable workaround for leading space
             if let extURL = post.url {
               CustomLink(title: title, link: extURL)
@@ -62,25 +62,25 @@ struct PostsListing: View {
                 .foregroundStyle(.primary)
                 .help(title)
             }
-
+            
             Spacer()
           }
-
+          
           Link(destination: hnURL) {
             HStack {
               Text("􀆇 \(abbreviatedNumberString(number: post.score))")
                 .frame(minWidth: 50, alignment: .leading)
-
+              
               Text("􀌲 \(abbreviatedNumberString(number: post.comments))")
                 .frame(minWidth: 50, alignment: .leading)
-
+              
               if (post.type != "story") {
                 Text("􀈕 \(post.type.uppercased())")
                   .frame(minWidth: 50, alignment: .leading)
               }
-
+              
               Spacer()
-
+              
               Text("\(dateTimeFormatter.localizedString(for: postTime, relativeTo: now))")
                 .help("\(postTime)")
                 .frame(minWidth: 100, alignment: .trailing)
@@ -107,7 +107,7 @@ func abbreviatedNumberString(number: Int?) -> String {
   guard let number = number else {
     return "—"
   }
-
+  
   switch number {
     case 0...999:
       return String(number)
