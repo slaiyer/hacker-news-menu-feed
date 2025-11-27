@@ -43,7 +43,7 @@ struct Actions: View {
         .contentShape(.capsule)
         .clipShape(.capsule)
         .clipped(antialiased: true)
-        .tint(.orange)
+        .tint(.white)
         .focusEffectDisabled()
 
       Spacer()
