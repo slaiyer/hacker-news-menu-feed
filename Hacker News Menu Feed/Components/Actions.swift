@@ -33,21 +33,26 @@ struct Actions: View {
       .disabled(isFetching || isCoolingDown)
       .focused($focusedField, equals: .reload)
       .focusEffectDisabled()
-
+      
       Spacer()
-
-      Toggle("Headline", isOn: $showHeadline)
-        .keyboardShortcut("h", modifiers: [])
-        .help("Toggle headline in menu bar (H)")
-        .toggleStyle(.button)
-        .contentShape(.capsule)
-        .clipShape(.capsule)
-        .clipped(antialiased: true)
-        .tint(.orange)
-        .focusEffectDisabled()
-
+      
+      Toggle(
+        isOn: $showHeadline,
+        label: {
+          Image(systemName: "vent.heat.waves.upward")
+        }
+      )
+      .keyboardShortcut("h", modifiers: [])
+      .help("Toggle headline in menu bar (H)")
+      .toggleStyle(.button)
+      .contentShape(.capsule)
+      .clipShape(.capsule)
+      .clipped(antialiased: true)
+      .tint(.orange)
+      .focusEffectDisabled()
+      
       Spacer()
-
+      
       Menu {
         ForEach(SortKey.allCases) { key in
           Button {
