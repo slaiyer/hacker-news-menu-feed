@@ -35,7 +35,7 @@ struct PostsListing: View {
             .frame(maxHeight: .infinity)
         }
         .buttonStyle(.glass)
-        .foregroundStyle(.orange)
+        .foregroundStyle(.accent)
         .contentShape(.circle)
         .clipShape(.circle)
         .clipped(antialiased: true)
