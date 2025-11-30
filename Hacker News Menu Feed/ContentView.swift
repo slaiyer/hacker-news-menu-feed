@@ -125,7 +125,7 @@ struct ContentView: App {
     isFetching = true
 
     Task {
-      await Task.withTimeout(.seconds(10.0)) {
+      await Task.withTimeout(.seconds(60.0)) {
         await fetchFeed()
       }
 
