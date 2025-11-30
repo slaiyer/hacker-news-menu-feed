@@ -46,11 +46,11 @@ struct PostsListing: View {
             NSCursor.pop()
           }
         }
-
+        
         VStack(alignment: .leading) {
           let title = post.title ?? "􀉣"
           
-          HStack { // unreliable workaround for leading space
+          HStack {
             if let extURL = post.url {
               CustomLink(title: title, link: extURL)
                 .foregroundStyle(.primary)
@@ -65,7 +65,7 @@ struct PostsListing: View {
             
             Spacer()
           }
-
+          
           Link(destination: hnURL) {
             HStack {
               Text("􀆇 \(abbreviatedNumberString(number: post.score))")
