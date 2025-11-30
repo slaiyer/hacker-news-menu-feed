@@ -3,7 +3,7 @@ import SwiftUI
 @available(macOS 26.0, *)
 @main
 struct ContentView: App {
-  private static let numPosts = 100
+  private static let numPosts = 500
   
   @State private var isFetching = false
   @State private var posts: [StoryFetchResponse] = LocalDataSource.getPosts()
