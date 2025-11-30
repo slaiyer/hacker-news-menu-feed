@@ -14,7 +14,7 @@ struct CustomLink: View {
         Text(title)
           .lineLimit(1)
           .truncationMode(.middle)
-          .underline(hovering, color: .secondary)
+          .underline(hovering)
       },
     )
     .onHover(perform: { inside in
