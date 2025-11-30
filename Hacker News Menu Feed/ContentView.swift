@@ -26,7 +26,7 @@ struct ContentView: App {
           isFetching: $isFetching,
         )
         
-        // TODO: vim-like j/k nagivation
+        // TODO: vim-like j/k navigation
         ScrollView {
           AppMenu(
             posts: $posts,
