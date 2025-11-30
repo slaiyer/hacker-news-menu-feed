@@ -46,7 +46,7 @@ struct PostsListing: View {
             NSCursor.pop()
           }
         }
-        
+
         VStack(alignment: .leading) {
           let title = post.title ?? "􀉣"
           
@@ -65,7 +65,7 @@ struct PostsListing: View {
             
             Spacer()
           }
-          
+
           Link(destination: hnURL) {
             HStack {
               Text("􀆇 \(abbreviatedNumberString(number: post.score))")
@@ -85,11 +85,10 @@ struct PostsListing: View {
                 .help("\(postTime)")
                 .frame(minWidth: 100, alignment: .trailing)
             }
-            .padding(.leading)
-            .padding(.trailing, 10)
             .font(.subheadline)
             .foregroundStyle(Color(.secondaryLabelColor))
           }
+          .padding(.leading)
           .onHover { hovering in
             if hovering {
               NSCursor.pointingHand.push()
@@ -98,6 +97,7 @@ struct PostsListing: View {
             }
           }
         }
+        .padding(.trailing, 10)
       }
     }
   }
