@@ -7,11 +7,7 @@ struct PostsListing: View {
   var posts: [StoryFetchResponse]
   
   private let now = Date()
-  private let dateTimeFormatter = {
-    let formatter = RelativeDateTimeFormatter()
-    formatter.unitsStyle = .short
-    return formatter
-  }()
+  private let dateTimeFormatter = RelativeDateTimeFormatter()
   
   var body: some View {
     ForEach(
