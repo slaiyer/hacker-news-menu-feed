@@ -64,10 +64,10 @@ struct PostsListing: View {
           
           Link(destination: hnURL) {
             HStack {
-              Text("􀆇 \(abbreviateNumber(number: post.score))")
+              Text("􀆇 \(abbreviateNumber(post.score))")
                 .frame(minWidth: 50, alignment: .leading)
               
-              Text("􀌲 \(abbreviateNumber(number: post.comments))")
+              Text("􀌲 \(abbreviateNumber(post.comments))")
                 .frame(minWidth: 50, alignment: .leading)
               
               if (post.type != "story") {
@@ -99,7 +99,7 @@ struct PostsListing: View {
   }
 }
 
-func abbreviateNumber(number: Int?) -> String {
+func abbreviateNumber(_ number: Int?) -> String {
   guard let number = number else {
     return "—"
   }
