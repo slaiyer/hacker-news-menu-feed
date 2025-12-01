@@ -4,6 +4,7 @@ import SwiftUI
 @main
 struct ContentView: App {
   private static let numPosts = 500
+  private let maxMenuBarWidth: CGFloat = 250
 
   @State private var isFetching = false
   @State private var posts: [StoryFetchResponse] = LocalDataSource.getPosts()
@@ -89,16 +90,14 @@ struct ContentView: App {
   }
 
   func adjustTitleForMenuBar() {
-    guard !posts.isEmpty else {
+    guard let firstPost = posts.first, let title = firstPost.title else {
       return
     }
 
     Task { @MainActor in
-      truncatedTitle = posts[0].title!
-      let maxMenuBarWidth: CGFloat = 250
       truncatedTitle = truncateStringToFit(
-        truncatedTitle,
-        maxWidth: maxMenuBarWidth
+        title,
+        maxWidth: maxMenuBarWidth,
       )
     }
   }
