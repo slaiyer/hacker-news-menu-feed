@@ -64,10 +64,10 @@ struct PostsListing: View {
           
           Link(destination: hnURL) {
             HStack {
-              Text("􀆇 \(abbreviatedNumberString(number: post.score))")
+              Text("􀆇 \(abbreviateNumber(number: post.score))")
                 .frame(minWidth: 50, alignment: .leading)
               
-              Text("􀌲 \(abbreviatedNumberString(number: post.comments))")
+              Text("􀌲 \(abbreviateNumber(number: post.comments))")
                 .frame(minWidth: 50, alignment: .leading)
               
               if (post.type != "story") {
@@ -99,27 +99,10 @@ struct PostsListing: View {
   }
 }
 
-func abbreviatedNumberString(number: Int?) -> String {
+func abbreviateNumber(number: Int?) -> String {
   guard let number = number else {
     return "—"
   }
   
-  switch number {
-    case 0...999:
-      return String(number)
-    case 1_000..<1_000_000:
-      let value = Double(number) / 1_000
-      return String(format: "%.1fK", value)
-    case 1_000_000..<1_000_000_000:
-      let value = Double(number) / 1_000_000
-      return String(format: "%.1fM", value)
-    case 1_000_000_000..<1_000_000_000_000:
-      let value = Double(number) / 1_000_000_000
-      return String(format: "%.1fB", value)
-    case 1_000_000_000_000..<1_000_000_000_000_000:
-      let value = Double(number) / 1_000_000_000_000
-      return String(format: "%.1fT", value)
-    default:
-      return "!"
-  }
+  return number.formatted(.number.notation(.compactName))
 }
