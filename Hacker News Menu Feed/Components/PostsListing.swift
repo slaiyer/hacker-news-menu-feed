@@ -31,6 +31,7 @@ struct PostsListing: View {
             .frame(maxHeight: .infinity)
         }
         .buttonStyle(.glass)
+        .onAppear { isHovering[idx] = false }
         .onHover { hovering in isHovering[idx] = hovering }
         .foregroundStyle(isHovering[idx] ?? false ? .accent : .secondary)
         .contentShape(.capsule)

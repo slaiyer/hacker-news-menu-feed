@@ -10,8 +10,8 @@ struct ContentView: App {
   @State private var posts: [StoryFetchResponse] = LocalDataSource.getPosts()
   @State private var showHeadline = LocalDataSource.getShowHeadline()
   @State private var sortKey = LocalDataSource.getSortKey()
-  @State private var truncatedTitle: String = "Reading HN…"
-  @State private var originalPostIDs: [Int] = []
+  @State private var truncatedTitle: String? = LocalDataSource.getTitle()
+  @State private var originalPostIDs: [Int] = LocalDataSource.getOriginalPostIDs()
   @State private var reloadRate = 3600.0
 
   var timer = Timer()
@@ -38,7 +38,7 @@ struct ContentView: App {
       .padding()
       .frame(width: 500)
     } label: {
-      Text(showHeadline ? truncatedTitle: "ℏ")
+      Text(showHeadline ? truncatedTitle ?? "Reading HN…" : "ℏ")
         .onAppear {
           startApp()
         }
@@ -50,17 +50,19 @@ struct ContentView: App {
       }
     }
     .onChange(of: posts) {
-      LocalDataSource.savePosts(value: posts)
       adjustTitleForMenuBar()
+      LocalDataSource.savePosts(value: posts)
+      LocalDataSource.saveOriginalPostIDs(value: originalPostIDs)
+      LocalDataSource.saveTitle(value: truncatedTitle)
     }
     .onChange(of: showHeadline) {
-      LocalDataSource.saveShowHeadline(value: showHeadline)
       adjustTitleForMenuBar()
+      LocalDataSource.saveShowHeadline(value: showHeadline)
     }
     .onChange(of: sortKey) { _, newKey in
-      LocalDataSource.saveSortKey(value: newKey)
       applySort()
       adjustTitleForMenuBar()
+      LocalDataSource.saveSortKey(value: newKey)
     }
     .commands {
       CommandMenu("Sort by…") {
