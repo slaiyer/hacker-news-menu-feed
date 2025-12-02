@@ -8,20 +8,19 @@ struct PostsListing: View {
   
   private let now = Date()
   private let dateTimeFormatter = RelativeDateTimeFormatter()
-  
+
   var body: some View {
     ForEach(
       Array(posts.enumerated()),
       id: \.element.id
     ) { _, post in
-      let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
-      
+
       HStack(alignment: .center) {
         let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
-        
+
         Button {
           NSWorkspace.shared.open(hnURL)
-          
+
           if let raw = post.url, let extURL = URL(string: raw) {
             NSWorkspace.shared.open(extURL)
           }
@@ -42,11 +41,11 @@ struct PostsListing: View {
             NSCursor.pop()
           }
         }
-        
+
         VStack(alignment: .leading) {
-          let title = post.title ?? "􀉣"
-          
           HStack {
+            let title = post.title ?? "􀉣"
+
             if let extURL = post.url {
               CustomLink(title: title, link: extURL)
                 .foregroundStyle(.primary)
@@ -58,12 +57,10 @@ struct PostsListing: View {
                 .foregroundStyle(.primary)
                 .help(title)
             }
-            
-            Spacer()
           }
           
-          Link(destination: hnURL) {
-            HStack {
+          HStack {
+            Link(destination: hnURL) {
               Text("􀆇 \(abbreviateNumber(post.score))")
                 .frame(minWidth: 50, alignment: .leading)
               
@@ -74,16 +71,19 @@ struct PostsListing: View {
                 Text("􀈕 \(post.type.uppercased())")
                   .frame(minWidth: 50, alignment: .leading)
               }
-              
-              Spacer()
-              
+            }
+
+            Spacer()
+
+            let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
+            Link(destination: hnURL) {
               Text("\(dateTimeFormatter.localizedString(for: postTime, relativeTo: now))")
                 .help("\(postTime)")
                 .frame(minWidth: 100, alignment: .trailing)
             }
-            .font(.subheadline)
-            .foregroundStyle(Color(.secondaryLabelColor))
           }
+          .font(.subheadline)
+          .foregroundStyle(Color(.secondaryLabelColor))
           .padding(.leading)
           .onHover { hovering in
             if hovering {

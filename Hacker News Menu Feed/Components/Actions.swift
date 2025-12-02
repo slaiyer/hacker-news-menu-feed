@@ -15,7 +15,9 @@ struct Actions: View {
   @Binding var isFetching: Bool
   
   @State private var isCoolingDown: Bool = false
-  
+  @State private var opacity: Double = 0.5
+  @State private var blurRadius: Double = 1.0
+
   enum FocusField: Hashable {
     case reload
   }
@@ -83,6 +85,19 @@ struct Actions: View {
               focusedField = .reload
             }
           }
+        }
+      }
+    }
+    .opacity(opacity)
+    .blur(radius: blurRadius)
+    .onHover { hovering in
+      withAnimation {
+        if hovering {
+          opacity = 1.0
+          blurRadius = 0.0
+        } else {
+          opacity = 0.5
+          blurRadius = 1.0
         }
       }
     }

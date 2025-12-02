@@ -14,17 +14,17 @@ struct CustomLink: View {
         Text(title)
           .lineLimit(1)
           .truncationMode(.middle)
-          .underline(hovering)
+          .underline(hovering, color: .secondary)
       },
     )
-    .onHover(perform: { inside in
+    .onHover{ inside in
       hovering = inside
-      
-      if inside {
+
+      if hovering {
         NSCursor.pointingHand.push()
       } else {
         NSCursor.pop()
       }
-    })
+    }
   }
 }
