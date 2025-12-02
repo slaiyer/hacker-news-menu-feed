@@ -31,11 +31,11 @@ struct PostsListing: View {
             .frame(maxHeight: .infinity)
         }
         .buttonStyle(.glass)
+        .onHover { hovering in isHovering[idx] = hovering }
         .foregroundStyle(isHovering[idx] ?? false ? .accent : .secondary)
-        .contentShape(.containerRelative)
+        .contentShape(.capsule)
         .clipShape(.capsule)
         .clipped(antialiased: true)
-        .onHover { hovering in isHovering[idx] = hovering }
         .opacity(isHovering[idx] ?? false ? 1.0 : 0.5)
         .blur(radius: isHovering[idx] ?? false ? 0.0 : 1.0)
         .animation(.easeInOut, value: isHovering)
