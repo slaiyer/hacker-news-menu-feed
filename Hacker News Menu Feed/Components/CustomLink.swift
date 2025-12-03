@@ -14,8 +14,7 @@ struct CustomLink: View {
         Text(title)
           .lineLimit(1)
           .truncationMode(.middle)
-          .shadow(color: .accent.opacity(0.75), radius: isHovering ? 0 : 1)
-          .shadow(color: .accent.opacity(0.5), radius: isHovering ? 0 : 2)
+          .shadow(color: .accent.opacity(1.0), radius: isHovering ? 0 : 1)
       },
     )
     .onHover{ inside in isHovering = inside }
