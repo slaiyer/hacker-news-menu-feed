@@ -5,8 +5,8 @@ struct CustomLink: View {
   var title: String
   var link: String
   
-  @State private var hovering = false
-  
+  @State private var isHovering = false
+
   var body: some View {
     Link(
       destination: URL(string: link)!,
@@ -14,17 +14,10 @@ struct CustomLink: View {
         Text(title)
           .lineLimit(1)
           .truncationMode(.middle)
-          .underline(hovering, color: .secondary)
+          .underline(isHovering, color: .secondary)
       },
     )
-    .onHover{ inside in
-      hovering = inside
-
-      if hovering {
-        NSCursor.pointingHand.push()
-      } else {
-        NSCursor.pop()
-      }
-    }
+    .onHover{ inside in isHovering = inside }
+    .animation(.snappy, value: isHovering)
   }
 }

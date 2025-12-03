@@ -9,7 +9,8 @@ struct PostsListing: View {
   private let now = Date()
   private let dateTimeFormatter = RelativeDateTimeFormatter()
 
-  @State var isHovering: [Int: Bool] = [:]
+  @State var isHoveringButton: [Int: Bool] = [:]
+  @State var isHoveringHnUrl: [Int: Bool] = [:]
 
   var body: some View {
     ForEach(
@@ -31,15 +32,15 @@ struct PostsListing: View {
             .frame(maxHeight: .infinity)
         }
         .buttonStyle(.glass)
-        .onAppear { isHovering[idx] = false }
-        .onHover { hovering in isHovering[idx] = hovering }
-        .foregroundStyle(isHovering[idx] ?? false ? .accent : .secondary)
+        .onAppear { isHoveringButton[idx] = false }
+        .onHover { hovering in isHoveringButton[idx] = hovering }
+        .foregroundStyle(isHoveringButton[idx] ?? false ? .accent : .secondary)
         .contentShape(.capsule)
         .clipShape(.capsule)
         .clipped(antialiased: true)
-        .opacity(isHovering[idx] ?? false ? 1.0 : 0.5)
-        .blur(radius: isHovering[idx] ?? false ? 0.0 : 1.0)
-        .animation(.easeInOut, value: isHovering)
+        .opacity(isHoveringButton[idx] ?? false ? 1.0 : 0.5)
+        .blur(radius: isHoveringButton[idx] ?? false ? 0.0 : 1.0)
+        .animation(.snappy, value: isHoveringButton)
 
         VStack(alignment: .leading) {
           HStack {
@@ -82,15 +83,11 @@ struct PostsListing: View {
             }
           }
           .font(.subheadline)
-          .foregroundStyle(Color(.secondaryLabelColor))
+          .onAppear { isHoveringHnUrl[idx] = false }
+          .onHover { hovering in isHoveringHnUrl[idx] = hovering }
+          .foregroundStyle(isHoveringHnUrl[idx] ?? false ? .accent : .secondary)
+          .animation(.snappy, value: isHoveringHnUrl)
           .padding(.leading)
-          .onHover { hovering in
-            if hovering {
-              NSCursor.pointingHand.push()
-            } else {
-              NSCursor.pop()
-            }
-          }
         }
         .padding(.trailing, 10)
       }

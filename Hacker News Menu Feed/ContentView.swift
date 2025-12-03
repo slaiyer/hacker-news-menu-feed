@@ -182,7 +182,7 @@ struct ContentView: App {
     }
 
     await MainActor.run {
-      withAnimation {
+      withAnimation(.snappy) {
         posts = newPosts
       }
     }
@@ -209,7 +209,7 @@ struct ContentView: App {
 
   func applySort() {
     Task { @MainActor in
-      withAnimation {
+      withAnimation(.snappy) {
         posts = sortPosts(
           posts,
           by: sortKey,

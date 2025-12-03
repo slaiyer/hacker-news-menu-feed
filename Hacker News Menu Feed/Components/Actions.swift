@@ -80,7 +80,7 @@ struct Actions: View {
         isCoolingDown = true
         Task {
           await MainActor.run {
-            withAnimation {
+            withAnimation(.snappy) {
               isCoolingDown = false
               focusedField = .reload
             }
@@ -91,7 +91,7 @@ struct Actions: View {
     .opacity(opacity)
     .blur(radius: blurRadius)
     .onHover { hovering in
-      withAnimation {
+      withAnimation(.snappy) {
         if hovering {
           opacity = 1.0
           blurRadius = 0.0
@@ -137,7 +137,7 @@ struct Spinner: View {
       animationTask = Task {
         while !Task.isCancelled {
           await MainActor.run {
-            withAnimation(.easeInOut(duration: spinnerAnimationLength)) {
+            withAnimation(.snappy(duration: spinnerAnimationLength)) {
               opacity = 0.5
               rotation += 180
             }
@@ -150,7 +150,7 @@ struct Spinner: View {
       animationTask?.cancel()
       animationTask = nil
       
-      withAnimation {
+      withAnimation(.snappy) {
         opacity = 0.75
         rotation = 0.0
       }
