@@ -43,7 +43,7 @@ struct PostsListing: View {
         .clipShape(.capsule)
         .clipped(antialiased: true)
         .opacity(isHoveringButton[idx] ?? false ? 1.0 : 0.5)
-        .blur(radius: isHoveringButton[idx] ?? false ? 0.0 : 1.0)
+        .blur(radius: isHoveringButton[idx] ?? false ? 0.0 : 0.5)
         .animation(.snappy, value: isHoveringButton)
 
         VStack(alignment: .leading) {

@@ -97,7 +97,7 @@ struct Actions: View {
           blurRadius = 0.0
         } else {
           opacity = 0.5
-          blurRadius = 1.0
+          blurRadius = 0.5
         }
       }
     }
