@@ -72,6 +72,7 @@ struct PostsListing: View {
                   .frame(minWidth: 50, alignment: .leading)
               }
             }
+            .help(hnURL.absoluteString)
 
             Spacer()
 
