@@ -30,6 +30,7 @@ struct PostsListing: View {
           Text("􀉣")
             .font(.subheadline)
             .frame(maxHeight: .infinity)
+            .shadow(color: .accent.opacity(1.0), radius: isHoveringButton[idx] ?? false ? 1 : 0, x: 0, y: 0)
         }
         .buttonStyle(.glass)
         .onAppear { isHoveringButton[idx] = false }
@@ -63,13 +64,19 @@ struct PostsListing: View {
             Link(destination: hnURL) {
               Text("􀆇 \(abbreviateNumber(post.score))")
                 .frame(minWidth: 50, alignment: .leading)
-              
+                .shadow(color: .accent.opacity(1.0), radius: isHoveringHnUrl[idx] ?? false ? 0 : 1)
+                .shadow(color: .accent.opacity(0.5), radius: isHoveringHnUrl[idx] ?? false ? 0 : 2)
+
               Text("􀌲 \(abbreviateNumber(post.comments))")
                 .frame(minWidth: 50, alignment: .leading)
-              
+                .shadow(color: .accent.opacity(1.0), radius: isHoveringHnUrl[idx] ?? false ? 0 : 1)
+                .shadow(color: .accent.opacity(0.5), radius: isHoveringHnUrl[idx] ?? false ? 0 : 2)
+
               if (post.type != "story") {
                 Text("􀈕 \(post.type.uppercased())")
                   .frame(minWidth: 50, alignment: .leading)
+                  .shadow(color: .accent.opacity(1.0), radius: isHoveringHnUrl[idx] ?? false ? 0 : 1)
+                  .shadow(color: .accent.opacity(0.5), radius: isHoveringHnUrl[idx] ?? false ? 0 : 2)
               }
             }
             .help(hnURL.absoluteString)
@@ -81,12 +88,14 @@ struct PostsListing: View {
               Text("\(dateTimeFormatter.localizedString(for: postTime, relativeTo: now))")
                 .help("\(postTime)")
                 .frame(minWidth: 100, alignment: .trailing)
+                .shadow(color: .accent.opacity(1.0), radius: isHoveringHnUrl[idx] ?? false ? 0 : 1)
+                .shadow(color: .accent.opacity(0.5), radius: isHoveringHnUrl[idx] ?? false ? 0 : 2)
             }
           }
           .font(.subheadline)
           .onAppear { isHoveringHnUrl[idx] = false }
           .onHover { hovering in isHoveringHnUrl[idx] = hovering }
-          .foregroundStyle(isHoveringHnUrl[idx] ?? false ? .accent : .secondary)
+          .foregroundStyle(Color(.secondaryLabelColor))
           .animation(.snappy, value: isHoveringHnUrl)
           .padding(.leading)
         }

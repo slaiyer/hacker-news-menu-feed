@@ -45,7 +45,7 @@ struct ContentView: App {
     }
     .menuBarExtraStyle(.window)
     .onChange(of: isFetching) {
-      if !isFetching && posts.count > 0 {
+      if !isFetching && !posts.isEmpty {
         adjustTitleForMenuBar()
       }
     }
