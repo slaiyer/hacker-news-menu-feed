@@ -33,7 +33,7 @@ struct PostsListing: View {
           Text("􀉣")
             .font(.subheadline)
             .frame(maxHeight: .infinity)
-            .shadow(color: .accent, radius: 2)
+            .shadow(color: .accent, radius: isHoveringButton[idx] ?? false ? 1 : 0)
         }
         .buttonStyle(.glass)
         .onAppear { isHoveringButton[idx] = false }
