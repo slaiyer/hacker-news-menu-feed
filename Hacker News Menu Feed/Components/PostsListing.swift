@@ -16,21 +16,24 @@ struct PostsListing: View {
     ForEach(
       Array(posts.enumerated()),
       id: \.element.id
-    ) { idx, post in
+    ) {
+ idx,
+ post in
       HStack(alignment: .center) {
         let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
 
         Button {
           NSWorkspace.shared.open(hnURL)
 
-          if let raw = post.url, let extURL = URL(string: raw) {
+          if let raw = post.url,
+ let extURL = URL(string: raw) {
             NSWorkspace.shared.open(extURL)
           }
         } label: {
           Text("􀉣")
             .font(.subheadline)
             .frame(maxHeight: .infinity)
-            .shadow(color: .secondary, radius: isHoveringButton[idx] ?? false ? 3 : 0)
+            .shadow(color: .accent, radius: 2)
         }
         .buttonStyle(.glass)
         .onAppear { isHoveringButton[idx] = false }
@@ -64,16 +67,13 @@ struct PostsListing: View {
             Link(destination: hnURL) {
               Text("􀆇 \(abbreviateNumber(post.score))")
                 .frame(minWidth: 50, alignment: .leading)
-                .shadow(color: .accent, radius: isHoveringHnUrl[idx] ?? false ? 0 : 3)
 
               Text("􀌲 \(abbreviateNumber(post.comments))")
                 .frame(minWidth: 50, alignment: .leading)
-                .shadow(color: .accent, radius: isHoveringHnUrl[idx] ?? false ? 0 : 3)
 
               if (post.type != "story") {
                 Text("􀈕 \(post.type.uppercased())")
                   .frame(minWidth: 50, alignment: .leading)
-                  .shadow(color: .accent, radius: isHoveringHnUrl[idx] ?? false ? 0 : 3)
               }
             }
             .help(hnURL.absoluteString)
@@ -85,13 +85,14 @@ struct PostsListing: View {
               Text("\(dateTimeFormatter.localizedString(for: postTime, relativeTo: now))")
                 .help("\(postTime)")
                 .frame(minWidth: 100, alignment: .trailing)
-                .shadow(color: .accent, radius: isHoveringHnUrl[idx] ?? false ? 0 : 3)
             }
           }
           .font(.subheadline)
           .onAppear { isHoveringHnUrl[idx] = false }
           .onHover { hovering in isHoveringHnUrl[idx] = hovering }
           .foregroundStyle(Color(.secondaryLabelColor))
+          .opacity(isHoveringHnUrl[idx] ?? false ? 1.0 : 0.5)
+          .shadow(color: .accent, radius: isHoveringHnUrl[idx] ?? false ? 0 : 2)
           .animation(.snappy, value: isHoveringHnUrl)
           .padding(.leading)
         }
