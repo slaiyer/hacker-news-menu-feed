@@ -58,7 +58,7 @@ struct PostsListing: View {
               Text(title)
                 .lineLimit(1)
                 .truncationMode(.middle)
-                .foregroundStyle(.primary)
+                .foregroundStyle(.secondary)
                 .help(title)
             }
           }
@@ -92,7 +92,7 @@ struct PostsListing: View {
           .onHover { hovering in isHoveringHnUrl[idx] = hovering }
           .foregroundStyle(Color(.secondaryLabelColor))
           .opacity(isHoveringHnUrl[idx] ?? false ? 1.0 : 0.5)
-          .shadow(color: .accent, radius: isHoveringHnUrl[idx] ?? false ? 0 : 2)
+          .shadow(color: .accent, radius: isHoveringHnUrl[idx] ?? false ? 1 : 2)
           .animation(.snappy, value: isHoveringHnUrl)
           .padding(.leading)
         }
