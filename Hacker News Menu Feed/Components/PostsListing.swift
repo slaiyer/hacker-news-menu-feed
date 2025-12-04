@@ -128,7 +128,8 @@ struct PostsListing: View {
                             Text(hnURL.absoluteString)
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
-                                .padding()
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
                         }
                         .onHover { inside in
                             isHoveringHnMeta[idx] = inside
@@ -160,7 +161,8 @@ struct PostsListing: View {
                                     Text("\(postTime)")
                                         .font(.subheadline)
                                         .foregroundStyle(.secondary)
-                                        .padding()
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 4)
                                 }
                                 .onHover { inside in isHoveringHnTime[idx] = inside }
                         }

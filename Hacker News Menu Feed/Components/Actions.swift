@@ -40,7 +40,8 @@ struct Actions: View {
             ) {
                 Text("􀂶 Reload feed")
                     .foregroundStyle(.secondary)
-                    .padding()
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 6)
             }
             .onHover { inside in isHoverReload = inside }
             .buttonStyle(.accessoryBar)
@@ -58,7 +59,8 @@ struct Actions: View {
                 ) {
                     Text("􀂢 Toggle headline in menu bar")
                         .foregroundStyle(.secondary)
-                        .padding()
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 6)
                 }
                 .onHover { inside in isHoverHeadlineToggle = inside }
                 .toggleStyle(.button)
@@ -91,7 +93,8 @@ struct Actions: View {
             ) {
                 Text("􀃊–􀃒 Select sort key")
                     .foregroundStyle(.secondary)
-                    .padding()
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 6)
             }
             .onHover { inside in isHoverSortMenu = inside }
             .menuStyle(.borderlessButton)
