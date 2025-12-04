@@ -86,7 +86,9 @@ struct ContentView: App {
     Timer.scheduledTimer(
       withTimeInterval: reloadRate, repeats: true,
       block: { _ in
-        reloadData()
+        Task { @MainActor in
+          reloadData()
+        }
       }
     )
   }
