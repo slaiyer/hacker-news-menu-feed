@@ -107,16 +107,16 @@ struct PostsListing: View {
 
                     HStack {
                         Link(destination: hnURL) {
-                            Text("􀆇 \(abbreviateNumber(post.score))")
-                                .frame(minWidth: 50, alignment: .leading)
-                            
-                            Text("􀌲 \(abbreviateNumber(post.comments))")
-                                .frame(minWidth: 50, alignment: .leading)
-                            
                             if (post.type != "story") {
                                 Text("􀈕 \(post.type.uppercased())")
                                     .frame(minWidth: 50, alignment: .leading)
                             }
+
+                            Text("􀆇 \(abbreviateNumber(post.score))")
+                                .frame(minWidth: 50, alignment: .leading)
+
+                            Text("􀌲 \(abbreviateNumber(post.comments))")
+                                .frame(alignment: .leading)
                         }
                         .popover(
                             isPresented: Binding(
@@ -150,7 +150,7 @@ struct PostsListing: View {
                         let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
                         Link(destination: hnURL) {
                             Text("\(dateTimeFormatter.localizedString(for: postTime, relativeTo: now))")
-                                .frame(minWidth: 100, alignment: .trailing)
+                                .frame(alignment: .trailing)
                                 .popover(
                                     isPresented: Binding(
                                         get: { isHoveringHnTime[idx] ?? false },
