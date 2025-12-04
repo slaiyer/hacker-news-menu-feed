@@ -11,9 +11,17 @@ struct PostsListing: View {
     
     @State var isHoveringButton: [Int: Bool] = [:]
     @State var isHoveringHnUrl: [Int: Bool] = [:]
+
+    private let popoverDelay = 1.0
+
     @State var isHoveringTitle: [Int: Bool] = [:]
+    @State var showTipTitle: [Int: Bool] = [:]
+
     @State var isHoveringHnMeta: [Int: Bool] = [:]
+    @State var showTipHnMeta: [Int: Bool] = [:]
+
     @State var isHoveringHnTime: [Int: Bool] = [:]
+    @State var showTipTime: [Int: Bool] = [:]
 
     var body: some View {
         ForEach(
@@ -65,8 +73,8 @@ struct PostsListing: View {
                     }
                     .popover(
                         isPresented: Binding(
-                            get: { isHoveringTitle[idx] ?? false },
-                            set: { isHoveringTitle[idx] = $0 },
+                            get: { showTipTitle[idx] ?? false },
+                            set: { showTipTitle[idx] = $0 },
                         ),
                     ) {
                         VStack(alignment: .leading) {
@@ -82,8 +90,20 @@ struct PostsListing: View {
                         }
                         .padding()
                     }
-                    .onHover { inside in isHoveringTitle[idx] = inside }
-                    .animation(.snappy, value: isHoveringTitle[idx])
+                    .onHover { inside in
+                        isHoveringTitle[idx] = inside
+
+                        if inside {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + popoverDelay) {
+                                if isHoveringTitle[idx] == true {
+                                    showTipTitle[idx] = true
+                                }
+                            }
+                        } else {
+                            showTipTitle[idx] = false
+                        }
+                    }
+                    .animation(.snappy, value: showTipTitle[idx])
 
                     HStack {
                         Link(destination: hnURL) {
@@ -100,8 +120,8 @@ struct PostsListing: View {
                         }
                         .popover(
                             isPresented: Binding(
-                                get: { isHoveringHnMeta[idx] ?? false },
-                                set: { isHoveringHnMeta[idx] = $0 },
+                                get: { showTipHnMeta[idx] ?? false },
+                                set: { showTipHnMeta[idx] = $0 },
                             ),
                         ) {
                             Text(hnURL.absoluteString)
@@ -109,8 +129,20 @@ struct PostsListing: View {
                                 .foregroundStyle(.secondary)
                                 .padding()
                         }
-                        .onHover { inside in isHoveringHnMeta[idx] = inside }
-                        .animation(.snappy, value: isHoveringHnMeta[idx])
+                        .onHover { inside in
+                            isHoveringHnMeta[idx] = inside
+
+                            if inside {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + popoverDelay) {
+                                    if isHoveringHnMeta[idx] == true {
+                                        showTipHnMeta[idx] = true
+                                    }
+                                }
+                            } else {
+                                showTipHnMeta[idx] = false
+                            }
+                        }
+                        .animation(.snappy, value: showTipHnMeta[idx])
 
                         Spacer()
                         
