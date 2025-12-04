@@ -12,7 +12,7 @@ struct PostsListing: View {
     @State var isHoveringButton: [Int: Bool] = [:]
     @State var isHoveringHnUrl: [Int: Bool] = [:]
 
-    private let popoverDelay = 1.0
+    private let popoverDelay = 0.5
 
     @State var isHoveringTitle: [Int: Bool] = [:]
     @State var showTipTitle: [Int: Bool] = [:]
