@@ -76,6 +76,7 @@ struct PostsListing: View {
                             get: { showTipTitle[idx] ?? false },
                             set: { showTipTitle[idx] = $0 },
                         ),
+                        arrowEdge: .trailing,
                     ) {
                         VStack(alignment: .leading) {
                             if let title = post.title {
@@ -123,6 +124,7 @@ struct PostsListing: View {
                                 get: { showTipHnMeta[idx] ?? false },
                                 set: { showTipHnMeta[idx] = $0 },
                             ),
+                            arrowEdge: .trailing,
                         ) {
                             Text(hnURL.absoluteString)
                                 .font(.subheadline)
@@ -155,6 +157,7 @@ struct PostsListing: View {
                                         get: { isHoveringHnTime[idx] ?? false },
                                         set: { isHoveringHnTime[idx] = $0 },
                                     ),
+                                    arrowEdge: .trailing,
                                 ) {
                                     Text(postTime.formatted())
                                         .font(.subheadline)
