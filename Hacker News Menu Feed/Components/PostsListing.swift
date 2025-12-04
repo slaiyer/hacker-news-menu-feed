@@ -90,7 +90,7 @@ struct PostsListing: View {
           .font(.subheadline)
           .onAppear { isHoveringHnUrl[idx] = false }
           .onHover { hovering in isHoveringHnUrl[idx] = hovering }
-          .foregroundStyle(Color(.secondaryLabelColor))
+          .foregroundStyle(.secondary)
           .opacity(isHoveringHnUrl[idx] ?? false ? 1.0 : 0.5)
           .shadow(color: .accent, radius: isHoveringHnUrl[idx] ?? false ? 1 : 2)
           .animation(.snappy, value: isHoveringHnUrl)
