@@ -17,7 +17,11 @@ struct Actions: View {
     @State private var isCoolingDown: Bool = false
     @State private var opacity: Double = 0.5
     @State private var blurRadius: Double = 0.5
-    
+
+    @State private var isHoverReload: Bool = false
+    @State private var isHoverHeadlineToggle: Bool = false
+    @State private var isHoverSortMenu: Bool = false
+
     enum FocusField: Hashable {
         case reload
     }
@@ -30,7 +34,13 @@ struct Actions: View {
                 Spinner(isSpinning: isFetching)
             }
             .keyboardShortcut("r", modifiers: [])
-            .help("Reload feed (R)")
+            .popover(isPresented: $isHoverReload) {
+                Text("􀂶 Reload feed")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .padding()
+            }
+            .onHover { inside in isHoverReload = inside }
             .buttonStyle(.accessoryBar)
             .disabled(isFetching || isCoolingDown)
             .focused($focusedField, equals: .reload)
@@ -40,7 +50,13 @@ struct Actions: View {
             
             Toggle("ℏ", isOn: $showHeadline)
                 .keyboardShortcut("h", modifiers: [])
-                .help("Toggle headline in menu bar (H)")
+                .popover(isPresented: $isHoverHeadlineToggle) {
+                    Text("􀂢 Toggle headline in menu bar")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .padding()
+                }
+                .onHover { inside in isHoverHeadlineToggle = inside }
                 .toggleStyle(.button)
                 .contentShape(.capsule)
                 .clipShape(.capsule)
@@ -65,7 +81,13 @@ struct Actions: View {
                 Image(systemName: "arrow.up.and.down.text.horizontal")
                     .tint(.secondary)
             }
-            .help("Sort key")
+            .popover(isPresented: $isHoverSortMenu) {
+                Text("􀃊–􀃒 Select sort key")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .padding()
+            }
+            .onHover { inside in isHoverSortMenu = inside }
             .menuStyle(.borderlessButton)
             .menuIndicator(.hidden)
             .padding(.trailing, 6)

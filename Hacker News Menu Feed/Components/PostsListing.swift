@@ -11,7 +11,10 @@ struct PostsListing: View {
     
     @State var isHoveringButton: [Int: Bool] = [:]
     @State var isHoveringHnUrl: [Int: Bool] = [:]
-    
+    @State var isHoveringTitle: [Int: Bool] = [:]
+    @State var isHoveringHnMeta: [Int: Bool] = [:]
+    @State var isHoveringHnTime: [Int: Bool] = [:]
+
     var body: some View {
         ForEach(
             Array(posts.enumerated()),
@@ -44,25 +47,43 @@ struct PostsListing: View {
                 .clipped(antialiased: true)
                 .opacity(isHoveringButton[idx] ?? false ? 1.0 : 0.5)
                 .blur(radius: isHoveringButton[idx] ?? false ? 0.0 : 0.5)
-                .animation(.snappy, value: isHoveringButton)
-                
+                .animation(.snappy, value: isHoveringButton[idx])
+
                 VStack(alignment: .leading) {
                     HStack {
                         let title = post.title ?? "􀉣"
-                        
+
                         if let extURL = post.url {
                             CustomLink(title: title, link: extURL)
                                 .foregroundStyle(.primary)
-                                .help("\(title)\n⸻\n\(extURL)")
                         } else {
                             Text(title)
                                 .lineLimit(1)
                                 .truncationMode(.middle)
                                 .foregroundStyle(.secondary)
-                                .help(title)
                         }
                     }
-                    
+                    .popover(
+                        isPresented: Binding(
+                            get: { isHoveringTitle[idx] ?? false },
+                            set: { isHoveringTitle[idx] = $0 },
+                        ),
+                    ) {
+                        VStack(alignment: .leading) {
+                            if let title = post.title {
+                                Text(title)
+                            }
+
+                            if let extURL = post.url {
+                                Text(extURL)
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .padding()
+                    }
+                    .onHover { inside in isHoveringTitle[idx] = inside }
+
                     HStack {
                         Link(destination: hnURL) {
                             Text("􀆇 \(abbreviateNumber(post.score))")
@@ -76,15 +97,37 @@ struct PostsListing: View {
                                     .frame(minWidth: 50, alignment: .leading)
                             }
                         }
-                        .help(hnURL.absoluteString)
-                        
+                        .popover(
+                            isPresented: Binding(
+                                get: { isHoveringHnMeta[idx] ?? false },
+                                set: { isHoveringHnMeta[idx] = $0 },
+                            ),
+                        ) {
+                            Text(hnURL.absoluteString)
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                                .padding()
+                        }
+                        .onHover { inside in isHoveringHnMeta[idx] = inside }
+
                         Spacer()
                         
                         let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
                         Link(destination: hnURL) {
                             Text("\(dateTimeFormatter.localizedString(for: postTime, relativeTo: now))")
-                                .help("\(postTime)")
                                 .frame(minWidth: 100, alignment: .trailing)
+                                .popover(
+                                    isPresented: Binding(
+                                        get: { isHoveringHnTime[idx] ?? false },
+                                        set: { isHoveringHnTime[idx] = $0 },
+                                    ),
+                                ) {
+                                    Text(postTime.formatted())
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                        .padding()
+                                }
+                                .onHover { inside in isHoveringHnTime[idx] = inside }
                         }
                     }
                     .font(.subheadline)
@@ -93,7 +136,7 @@ struct PostsListing: View {
                     .foregroundStyle(.secondary)
                     .opacity(isHoveringHnUrl[idx] ?? false ? 1.0 : 0.5)
                     .shadow(color: .accent, radius: isHoveringHnUrl[idx] ?? false ? 1 : 2)
-                    .animation(.snappy, value: isHoveringHnUrl)
+                    .animation(.snappy, value: isHoveringHnUrl[idx])
                     .padding(.leading)
                 }
                 .padding(.trailing, 10)
