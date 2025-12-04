@@ -55,7 +55,7 @@ struct PostsListing: View {
                 .clipped(antialiased: true)
                 .opacity(isHoveringButton[idx] ?? false ? 1.0 : 0.5)
                 .blur(radius: isHoveringButton[idx] ?? false ? 0.0 : 0.5)
-                .animation(.snappy, value: isHoveringButton[idx])
+                .animation(.default, value: isHoveringButton[idx])
 
                 VStack(alignment: .leading) {
                     HStack {
@@ -104,7 +104,6 @@ struct PostsListing: View {
                             showTipTitle[idx] = false
                         }
                     }
-                    .animation(.snappy, value: showTipTitle[idx])
 
                     HStack {
                         Link(destination: hnURL) {
@@ -144,7 +143,6 @@ struct PostsListing: View {
                                 showTipHnMeta[idx] = false
                             }
                         }
-                        .animation(.snappy, value: showTipHnMeta[idx])
 
                         Spacer()
                         
@@ -165,7 +163,6 @@ struct PostsListing: View {
                                         .padding()
                                 }
                                 .onHover { inside in isHoveringHnTime[idx] = inside }
-                                .animation(.snappy, value: isHoveringHnTime[idx])
                         }
                     }
                     .font(.subheadline)
@@ -174,7 +171,7 @@ struct PostsListing: View {
                     .foregroundStyle(.secondary)
                     .opacity(isHoveringHnUrl[idx] ?? false ? 1.0 : 0.5)
                     .shadow(color: .accent, radius: isHoveringHnUrl[idx] ?? false ? 1 : 2)
-                    .animation(.snappy, value: isHoveringHnUrl[idx])
+                    .animation(.default, value: isHoveringHnUrl[idx])
                     .padding(.leading)
                 }
                 .padding(.trailing, 10)

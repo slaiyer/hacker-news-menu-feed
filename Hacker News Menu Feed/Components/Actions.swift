@@ -43,7 +43,6 @@ struct Actions: View {
                     .padding()
             }
             .onHover { inside in isHoverReload = inside }
-            .animation(.snappy, value: isHoverReload)
             .buttonStyle(.accessoryBar)
             .disabled(isFetching || isCoolingDown)
             .focused($focusedField, equals: .reload)
@@ -62,7 +61,6 @@ struct Actions: View {
                         .padding()
                 }
                 .onHover { inside in isHoverHeadlineToggle = inside }
-                .animation(.snappy, value: isHoverHeadlineToggle)
                 .toggleStyle(.button)
                 .contentShape(.capsule)
                 .clipShape(.capsule)
@@ -96,7 +94,6 @@ struct Actions: View {
                     .padding()
             }
             .onHover { inside in isHoverSortMenu = inside }
-            .animation(.snappy, value: isHoverSortMenu)
             .menuStyle(.borderlessButton)
             .menuIndicator(.hidden)
             .padding(.trailing, 6)
@@ -111,7 +108,7 @@ struct Actions: View {
                 isCoolingDown = true
                 Task {
                     await MainActor.run {
-                        withAnimation(.snappy) {
+                        withAnimation {
                             isCoolingDown = false
                             focusedField = .reload
                         }
@@ -122,7 +119,7 @@ struct Actions: View {
         .opacity(opacity)
         .blur(radius: blurRadius)
         .onHover { hovering in
-            withAnimation(.snappy) {
+            withAnimation {
                 if hovering {
                     opacity = 1.0
                     blurRadius = 0.0
@@ -168,7 +165,7 @@ struct Spinner: View {
             animationTask = Task {
                 while !Task.isCancelled {
                     await MainActor.run {
-                        withAnimation(.snappy(duration: spinnerAnimationLength)) {
+                        withAnimation(.easeInOut(duration: spinnerAnimationLength)) {
                             opacity = 0.5
                             rotation += 180
                         }
@@ -181,7 +178,7 @@ struct Spinner: View {
             animationTask?.cancel()
             animationTask = nil
             
-            withAnimation(.snappy) {
+            withAnimation {
                 opacity = 0.75
                 rotation = 0.0
             }

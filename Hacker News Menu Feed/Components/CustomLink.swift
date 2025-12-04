@@ -19,6 +19,6 @@ struct CustomLink: View {
             },
         )
         .onHover{ inside in isHovering = inside }
-        .animation(.snappy, value: isHovering)
+        .animation(.default, value: isHovering)
     }
 }
