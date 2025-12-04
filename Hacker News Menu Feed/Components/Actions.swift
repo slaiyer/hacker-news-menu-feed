@@ -34,9 +34,11 @@ struct Actions: View {
                 Spinner(isSpinning: isFetching)
             }
             .keyboardShortcut("r", modifiers: [])
-            .popover(isPresented: $isHoverReload) {
+            .popover(
+                isPresented: $isHoverReload,
+                arrowEdge: .bottom,
+            ) {
                 Text("􀂶 Reload feed")
-                    .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .padding()
             }
@@ -51,9 +53,11 @@ struct Actions: View {
             
             Toggle("ℏ", isOn: $showHeadline)
                 .keyboardShortcut("h", modifiers: [])
-                .popover(isPresented: $isHoverHeadlineToggle) {
+                .popover(
+                    isPresented: $isHoverHeadlineToggle,
+                    arrowEdge: .bottom,
+                ) {
                     Text("􀂢 Toggle headline in menu bar")
-                        .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .padding()
                 }
@@ -83,9 +87,11 @@ struct Actions: View {
                 Image(systemName: "arrow.up.and.down.text.horizontal")
                     .tint(.secondary)
             }
-            .popover(isPresented: $isHoverSortMenu) {
+            .popover(
+                isPresented: $isHoverSortMenu,
+                arrowEdge: .bottom,
+            ) {
                 Text("􀃊–􀃒 Select sort key")
-                    .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .padding()
             }
