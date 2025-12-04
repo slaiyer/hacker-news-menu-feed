@@ -13,9 +13,9 @@ struct ContentView: App {
     @State private var truncatedTitle: String? = LocalDataSource.getTitle()
     @State private var originalPostIDs: [Int] = LocalDataSource.getOriginalPostIDs()
     @State private var reloadRate = 3600.0
-    
-    var timer = Timer()
-    
+
+    private var timer = Timer()
+
     var body: some Scene {
         MenuBarExtra {
             VStack(alignment: .center) {
@@ -82,7 +82,7 @@ struct ContentView: App {
     
     func startApp() {
         reloadData()
-        
+
         Timer.scheduledTimer(
             withTimeInterval: reloadRate, repeats: true,
             block: { _ in
@@ -175,7 +175,6 @@ struct ContentView: App {
             return sortPosts(
                 orderedPosts.compactMap { $0 },
                 by: sortKey,
-                originalPostIDs: originalPostIDs,
             )
         }
         
@@ -215,7 +214,6 @@ struct ContentView: App {
                 posts = sortPosts(
                     posts,
                     by: sortKey,
-                    originalPostIDs: originalPostIDs,
                 )
             }
         }
@@ -224,7 +222,6 @@ struct ContentView: App {
     func sortPosts(
         _ posts: [StoryFetchResponse],
         by key: SortKey,
-        originalPostIDs: [Int],
     ) -> [StoryFetchResponse] {
         switch key {
             case .original:
