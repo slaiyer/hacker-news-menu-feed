@@ -6,7 +6,7 @@ struct CustomLink: View {
   var link: String
   
   @State private var isHovering = false
-
+  
   var body: some View {
     Link(
       destination: URL(string: link)!,

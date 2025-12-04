@@ -17,7 +17,7 @@ struct Actions: View {
   @State private var isCoolingDown: Bool = false
   @State private var opacity: Double = 0.5
   @State private var blurRadius: Double = 0.5
-
+  
   enum FocusField: Hashable {
     case reload
   }

@@ -8,25 +8,25 @@ struct PostsListing: View {
   
   private let now = Date()
   private let dateTimeFormatter = RelativeDateTimeFormatter()
-
+  
   @State var isHoveringButton: [Int: Bool] = [:]
   @State var isHoveringHnUrl: [Int: Bool] = [:]
-
+  
   var body: some View {
     ForEach(
       Array(posts.enumerated()),
       id: \.element.id
     ) {
- idx,
- post in
+      idx,
+      post in
       HStack(alignment: .center) {
         let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
-
+        
         Button {
           NSWorkspace.shared.open(hnURL)
-
+          
           if let raw = post.url,
- let extURL = URL(string: raw) {
+             let extURL = URL(string: raw) {
             NSWorkspace.shared.open(extURL)
           }
         } label: {
@@ -45,11 +45,11 @@ struct PostsListing: View {
         .opacity(isHoveringButton[idx] ?? false ? 1.0 : 0.5)
         .blur(radius: isHoveringButton[idx] ?? false ? 0.0 : 0.5)
         .animation(.snappy, value: isHoveringButton)
-
+        
         VStack(alignment: .leading) {
           HStack {
             let title = post.title ?? "􀉣"
-
+            
             if let extURL = post.url {
               CustomLink(title: title, link: extURL)
                 .foregroundStyle(.primary)
@@ -67,19 +67,19 @@ struct PostsListing: View {
             Link(destination: hnURL) {
               Text("􀆇 \(abbreviateNumber(post.score))")
                 .frame(minWidth: 50, alignment: .leading)
-
+              
               Text("􀌲 \(abbreviateNumber(post.comments))")
                 .frame(minWidth: 50, alignment: .leading)
-
+              
               if (post.type != "story") {
                 Text("􀈕 \(post.type.uppercased())")
                   .frame(minWidth: 50, alignment: .leading)
               }
             }
             .help(hnURL.absoluteString)
-
+            
             Spacer()
-
+            
             let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
             Link(destination: hnURL) {
               Text("\(dateTimeFormatter.localizedString(for: postTime, relativeTo: now))")
