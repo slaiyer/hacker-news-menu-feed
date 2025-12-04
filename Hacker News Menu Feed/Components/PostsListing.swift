@@ -159,7 +159,7 @@ struct PostsListing: View {
                                     ),
                                     arrowEdge: .trailing,
                                 ) {
-                                    Text(postTime.formatted())
+                                    Text("\(postTime)")
                                         .font(.subheadline)
                                         .foregroundStyle(.secondary)
                                         .padding()
