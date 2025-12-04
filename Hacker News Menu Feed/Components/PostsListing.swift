@@ -83,6 +83,7 @@ struct PostsListing: View {
                         .padding()
                     }
                     .onHover { inside in isHoveringTitle[idx] = inside }
+                    .animation(.snappy, value: isHoveringTitle[idx])
 
                     HStack {
                         Link(destination: hnURL) {
@@ -109,6 +110,7 @@ struct PostsListing: View {
                                 .padding()
                         }
                         .onHover { inside in isHoveringHnMeta[idx] = inside }
+                        .animation(.snappy, value: isHoveringHnMeta[idx])
 
                         Spacer()
                         
@@ -128,6 +130,7 @@ struct PostsListing: View {
                                         .padding()
                                 }
                                 .onHover { inside in isHoveringHnTime[idx] = inside }
+                                .animation(.snappy, value: isHoveringHnTime[idx])
                         }
                     }
                     .font(.subheadline)

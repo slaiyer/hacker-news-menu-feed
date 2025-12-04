@@ -41,6 +41,7 @@ struct Actions: View {
                     .padding()
             }
             .onHover { inside in isHoverReload = inside }
+            .animation(.snappy, value: isHoverReload)
             .buttonStyle(.accessoryBar)
             .disabled(isFetching || isCoolingDown)
             .focused($focusedField, equals: .reload)
@@ -57,6 +58,7 @@ struct Actions: View {
                         .padding()
                 }
                 .onHover { inside in isHoverHeadlineToggle = inside }
+                .animation(.snappy, value: isHoverHeadlineToggle)
                 .toggleStyle(.button)
                 .contentShape(.capsule)
                 .clipShape(.capsule)
@@ -88,6 +90,7 @@ struct Actions: View {
                     .padding()
             }
             .onHover { inside in isHoverSortMenu = inside }
+            .animation(.snappy, value: isHoverSortMenu)
             .menuStyle(.borderlessButton)
             .menuIndicator(.hidden)
             .padding(.trailing, 6)
