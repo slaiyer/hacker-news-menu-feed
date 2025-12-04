@@ -111,16 +111,16 @@ struct PostsListing: View {
 
                     HStack {
                         Link(destination: hnURL) {
-                            if (post.type != "story") {
-                                Text("􀈕 \(post.type.uppercased())")
-                                    .frame(minWidth: 50, alignment: .leading)
-                            }
-
                             Text("􀆇 \(abbreviateNumber(post.score))")
                                 .frame(minWidth: 50, alignment: .leading)
 
                             Text("􀌲 \(abbreviateNumber(post.comments))")
-                                .frame(alignment: .leading)
+                                .frame(minWidth: 50, alignment: .leading)
+
+                            if (post.type != "story") {
+                                Text("􀈕 \(post.type.uppercased())")
+                                    .frame(alignment: .leading)
+                            }
                         }
                         .popover(
                             isPresented: Binding(
