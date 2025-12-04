@@ -81,13 +81,13 @@ struct PostsListing: View {
                         VStack(alignment: .leading) {
                             if let title = post.title {
                                 Text(title)
-                                    .frame(width: 250, alignment: .leading)
+                                    .frame(maxWidth: 250, alignment: .leading)
                                     .fixedSize(horizontal: false, vertical: true)
                             }
 
                             if let extURL = post.url {
                                 Text(extURL)
-                                    .frame(width: 250, alignment: .leading)
+                                    .frame(maxWidth: 250, alignment: .leading)
                                     .fixedSize(horizontal: false, vertical: true)
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
