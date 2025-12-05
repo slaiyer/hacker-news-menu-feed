@@ -13,7 +13,7 @@ struct PostsListing: View {
     @State var isHoveringHnUrl: [Int: Bool] = [:]
 
     private let popoverMaxWidth = 350.0
-    private let popoverDelay = 1.0
+    private let popoverDelay = 0.5
 
     @State var isHoveringRow: [Int: Bool] = [:]
     @State var showTipRow: [Int: Bool] = [:]
@@ -111,7 +111,7 @@ struct PostsListing: View {
                             }
                         }
                     } else {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + popoverDelay) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + popoverDelay / 2) {
                             if !(isHoveringRow[idx] ?? false) {
                                 showTipRow[idx] = false
                             }
