@@ -57,16 +57,14 @@ struct PostsListing: View {
                 .animation(.default, value: isHoveringButton[idx])
 
                 VStack(alignment: .leading) {
-                    HStack {
-                        if let extURL = post.url {
-                            CustomLink(title: title, link: extURL)
-                                .foregroundStyle(.primary)
-                        } else {
-                            Text(title)
-                                .lineLimit(1)
-                                .truncationMode(.middle)
-                                .foregroundStyle(.secondary)
-                        }
+                    if let extURL = post.url {
+                        CustomLink(title: title, link: extURL)
+                            .foregroundStyle(.primary)
+                    } else {
+                        Text(title)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                            .foregroundStyle(.secondary)
                     }
 
                     HStack {
