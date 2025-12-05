@@ -13,8 +13,9 @@ struct PostsListing: View {
     @State var isHoveringHnUrl: [Int: Bool] = [:]
 
     private let popoverMaxWidth = 350.0
-    private let popoverDelay = 0.4
+    private let popoverDelay = 1.0
 
+    @State var isHoveringRow: [Int: Bool] = [:]
     @State var showTipRow: [Int: Bool] = [:]
 
     var body: some View {
@@ -45,19 +46,7 @@ struct PostsListing: View {
                 }
                 .buttonStyle(.glass)
                 .onAppear { isHoveringButton[idx] = false }
-                .onHover { inside in
-                    isHoveringButton[idx] = inside
-
-                    if inside {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + popoverDelay) {
-                            if isHoveringButton[idx] == true {
-                                showTipRow[idx] = true
-                            }
-                        }
-                    } else {
-                        showTipRow[idx] = false
-                    }
-                }
+                .onHover { inside in isHoveringButton[idx] = inside }
                 .foregroundStyle(isHoveringButton[idx] ?? false ? .accent : .secondary)
                 .contentShape(.capsule)
                 .clipShape(.capsule)
@@ -88,7 +77,8 @@ struct PostsListing: View {
                                 .frame(minWidth: 50, alignment: .leading)
 
                             if (post.type != "story") {
-                                Text("􀈕 \(post.type.uppercased())")
+                                Text("􀈕 \(post.type)")
+                                    .textCase(.uppercase)
                                     .frame(alignment: .leading)
                             }
                         }
@@ -101,15 +91,29 @@ struct PostsListing: View {
                         }
                     }
                     .font(.subheadline)
+                    .foregroundStyle(.secondary)
                     .onAppear { isHoveringHnUrl[idx] = false }
                     .onHover { hovering in isHoveringHnUrl[idx] = hovering }
-                    .foregroundStyle(.secondary)
                     .opacity(isHoveringHnUrl[idx] ?? false ? 1.0 : 0.5)
                     .shadow(color: .accent, radius: isHoveringHnUrl[idx] ?? false ? 1 : 2)
                     .animation(.default, value: isHoveringHnUrl[idx])
                     .padding(.leading)
                 }
                 .padding(.trailing, 10)
+                .contentShape(.rect)
+                .onHover { inside in
+                    isHoveringRow[idx] = inside
+
+                    if inside {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + popoverDelay) {
+                            if isHoveringRow[idx] ?? false {
+                                showTipRow[idx] = true
+                            }
+                        }
+                    } else {
+                        showTipRow[idx] = false
+                    }
+                }
             }
             .popover(
                 isPresented: Binding(
