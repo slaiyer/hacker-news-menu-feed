@@ -142,22 +142,19 @@ struct PostsListing: View {
                     HStack {
                         Text(post.type)
                             .textCase(.uppercase)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
 
                         Divider()
 
                         Text(hnURL.absoluteString)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-
                     }
+                    .font(.subheadline)
+                    .foregroundStyle(.tertiary)
 
                     Divider()
 
                     Text("\(postTime)")
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.tertiary)
                 }
                 .frame(maxWidth: popoverMaxWidth, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
