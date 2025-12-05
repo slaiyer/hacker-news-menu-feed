@@ -56,7 +56,7 @@ struct Actions: View {
                     isPresented: $isHoverHeadlineToggle,
                     arrowEdge: .bottom,
                 ) {
-                    Text("􀂢 Toggle headline in menu bar")
+                    Text("􀂢 Toggle menu bar headline")
                         .foregroundStyle(.secondary)
                         .padding()
                 }
@@ -89,7 +89,7 @@ struct Actions: View {
                 isPresented: $isHoverSortMenu,
                 arrowEdge: .bottom,
             ) {
-                Text("􀃊–􀃒 Select sort key")
+                Text("􀃊–􀃒 Sort by key")
                     .foregroundStyle(.secondary)
                     .padding()
             }
