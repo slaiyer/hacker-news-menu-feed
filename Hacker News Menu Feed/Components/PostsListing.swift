@@ -11,18 +11,12 @@ struct PostsListing: View {
     
     @State var isHoveringButton: [Int: Bool] = [:]
     @State var isHoveringHnUrl: [Int: Bool] = [:]
-
+    
+    private let popoverMaxWidth = 350.0
     private let popoverDelay = 0.4
-
-    @State var isHoveringTitle: [Int: Bool] = [:]
-    @State var showTipTitle: [Int: Bool] = [:]
-
-    @State var isHoveringHnMeta: [Int: Bool] = [:]
-    @State var showTipHnMeta: [Int: Bool] = [:]
-
-    @State var isHoveringHnTime: [Int: Bool] = [:]
-    @State var showTipTime: [Int: Bool] = [:]
-
+    
+    @State var showTipRow: [Int: Bool] = [:]
+    
     var body: some View {
         ForEach(
             Array(posts.enumerated()),
@@ -30,9 +24,12 @@ struct PostsListing: View {
         ) {
             idx,
             post in
+            
+            let title = post.title ?? "􀉣"
+            let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
+            let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
+            
             HStack(alignment: .center) {
-                let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
-                
                 Button {
                     NSWorkspace.shared.open(hnURL)
                     
@@ -48,7 +45,19 @@ struct PostsListing: View {
                 }
                 .buttonStyle(.glass)
                 .onAppear { isHoveringButton[idx] = false }
-                .onHover { hovering in isHoveringButton[idx] = hovering }
+                .onHover { inside in
+                    isHoveringButton[idx] = inside
+                    
+                    if inside {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + popoverDelay) {
+                            if isHoveringButton[idx] == true {
+                                showTipRow[idx] = true
+                            }
+                        }
+                    } else {
+                        showTipRow[idx] = false
+                    }
+                }
                 .foregroundStyle(isHoveringButton[idx] ?? false ? .accent : .secondary)
                 .contentShape(.capsule)
                 .clipShape(.capsule)
@@ -56,11 +65,9 @@ struct PostsListing: View {
                 .opacity(isHoveringButton[idx] ?? false ? 1.0 : 0.5)
                 .blur(radius: isHoveringButton[idx] ?? false ? 0.0 : 0.5)
                 .animation(.default, value: isHoveringButton[idx])
-
+                
                 VStack(alignment: .leading) {
                     HStack {
-                        let title = post.title ?? "􀉣"
-
                         if let extURL = post.url {
                             CustomLink(title: title, link: extURL)
                                 .foregroundStyle(.primary)
@@ -71,104 +78,26 @@ struct PostsListing: View {
                                 .foregroundStyle(.secondary)
                         }
                     }
-                    .popover(
-                        isPresented: Binding(
-                            get: { showTipTitle[idx] ?? false },
-                            set: { showTipTitle[idx] = $0 },
-                        ),
-                        arrowEdge: .trailing,
-                    ) {
-                        VStack(alignment: .leading) {
-                            if let title = post.title {
-                                Text(title)
-                                    .frame(maxWidth: 250, alignment: .leading)
-                                    .fixedSize(horizontal: false, vertical: true)
-                            }
-
-                            if let extURL = post.url {
-                                Text(extURL)
-                                    .frame(maxWidth: 250, alignment: .leading)
-                                    .fixedSize(horizontal: false, vertical: true)
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                        .padding()
-                    }
-                    .onHover { inside in
-                        isHoveringTitle[idx] = inside
-
-                        if inside {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + popoverDelay) {
-                                if isHoveringTitle[idx] == true {
-                                    showTipTitle[idx] = true
-                                }
-                            }
-                        } else {
-                            showTipTitle[idx] = false
-                        }
-                    }
-
+                    
                     HStack {
                         Link(destination: hnURL) {
                             Text("􀆇 \(abbreviateNumber(post.score))")
                                 .frame(minWidth: 50, alignment: .leading)
-
+                            
                             Text("􀌲 \(abbreviateNumber(post.comments))")
                                 .frame(minWidth: 50, alignment: .leading)
-
+                            
                             if (post.type != "story") {
                                 Text("􀈕 \(post.type.uppercased())")
                                     .frame(alignment: .leading)
                             }
                         }
-                        .popover(
-                            isPresented: Binding(
-                                get: { showTipHnMeta[idx] ?? false },
-                                set: { showTipHnMeta[idx] = $0 },
-                            ),
-                            arrowEdge: .trailing,
-                        ) {
-                            Text(hnURL.absoluteString)
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                        }
-                        .onHover { inside in
-                            isHoveringHnMeta[idx] = inside
-
-                            if inside {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + popoverDelay) {
-                                    if isHoveringHnMeta[idx] == true {
-                                        showTipHnMeta[idx] = true
-                                    }
-                                }
-                            } else {
-                                showTipHnMeta[idx] = false
-                            }
-                        }
-
+                        
                         Spacer()
                         
-                        let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
                         Link(destination: hnURL) {
                             Text("\(dateTimeFormatter.localizedString(for: postTime, relativeTo: now))")
                                 .frame(alignment: .trailing)
-                                .popover(
-                                    isPresented: Binding(
-                                        get: { isHoveringHnTime[idx] ?? false },
-                                        set: { isHoveringHnTime[idx] = $0 },
-                                    ),
-                                    arrowEdge: .trailing,
-                                ) {
-                                    Text("\(postTime)")
-                                        .font(.subheadline)
-                                        .foregroundStyle(.secondary)
-                                        .padding(.horizontal, 8)
-                                        .padding(.vertical, 4)
-                                }
-                                .onHover { inside in isHoveringHnTime[idx] = inside }
                         }
                     }
                     .font(.subheadline)
@@ -181,6 +110,50 @@ struct PostsListing: View {
                     .padding(.leading)
                 }
                 .padding(.trailing, 10)
+            }
+            .popover(
+                isPresented: Binding(
+                    get: { showTipRow[idx] ?? false },
+                    set: { showTipRow[idx] = $0 },
+                ),
+                arrowEdge: .leading,
+            ) {
+                VStack(alignment: .leading) {
+                    if let title = post.title {
+                        Text(title)
+                    }
+                    
+                    if let extURL = post.url {
+                        Text(extURL)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                    
+                    Divider()
+                    
+                    HStack {
+                        Text(post.type)
+                            .textCase(.uppercase)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                        
+                        Divider()
+                        
+                        Text(hnURL.absoluteString)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                        
+                    }
+                    
+                    Divider()
+                    
+                    Text("\(postTime)")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: popoverMaxWidth, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding()
             }
         }
     }
