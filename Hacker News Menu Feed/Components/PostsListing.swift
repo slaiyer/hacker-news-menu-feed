@@ -45,6 +45,7 @@ struct PostsListing: View {
                         .shadow(color: .accent, radius: isHoveringButton[idx] ?? false ? 1 : 0)
                 }
                 .buttonStyle(.glass)
+                .padding(.leading, 1)
                 .onAppear { isHoveringButton[idx] = false }
                 .onHover { inside in isHoveringButton[idx] = inside }
                 .foregroundStyle(isHoveringButton[idx] ?? false ? .accent : .secondary)
