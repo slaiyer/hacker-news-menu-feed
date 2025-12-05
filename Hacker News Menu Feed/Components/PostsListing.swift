@@ -132,6 +132,8 @@ struct PostsListing: View {
                     }
 
                     if let extURL = post.url {
+                        Spacer()
+
                         Text(extURL)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
