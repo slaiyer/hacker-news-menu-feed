@@ -111,7 +111,11 @@ struct PostsListing: View {
                             }
                         }
                     } else {
-                        showTipRow[idx] = false
+                        DispatchQueue.main.asyncAfter(deadline: .now() + popoverDelay) {
+                            if !(isHoveringRow[idx] ?? false) {
+                                showTipRow[idx] = false
+                            }
+                        }
                     }
                 }
             }
