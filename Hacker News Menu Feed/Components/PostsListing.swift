@@ -12,9 +12,6 @@ struct PostsListing: View {
     @State var isHoveringButton: [Int: Bool] = [:]
     @State var isHoveringHnUrl: [Int: Bool] = [:]
 
-    private let popoverMaxWidth = 350.0
-    private let popoverDelay = 0.5
-
     @State var isHoveringRow: [Int: Bool] = [:]
     @State var showTipRow: [Int: Bool] = [:]
 
@@ -104,17 +101,13 @@ struct PostsListing: View {
                     isHoveringRow[idx] = inside
 
                     if inside {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + popoverDelay) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             if isHoveringRow[idx] ?? false {
                                 showTipRow[idx] = true
                             }
                         }
                     } else {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            if !(isHoveringRow[idx] ?? false) {
-                                showTipRow[idx] = false
-                            }
-                        }
+                        showTipRow[idx] = false
                     }
                 }
             }
@@ -158,7 +151,7 @@ struct PostsListing: View {
                         .font(.subheadline)
                         .foregroundStyle(.tertiary)
                 }
-                .frame(maxWidth: popoverMaxWidth, alignment: .leading)
+                .frame(maxWidth: 350, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding()
             }
