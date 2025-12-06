@@ -51,7 +51,7 @@ struct PostsListing: View {
                 .blur(radius: isHoveringButton[idx] ?? false ? 0.0 : 0.5)
                 .animation(.default, value: isHoveringButton[idx])
 
-                Spacer(minLength: 10)
+                Spacer(minLength: 12)
 
                 VStack(alignment: .leading) {
                     if let raw = post.url,
