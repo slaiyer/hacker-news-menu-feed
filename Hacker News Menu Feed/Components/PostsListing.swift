@@ -81,6 +81,7 @@ struct PostsListing: View {
                                     .frame(alignment: .leading)
                             }
                         }
+                        .padding(.leading)
 
                         Spacer()
 
@@ -96,7 +97,6 @@ struct PostsListing: View {
                     .opacity(isHoveringHnUrl[idx] ?? false ? 1.0 : 0.5)
                     .shadow(color: .accent, radius: isHoveringHnUrl[idx] ?? false ? 1 : 2)
                     .animation(.default, value: isHoveringHnUrl[idx])
-                    .padding(.leading)
                 }
                 .contentShape(.rect)
                 .onHover { inside in
