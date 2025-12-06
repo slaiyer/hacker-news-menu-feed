@@ -12,6 +12,8 @@ struct AppMenu: View {
             LazyVStack(alignment: .center) {
                 PostsListing(posts: posts)
             }
+            .padding(.leading, 1)
+            .padding(.trailing, 10)
         } else {
             Text("…")
                 .frame(maxWidth: .infinity, alignment: .center)

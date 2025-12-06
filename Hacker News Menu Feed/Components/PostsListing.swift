@@ -45,7 +45,6 @@ struct PostsListing: View {
                         .shadow(color: .accent, radius: isHoveringButton[idx] ?? false ? 1 : 0)
                 }
                 .buttonStyle(.glass)
-                .padding(.leading, 1)
                 .onAppear { isHoveringButton[idx] = false }
                 .onHover { inside in isHoveringButton[idx] = inside }
                 .foregroundStyle(isHoveringButton[idx] ?? false ? .accent : .secondary)
@@ -98,7 +97,6 @@ struct PostsListing: View {
                     .animation(.default, value: isHoveringHnUrl[idx])
                     .padding(.leading)
                 }
-                .padding(.trailing, 10)
                 .contentShape(.rect)
                 .onHover { inside in
                     isHoveringRow[idx] = inside
