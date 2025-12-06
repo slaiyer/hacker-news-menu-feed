@@ -62,6 +62,7 @@ struct Actions: View {
                 }
                 .onHover { inside in isHoverHeadlineToggle = inside }
                 .toggleStyle(.button)
+                .buttonStyle(.accessoryBar)
                 .contentShape(.capsule)
                 .clipShape(.capsule)
                 .clipped(antialiased: true)
@@ -95,8 +96,8 @@ struct Actions: View {
             }
             .onHover { inside in isHoverSortMenu = inside }
             .menuStyle(.borderlessButton)
+            .buttonStyle(.accessoryBar)
             .menuIndicator(.hidden)
-            .padding(.trailing, 6)
         }
         .onAppear {
             focusedField = .reload

@@ -13,7 +13,7 @@ struct AppMenu: View {
                 PostsListing(posts: posts)
             }
             .padding(.leading, 1)
-            .padding(.trailing, 10)
+            .padding(.trailing, 14)
         } else {
             Text("…")
                 .frame(maxWidth: .infinity, alignment: .center)
