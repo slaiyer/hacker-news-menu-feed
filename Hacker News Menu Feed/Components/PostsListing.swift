@@ -22,9 +22,8 @@ struct PostsListing: View {
         ForEach(
             Array(posts.enumerated()),
             id: \.element.id
-        ) {
-            idx,
-            post in
+        ) { idx, post in
+            Divider()
 
             let title = post.title ?? "􀉣"
             let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
@@ -54,6 +53,8 @@ struct PostsListing: View {
                 .opacity(isHoveringButton[idx] ?? false ? 1.0 : 0.5)
                 .blur(radius: isHoveringButton[idx] ?? false ? 0.0 : 0.5)
                 .animation(.default, value: isHoveringButton[idx])
+
+                Divider()
 
                 VStack(alignment: .leading) {
                     if let extURL = post.url {
