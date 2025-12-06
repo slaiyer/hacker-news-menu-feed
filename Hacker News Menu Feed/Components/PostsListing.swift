@@ -54,10 +54,11 @@ struct PostsListing: View {
                 .blur(radius: isHoveringButton[idx] ?? false ? 0.0 : 0.5)
                 .animation(.default, value: isHoveringButton[idx])
 
-                Divider()
+                Spacer(minLength: 10)
 
                 VStack(alignment: .leading) {
-                    if let extURL = post.url {
+                    if let raw = post.url,
+                       let extURL = URL(string: raw) {
                         CustomLink(title: title, link: extURL)
                             .foregroundStyle(.primary)
                     } else {
@@ -109,7 +110,7 @@ struct PostsListing: View {
                             }
                         }
                     } else {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + popoverDelay / 2) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             if !(isHoveringRow[idx] ?? false) {
                                 showTipRow[idx] = false
                             }
@@ -129,10 +130,11 @@ struct PostsListing: View {
                         Text(title)
                     }
 
-                    if let extURL = post.url {
-                        Spacer()
+                    if let raw = post.url,
+                       let extURL = URL(string: raw) {
+                       Spacer()
 
-                        Text(extURL)
+                        Text(extURL.standardized.absoluteString)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
@@ -145,7 +147,7 @@ struct PostsListing: View {
 
                         Divider()
 
-                        Text(hnURL.absoluteString)
+                        Text(hnURL.standardized.absoluteString)
                     }
                     .font(.subheadline)
                     .foregroundStyle(.tertiary)

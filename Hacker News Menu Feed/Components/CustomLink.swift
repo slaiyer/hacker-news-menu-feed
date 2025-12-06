@@ -3,13 +3,13 @@ import SwiftUI
 
 struct CustomLink: View {
     var title: String
-    var link: String
-    
+    var link: URL
+
     @State private var isHovering = false
     
     var body: some View {
         Link(
-            destination: URL(string: link)!,
+            destination: link,
             label: {
                 Text(title)
                     .lineLimit(1)
