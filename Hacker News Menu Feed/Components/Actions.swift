@@ -8,7 +8,6 @@ let spinnerAnimationDuration = Duration.seconds(spinnerAnimationLength)
 @available(macOS 26.0, *)
 struct Actions: View {
     var onReload: () -> Void
-    var onSort: () -> Void
 
     @Binding var showHeadline: Bool
     @Binding var sortKey: SortKey
@@ -75,7 +74,6 @@ struct Actions: View {
                 ForEach(SortKey.allCases) { key in
                     Button {
                         sortKey = key
-                        onSort()
                     } label: {
                         Label(key.label, systemImage: sortKey == key ? "checkmark" : "")
                     }

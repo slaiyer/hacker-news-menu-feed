@@ -21,7 +21,6 @@ struct ContentView: App {
             VStack(alignment: .center) {
                 Actions(
                     onReload: reloadData,
-                    onSort: applySort,
                     showHeadline: $showHeadline,
                     sortKey: $sortKey,
                     isFetching: $isFetching,
@@ -70,7 +69,6 @@ struct ContentView: App {
                     Button(key.label) {
                         if key != sortKey {
                             sortKey = key
-                            applySort()
                         }
                     }
                     .keyboardShortcut(KeyEquivalent(key.cut), modifiers: [])
