@@ -25,16 +25,16 @@ struct StoryFetchResponse: Codable, Hashable {
 }
 
 struct Story: Codable {
-    var id: Int
-    var author: String
-    var descendants: Int
+    let id: Int
+    let author: String
+    let descendants: Int
     var kids: [Int]
-    var score: Int
-    var time: Int
-    var title: String
-    var type: String
-    var text: String?
-    var url: String?
+    let score: Int
+    let time: Int
+    let title: String
+    let type: String
+    let text: String?
+    let url: String?
 }
 
 struct Comment: Codable {

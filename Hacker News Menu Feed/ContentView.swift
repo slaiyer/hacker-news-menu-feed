@@ -6,7 +6,7 @@ struct ContentView: App {
     private static let numPosts = 500
     private let maxMenuBarWidth: CGFloat = 250
     private let reloadRate = 3600.0
-    private let timer = Timer()
+    private static let timer = Timer()
 
     @State private var isFetching = false
     @State private var posts: [StoryFetchResponse] = LocalDataSource.getPosts()
@@ -41,6 +41,7 @@ struct ContentView: App {
                 }
         }
         .menuBarExtraStyle(.window)
+        .windowLevel(.floating)
         .onChange(of: posts) {
             adjustTitleForMenuBar()
             LocalDataSource.savePosts(value: posts)
@@ -69,7 +70,6 @@ struct ContentView: App {
                 }
             }
         }
-        .windowLevel(.floating)
     }
 
     private func startApp() {

@@ -7,7 +7,7 @@ struct PostsListing: View {
     let posts: [StoryFetchResponse]
     
     private let dateTimeFormatter = RelativeDateTimeFormatter()
-    
+
     @State var isHoveringButton: [Int: Bool] = [:]
     @State var isHoveringHnUrl: [Int: Bool] = [:]
     
