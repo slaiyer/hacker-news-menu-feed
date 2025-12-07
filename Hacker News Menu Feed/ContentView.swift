@@ -119,6 +119,10 @@ struct ContentView: App {
     }
     
     func reloadData() {
+        if !isFetching {
+            return
+        }
+
         isFetching = true
         
         Task {
