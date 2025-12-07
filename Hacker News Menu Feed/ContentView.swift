@@ -43,11 +43,6 @@ struct ContentView: App {
                 }
         }
         .menuBarExtraStyle(.window)
-        .onChange(of: isFetching) {
-            if !isFetching && !posts.isEmpty {
-                adjustTitleForMenuBar()
-            }
-        }
         .onChange(of: posts) {
             adjustTitleForMenuBar()
             LocalDataSource.savePosts(value: posts)
@@ -60,14 +55,17 @@ struct ContentView: App {
         }
         .onChange(of: sortKey) { _, newKey in
             applySort()
-            adjustTitleForMenuBar()
             LocalDataSource.saveSortKey(value: newKey)
         }
         .commands {
             CommandMenu("Sort by…") {
                 ForEach(SortKey.allCases) { key in
                     Button(key.label) {
-                        sortKey = key
+                        if key == sortKey {
+                            posts = sortPosts(posts, by: sortKey, reverse: true)
+                        } else {
+                            sortKey = key
+                        }
                     }
                     .keyboardShortcut(KeyEquivalent(key.cut), modifiers: [])
                 }
@@ -218,7 +216,12 @@ struct ContentView: App {
     func sortPosts(
         _ posts: [StoryFetchResponse],
         by key: SortKey,
+        reverse: Bool = false,
     ) -> [StoryFetchResponse] {
+        if reverse {
+            return posts.reversed()
+        }
+
         switch key {
             case .original:
                 let order = Dictionary(
