@@ -4,31 +4,31 @@ import AppKit
 
 @available(macOS 26.0, *)
 struct PostsListing: View {
-    var posts: [StoryFetchResponse]
-
+    let posts: [StoryFetchResponse]
+    
     private let dateTimeFormatter = RelativeDateTimeFormatter()
-
+    
     @State var isHoveringButton: [Int: Bool] = [:]
     @State var isHoveringHnUrl: [Int: Bool] = [:]
-
+    
     @State var isHoveringRow: [Int: Bool] = [:]
     @State var showTipRow: [Int: Bool] = [:]
-
+    
     var body: some View {
         ForEach(
             Array(posts.enumerated()),
             id: \.element.id
         ) { idx, post in
             Divider()
-
+            
             let title = post.title ?? "􀉣"
             let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
             let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
-
+            
             HStack(alignment: .center) {
                 Button {
                     NSWorkspace.shared.open(hnURL)
-
+                    
                     if let raw = post.url,
                        let extURL = URL(string: raw) {
                         NSWorkspace.shared.open(extURL)
@@ -49,9 +49,9 @@ struct PostsListing: View {
                 .opacity(isHoveringButton[idx] ?? false ? 1.0 : 0.5)
                 .blur(radius: isHoveringButton[idx] ?? false ? 0.0 : 0.5)
                 .animation(.default, value: isHoveringButton[idx])
-
+                
                 Spacer(minLength: 12)
-
+                
                 VStack(alignment: .leading) {
                     if let raw = post.url,
                        let extURL = URL(string: raw) {
@@ -63,15 +63,15 @@ struct PostsListing: View {
                             .truncationMode(.middle)
                             .foregroundStyle(.secondary)
                     }
-
+                    
                     HStack {
                         Link(destination: hnURL) {
                             Text("􀆇 \(abbreviateNumber(post.score))")
                                 .frame(minWidth: 50, alignment: .leading)
-
+                            
                             Text("􀌲 \(abbreviateNumber(post.comments))")
                                 .frame(minWidth: 50, alignment: .leading)
-
+                            
                             if (post.type != "story") {
                                 Text("􀈕 \(post.type)")
                                     .textCase(.uppercase)
@@ -79,9 +79,9 @@ struct PostsListing: View {
                             }
                         }
                         .padding(.leading)
-
+                        
                         Spacer()
-
+                        
                         Link(destination: hnURL) {
                             Text("\(dateTimeFormatter.localizedString(for: postTime, relativeTo: .now))")
                                 .frame(alignment: .trailing)
@@ -98,7 +98,7 @@ struct PostsListing: View {
                 .contentShape(.rect)
                 .onHover { inside in
                     isHoveringRow[idx] = inside
-
+                    
                     if inside {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             if isHoveringRow[idx] ?? false {
@@ -121,31 +121,31 @@ struct PostsListing: View {
                     if let title = post.title {
                         Text(title)
                     }
-
+                    
                     if let raw = post.url,
                        let extURL = URL(string: raw) {
-                       Spacer()
-
+                        Spacer()
+                        
                         Text(extURL.standardized.absoluteString)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
-
+                    
                     Divider()
-
+                    
                     HStack {
                         Text(post.type)
                             .textCase(.uppercase)
-
+                        
                         Divider()
-
+                        
                         Text(hnURL.standardized.absoluteString)
                     }
                     .font(.subheadline)
                     .foregroundStyle(.tertiary)
-
+                    
                     Divider()
-
+                    
                     Text("\(postTime)")
                         .font(.subheadline)
                         .foregroundStyle(.tertiary)
@@ -156,12 +156,12 @@ struct PostsListing: View {
             }
         }
     }
-}
-
-func abbreviateNumber(_ number: Int?) -> String {
-    guard let number = number else {
-        return "—"
+    
+    private func abbreviateNumber(_ number: Int?) -> String {
+        guard let number = number else {
+            return "—"
+        }
+        
+        return number.formatted(.number.notation(.compactName))
     }
-
-    return number.formatted(.number.notation(.compactName))
 }

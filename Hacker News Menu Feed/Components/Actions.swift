@@ -7,26 +7,26 @@ let spinnerAnimationDuration = Duration.seconds(spinnerAnimationLength)
 
 @available(macOS 26.0, *)
 struct Actions: View {
-    var onReload: () -> Void
-
+    let onReload: () -> Void
+    
     @Binding var showHeadline: Bool
     @Binding var sortKey: SortKey
     @Binding var isFetching: Bool
-
+    
     @State private var isCoolingDown: Bool = false
     @State private var opacity: Double = 0.5
     @State private var blurRadius: Double = 0.5
-
+    
     @State private var isHoverReload: Bool = false
     @State private var isHoverHeadlineToggle: Bool = false
     @State private var isHoverSortMenu: Bool = false
-
+    
     enum FocusField: Hashable {
         case reload
     }
-
+    
     @FocusState private var focusedField: FocusField?
-
+    
     var body: some View {
         HStack(alignment: .center) {
             Button(action: onReload) {
@@ -46,9 +46,9 @@ struct Actions: View {
             .disabled(isFetching || isCoolingDown)
             .focused($focusedField, equals: .reload)
             .focusEffectDisabled()
-
+            
             Spacer()
-
+            
             Toggle("ℏ", isOn: $showHeadline)
                 .keyboardShortcut("h", modifiers: [])
                 .popover(
@@ -67,9 +67,9 @@ struct Actions: View {
                 .clipped(antialiased: true)
                 .tint(.gray)
                 .focusEffectDisabled()
-
+            
             Spacer()
-
+            
             Menu {
                 ForEach(SortKey.allCases) { key in
                     Button {
@@ -134,11 +134,11 @@ struct Actions: View {
 @available(macOS 26.0, *)
 struct Spinner: View {
     var isSpinning: Bool
-
+    
     @State private var rotation: Double = 0.0
     @State private var opacity: Double = 0.75
     @State private var animationTask: Task<Void, Never>?
-
+    
     var body: some View {
         Image(systemName: reloadSymbol)
             .foregroundStyle(.secondary)
@@ -156,11 +156,11 @@ struct Spinner: View {
                 animationTask = nil
             }
     }
-
+    
     private func updateAnimation(shouldSpin: Bool) {
         if shouldSpin {
             guard animationTask == nil else { return }
-
+            
             animationTask = Task {
                 while !Task.isCancelled {
                     await MainActor.run {
@@ -169,14 +169,14 @@ struct Spinner: View {
                             rotation += 180
                         }
                     }
-
+                    
                     try? await Task.sleep(for: spinnerAnimationDuration)
                 }
             }
         } else {
             animationTask?.cancel()
             animationTask = nil
-
+            
             withAnimation {
                 opacity = 0.75
                 rotation = 0.0

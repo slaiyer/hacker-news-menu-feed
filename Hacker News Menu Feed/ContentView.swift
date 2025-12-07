@@ -5,6 +5,8 @@ import SwiftUI
 struct ContentView: App {
     private static let numPosts = 500
     private let maxMenuBarWidth: CGFloat = 250
+    private let reloadRate = 3600.0
+    private let timer = Timer()
     
     @State private var isFetching = false
     @State private var posts: [StoryFetchResponse] = LocalDataSource.getPosts()
@@ -12,9 +14,6 @@ struct ContentView: App {
     @State private var sortKey = LocalDataSource.getSortKey()
     @State private var truncatedTitle: String? = LocalDataSource.getTitle()
     @State private var originalPostIDs: [Int] = LocalDataSource.getOriginalPostIDs()
-    @State private var reloadRate = 3600.0
-    
-    private var timer = Timer()
     
     var body: some Scene {
         MenuBarExtra {
@@ -30,7 +29,6 @@ struct ContentView: App {
                 ScrollView {
                     AppMenu(
                         posts: $posts,
-                        onReloadTapped: reloadData,
                     )
                 }
             }
@@ -54,15 +52,15 @@ struct ContentView: App {
             LocalDataSource.saveShowHeadline(value: showHeadline)
         }
         .onChange(of: sortKey) { _, newKey in
-            applySort()
             LocalDataSource.saveSortKey(value: newKey)
+            applySort()
         }
         .commands {
             CommandMenu("Sort by…") {
                 ForEach(SortKey.allCases) { key in
                     Button(key.label) {
                         if key == sortKey {
-                            posts = sortPosts(posts, by: sortKey, reverse: true)
+                            applySort(reverse: true)
                         } else {
                             sortKey = key
                         }
@@ -74,7 +72,7 @@ struct ContentView: App {
         .windowLevel(.floating)
     }
     
-    func startApp() {
+    private func startApp() {
         reloadData()
         
         Timer.scheduledTimer(
@@ -87,29 +85,24 @@ struct ContentView: App {
         )
     }
     
-    func adjustTitleForMenuBar() {
+    private func adjustTitleForMenuBar() {
         guard let firstPost = posts.first, let title = firstPost.title else {
             return
         }
         
-        Task { @MainActor in
-            truncatedTitle = truncateStringToFit(
-                title,
-                maxWidth: maxMenuBarWidth,
-            )
-        }
+        truncatedTitle = truncateStringToFit(title)
     }
     
-    func truncateStringToFit(_ string: String, maxWidth: CGFloat) -> String {
+    private func truncateStringToFit(_ string: String) -> String {
         let tempLabel = NSTextField(labelWithString: string)
         tempLabel.sizeToFit()
         
-        if tempLabel.frame.width <= maxWidth {
+        if tempLabel.frame.width <= maxMenuBarWidth {
             return string
         }
         
         var truncatedString = string
-        while tempLabel.frame.width > maxWidth && truncatedString.count > 0 {
+        while tempLabel.frame.width > maxMenuBarWidth && truncatedString.count > 0 {
             truncatedString.removeLast()
             tempLabel.stringValue = truncatedString + "…"
             tempLabel.sizeToFit()
@@ -118,11 +111,11 @@ struct ContentView: App {
         return truncatedString + "…"
     }
     
-    func reloadData() {
+    private func reloadData() {
         if isFetching {
             return
         }
-
+        
         isFetching = true
         
         Task {
@@ -130,11 +123,13 @@ struct ContentView: App {
                 await fetchFeed()
             }
             
+            applySort()
+            
             isFetching = false
         }
     }
     
-    func fetchFeed() async {
+    private func fetchFeed() async {
         let postIds: [Int]
         do {
             postIds = try await fetchTopPostsIDs()
@@ -170,24 +165,17 @@ struct ContentView: App {
                 }
             }
             
-            return sortPosts(
-                orderedPosts.compactMap { $0 },
-                by: sortKey,
-            )
+            return orderedPosts.compactMap { $0 }
         }
         
         guard !newPosts.isEmpty else {
             return
         }
         
-        await MainActor.run {
-            withAnimation {
-                posts = newPosts
-            }
-        }
+        posts = newPosts
     }
     
-    func fetchTopPostsIDs() async throws -> [Int] {
+    private func fetchTopPostsIDs() async throws -> [Int] {
         let url = URL(
             string: "https://hacker-news.firebaseio.com/v0/topstories.json"
         )!
@@ -197,7 +185,7 @@ struct ContentView: App {
         return Array(response.prefix(ContentView.numPosts))
     }
     
-    func fetchPostById(postId: Int) async throws -> StoryFetchResponse {
+    private func fetchPostById(postId: Int) async throws -> StoryFetchResponse {
         let url = URL(
             string: "https://hacker-news.firebaseio.com/v0/item/\(postId).json"
         )!
@@ -206,42 +194,32 @@ struct ContentView: App {
         return try JSONDecoder().decode(StoryFetchResponse.self, from: data)
     }
     
-    func applySort() {
+    private func applySort(reverse: Bool = false) {
         Task { @MainActor in
             withAnimation {
-                posts = sortPosts(
-                    posts,
-                    by: sortKey,
-                )
-            }
-        }
-    }
-    
-    func sortPosts(
-        _ posts: [StoryFetchResponse],
-        by key: SortKey,
-        reverse: Bool = false,
-    ) -> [StoryFetchResponse] {
-        if reverse {
-            return posts.reversed()
-        }
-
-        switch key {
-            case .original:
-                let order = Dictionary(
-                    uniqueKeysWithValues: originalPostIDs.enumerated().map { ($1, $0) }
-                )
-                return posts.sorted {
-                    (order[$0.id] ?? Int.max) < (order[$1.id] ?? Int.max)
+                if reverse {
+                    posts.reverse()
+                    return
                 }
-            case .time:
-                return posts.sorted { $0.time > $1.time }
-            case .score:
-                return posts.sorted { $0.score > $1.score }
-            case .comments:
-                return posts.sorted { ($0.comments ?? 0) > ($1.comments ?? 0) }
-            case .type:
-                return posts.sorted { $0.type < $1.type }
+                
+                switch sortKey {
+                    case .original:
+                        let order = Dictionary(
+                            uniqueKeysWithValues: originalPostIDs.enumerated().map { ($1, $0) }
+                        )
+                        posts.sort {
+                            (order[$0.id] ?? Int.max) < (order[$1.id] ?? Int.max)
+                        }
+                    case .time:
+                        posts.sort { $0.time > $1.time }
+                    case .score:
+                        posts.sort { $0.score > $1.score }
+                    case .comments:
+                        posts.sort { ($0.comments ?? 0) > ($1.comments ?? 0) }
+                    case .type:
+                        posts.sort { $0.type < $1.type }
+                }
+            }
         }
     }
 }

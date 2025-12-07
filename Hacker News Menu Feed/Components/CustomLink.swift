@@ -2,11 +2,11 @@ import Foundation
 import SwiftUI
 
 struct CustomLink: View {
-    var title: String
-    var link: URL
+    let title: String
+    let link: URL
 
     @State private var isHovering = false
-    
+
     var body: some View {
         Link(
             destination: link,

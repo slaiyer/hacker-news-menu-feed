@@ -9,7 +9,7 @@ struct StoryFetchResponse: Codable, Hashable {
     let title: String?
     let text: String?
     let url: String?
-    
+
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case author = "by"

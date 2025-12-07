@@ -4,9 +4,7 @@ import SwiftUI
 @available(macOS 26.0, *)
 struct AppMenu: View {
     @Binding var posts: [StoryFetchResponse]
-
-    var onReloadTapped: () -> Void
-
+    
     var body: some View {
         if posts.count > 0 {
             LazyVStack(alignment: .center) {
