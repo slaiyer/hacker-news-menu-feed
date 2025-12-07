@@ -119,7 +119,7 @@ struct ContentView: App {
     }
     
     func reloadData() {
-        if !isFetching {
+        if isFetching {
             return
         }
 
