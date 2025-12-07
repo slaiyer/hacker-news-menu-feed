@@ -27,12 +27,12 @@ struct PostsListing: View {
             
             HStack(alignment: .center) {
                 Button {
-                    NSWorkspace.shared.open(hnURL)
-                    
                     if let raw = post.url,
                        let extURL = URL(string: raw) {
                         NSWorkspace.shared.open(extURL)
                     }
+
+                    NSWorkspace.shared.open(hnURL)
                 } label: {
                     Text("􀉣")
                         .font(.subheadline)
