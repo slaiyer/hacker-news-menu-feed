@@ -6,7 +6,6 @@ import AppKit
 struct PostsListing: View {
     var posts: [StoryFetchResponse]
 
-    private let now = Date()
     private let dateTimeFormatter = RelativeDateTimeFormatter()
 
     @State var isHoveringButton: [Int: Bool] = [:]
@@ -84,7 +83,7 @@ struct PostsListing: View {
                         Spacer()
 
                         Link(destination: hnURL) {
-                            Text("\(dateTimeFormatter.localizedString(for: postTime, relativeTo: now))")
+                            Text("\(dateTimeFormatter.localizedString(for: postTime, relativeTo: .now))")
                                 .frame(alignment: .trailing)
                         }
                     }
