@@ -106,11 +106,9 @@ struct Actions: View {
             } else {
                 isCoolingDown = true
                 Task {
-                    await MainActor.run {
-                        withAnimation {
-                            isCoolingDown = false
-                            focusedField = .reload
-                        }
+                    withAnimation {
+                        isCoolingDown = false
+                        focusedField = .reload
                     }
                 }
             }
@@ -163,11 +161,9 @@ struct Spinner: View {
             
             animationTask = Task {
                 while !Task.isCancelled {
-                    await MainActor.run {
-                        withAnimation(.easeInOut(duration: spinnerAnimationLength)) {
-                            opacity = 0.5
-                            rotation += 180
-                        }
+                    withAnimation(.easeInOut(duration: spinnerAnimationLength)) {
+                        opacity = 0.5
+                        rotation += 180
                     }
                     
                     try? await Task.sleep(for: spinnerAnimationDuration)
