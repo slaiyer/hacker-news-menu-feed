@@ -23,9 +23,9 @@ struct ContentView: App {
 
     var body: some Scene {
         MenuBarExtra {
-            VStack(alignment: .center) {
-                if isSearchMode {
-                    ZStack(alignment: .center) {
+            VStack {
+                ZStack {
+                    if isSearchMode {
                         Button(action: hideSearch) {
                             Text("􀆙")
                         }
@@ -33,13 +33,11 @@ struct ContentView: App {
                         .keyboardShortcut(.escape, modifiers: [])
 
                         TextField("􀊫 Search", text: $searchText)
+                            .focused($isSearchFocused)
                             .autocorrectionDisabled()
                             .padding(.horizontal, 45)
-                            .focused($isSearchFocused)
-                    }
-                    .padding(.vertical, 1)
-                } else {
-                    ZStack(alignment: .center) {
+                            .padding(.vertical, 1)
+                    } else {
                         Button(action: showSearch) {
                             Text("􀊫")
                         }

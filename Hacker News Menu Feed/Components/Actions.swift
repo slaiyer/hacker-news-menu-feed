@@ -18,7 +18,7 @@ struct Actions: View {
     @State private var isHoverSortMenu: Bool = false
 
     var body: some View {
-        HStack(alignment: .center) {
+        HStack {
             Button(action: onReload) {
                 Spinner(isSpinning: isFetching)
             }

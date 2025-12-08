@@ -7,7 +7,7 @@ struct AppMenu: View {
     
     var body: some View {
         if posts.count > 0 {
-            LazyVStack(alignment: .center) {
+            LazyVStack {
                 PostsListing(posts: posts)
             }
             .padding(.leading, 1)

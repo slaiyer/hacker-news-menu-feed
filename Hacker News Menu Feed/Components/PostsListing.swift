@@ -23,7 +23,7 @@ struct PostsListing: View {
             let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
             let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
             
-            HStack(alignment: .center) {
+            HStack {
                 Button {
                     if let raw = post.url,
                        let extURL = URL(string: raw) {
