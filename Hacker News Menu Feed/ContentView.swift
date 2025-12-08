@@ -231,6 +231,10 @@ struct ContentView: App {
         Task {
             withAnimation {
                 if reverse {
+                    if sortKey == .original {
+                        return
+                    }
+
                     posts.reverse()
                     return
                 }
