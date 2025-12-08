@@ -14,21 +14,51 @@ struct ContentView: App {
     @State private var sortKey = LocalDataSource.getSortKey()
     @State private var truncatedTitle: String? = LocalDataSource.getTitle()
     @State private var originalPostIDs: [Int] = LocalDataSource.getOriginalPostIDs()
+    @State private var searchText: String = ""
+    @State private var filteredPosts: [StoryFetchResponse] = []
+    @State private var searchTask: Task<Void, Never>? = nil
+    @State private var isSearchMode: Bool = false
+
+    @FocusState private var isSearchFocused: Bool
 
     var body: some Scene {
         MenuBarExtra {
             VStack(alignment: .center) {
-                Actions(
-                    onReload: reloadData,
-                    showHeadline: $showHeadline,
-                    sortKey: $sortKey,
-                    isFetching: $isFetching,
-                )
+                if isSearchMode {
+                    ZStack(alignment: .center) {
+                        Button(action: hideSearch) {
+                            Text("􀆙")
+                        }
+                        .hidden()
+                        .keyboardShortcut(.escape, modifiers: [])
+
+                        TextField("􀊫 Search", text: $searchText)
+                            .autocorrectionDisabled()
+                            .padding(.horizontal, 45)
+                            .focused($isSearchFocused)
+                    }
+                    .padding(.vertical, 1)
+                } else {
+                    ZStack(alignment: .center) {
+                        Button(action: showSearch) {
+                            Text("􀊫")
+                        }
+                        .hidden()
+                        .keyboardShortcut("/", modifiers: [])
+
+                        Actions(
+                            onReload: reloadData,
+                            showHeadline: $showHeadline,
+                            sortKey: $sortKey,
+                            isFetching: $isFetching
+                        )
+                    }
+                }
 
                 // TODO: vim-like j/k navigation
                 ScrollView {
                     AppMenu(
-                        posts: $posts,
+                        posts: $filteredPosts,
                     )
                 }
             }
@@ -47,6 +77,10 @@ struct ContentView: App {
             LocalDataSource.savePosts(value: posts)
             LocalDataSource.saveOriginalPostIDs(value: originalPostIDs)
             LocalDataSource.saveTitle(value: truncatedTitle)
+            runSearch()
+        }
+        .onChange(of: searchText) {
+            runSearch()
         }
         .onChange(of: showHeadline) {
             adjustTitleForMenuBar()
@@ -73,6 +107,7 @@ struct ContentView: App {
     }
 
     private func startApp() {
+        runSearch()
         reloadData()
 
         Timer.scheduledTimer(
@@ -216,6 +251,47 @@ struct ContentView: App {
                         posts.sort { ($0.comments ?? 0) > ($1.comments ?? 0) }
                     case .type:
                         posts.sort { $0.type < $1.type }
+                }
+            }
+        }
+    }
+
+    private func showSearch() {
+        isSearchMode = true
+        isSearchFocused = true
+    }
+
+    private func hideSearch() {
+        searchText.removeAll(keepingCapacity: true)
+        isSearchFocused = false
+        isSearchMode = false
+    }
+
+    private func runSearch() {
+        searchTask?.cancel()
+
+        searchTask = Task.detached(priority: .background) { [posts, searchText] in
+            try? await Task.sleep(for: .milliseconds(150))
+            try? Task.checkCancellation()
+
+            let results: [StoryFetchResponse]
+            if searchText.isEmpty {
+                results = posts
+            } else {
+                results = posts.filter { post in
+                    post.type.localizedCaseInsensitiveContains(searchText) ||
+                    post.author.localizedCaseInsensitiveContains(searchText) ||
+                    (post.title?.localizedCaseInsensitiveContains(searchText) ?? false) ||
+                    (post.url?.localizedCaseInsensitiveContains(searchText) ?? false) ||
+                    (post.text?.localizedCaseInsensitiveContains(searchText) ?? false)
+                }
+            }
+
+            try? Task.checkCancellation()
+
+            await MainActor.run {
+                withAnimation {
+                    self.filteredPosts = results
                 }
             }
         }

@@ -17,12 +17,6 @@ struct Actions: View {
     @State private var isHoverHeadlineToggle: Bool = false
     @State private var isHoverSortMenu: Bool = false
 
-    enum FocusField: Hashable {
-        case reload
-    }
-
-    @FocusState private var focusedField: FocusField?
-
     var body: some View {
         HStack(alignment: .center) {
             Button(action: onReload) {
@@ -40,7 +34,6 @@ struct Actions: View {
             .onHover { inside in isHoverReload = inside }
             .buttonStyle(.accessoryBar)
             .disabled(isFetching || isCoolingDown)
-            .focused($focusedField, equals: .reload)
             .focusEffectDisabled()
 
             Spacer()
@@ -92,9 +85,7 @@ struct Actions: View {
             .menuStyle(.borderlessButton)
             .buttonStyle(.accessoryBar)
             .menuIndicator(.hidden)
-        }
-        .onAppear {
-            focusedField = .reload
+            .focusEffectDisabled()
         }
         .onChange(of: isFetching) { _, isNowFetching in
             if isNowFetching {
@@ -104,7 +95,6 @@ struct Actions: View {
                 Task {
                     withAnimation {
                         isCoolingDown = false
-                        focusedField = .reload
                     }
                 }
             }
