@@ -33,7 +33,7 @@ struct ContentView: App {
                 }
             }
             .padding()
-            .frame(minWidth: 500, minHeight: 500)
+            .frame(minWidth: 500, minHeight: 400)
         } label: {
             Text(showHeadline ? truncatedTitle ?? "Reading HN…" : "ℏ")
                 .onAppear {

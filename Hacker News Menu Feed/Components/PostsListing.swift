@@ -19,8 +19,6 @@ struct PostsListing: View {
             Array(posts.enumerated()),
             id: \.element.id
         ) { idx, post in
-            Divider()
-            
             let title = post.title ?? "􀉣"
             let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
             let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
