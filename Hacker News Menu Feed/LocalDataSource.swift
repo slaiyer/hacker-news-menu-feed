@@ -1,13 +1,13 @@
 import Foundation
 
 class LocalDataSource {
-    public static func savePosts(value: [StoryFetchResponse]) {
+    static func savePosts(value: [StoryFetchResponse]) {
         if let encoded = try? JSONEncoder().encode(value) {
             UserDefaults.standard.set(encoded, forKey: "Posts")
         }
     }
 
-    public static func getPosts() -> [StoryFetchResponse] {
+    static func getPosts() -> [StoryFetchResponse] {
         var posts: [StoryFetchResponse] = []
 
         if let data = UserDefaults.standard.data(forKey: "Posts") {
@@ -19,13 +19,13 @@ class LocalDataSource {
         return posts
     }
 
-    public static func saveOriginalPostIDs(value: [Int]) {
+    static func saveOriginalPostIDs(value: [Int]) {
         if let encoded = try? JSONEncoder().encode(value) {
             UserDefaults.standard.set(encoded, forKey: "OriginalPostIDs")
         }
     }
 
-    public static func getOriginalPostIDs() -> [Int] {
+    static func getOriginalPostIDs() -> [Int] {
         var originalPostIDs: [Int] = []
 
         if let data = UserDefaults.standard.data(forKey: "OriginalPostIDs") {
@@ -37,13 +37,13 @@ class LocalDataSource {
         return originalPostIDs
     }
 
-    public static func saveTitle(value: String?) {
+    static func saveTitle(value: String?) {
         if let encoded = try? JSONEncoder().encode(value) {
             UserDefaults.standard.set(encoded, forKey: "Title")
         }
     }
 
-    public static func getTitle() -> String? {
+    static func getTitle() -> String? {
         var title: String?
 
         if let data = UserDefaults.standard.data(forKey: "Title") {
@@ -55,13 +55,13 @@ class LocalDataSource {
         return title
     }
 
-    public static func saveSortKey(value: SortKey) {
+    static func saveSortKey(value: SortKey) {
         if let encoded = try? JSONEncoder().encode(value) {
             UserDefaults.standard.set(encoded, forKey: "SortKey")
         }
     }
 
-    public static func getSortKey() -> SortKey {
+    static func getSortKey() -> SortKey {
         var sortKey: SortKey = .original
 
         if let data = UserDefaults.standard.data(forKey: "SortKey") {
@@ -73,13 +73,13 @@ class LocalDataSource {
         return sortKey
     }
 
-    public static func saveShowHeadline(value: Bool) {
+    static func saveShowHeadline(value: Bool) {
         if let encoded = try? JSONEncoder().encode(value) {
             UserDefaults.standard.set(encoded, forKey: "ShowHeadline")
         }
     }
 
-    public static func getShowHeadline() -> Bool {
+    static func getShowHeadline() -> Bool {
         var result: Bool = true
 
         if let data = UserDefaults.standard.data(forKey: "ShowHeadline") {

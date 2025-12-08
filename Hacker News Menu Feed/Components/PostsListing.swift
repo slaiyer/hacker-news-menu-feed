@@ -8,11 +8,11 @@ struct PostsListing: View {
     
     private let dateTimeFormatter = RelativeDateTimeFormatter()
 
-    @State var isHoveringButton: [Int: Bool] = [:]
-    @State var isHoveringHnUrl: [Int: Bool] = [:]
-    
-    @State var isHoveringRow: [Int: Bool] = [:]
-    @State var showTipRow: [Int: Bool] = [:]
+    @State private var isHoveringButton: [Int: Bool] = [:]
+    @State private var isHoveringHnUrl: [Int: Bool] = [:]
+
+    @State private var isHoveringRow: [Int: Bool] = [:]
+    @State private var showTipRow: [Int: Bool] = [:]
     
     var body: some View {
         ForEach(
