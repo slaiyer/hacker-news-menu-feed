@@ -282,7 +282,6 @@ struct ContentView: App {
             } else {
                 results = posts.filter { post in
                     post.type.localizedCaseInsensitiveContains(searchText) ||
-                    post.author.localizedCaseInsensitiveContains(searchText) ||
                     (post.title?.localizedCaseInsensitiveContains(searchText) ?? false) ||
                     (post.url?.localizedCaseInsensitiveContains(searchText) ?? false) ||
                     (post.text?.localizedCaseInsensitiveContains(searchText) ?? false)
