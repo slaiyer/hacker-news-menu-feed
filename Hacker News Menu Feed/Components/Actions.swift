@@ -11,7 +11,7 @@ struct Actions: View {
 
     @State private var isCoolingDown: Bool = false
     @State private var opacity: Double = 0.5
-    @State private var blurRadius: Double = 0.5
+    @State private var blurRadius: Double = 1.0
 
     @State private var isHoverReload: Bool = false
     @State private var isHoverHeadlineToggle: Bool = false
@@ -32,9 +32,10 @@ struct Actions: View {
                     .padding()
             }
             .onHover { inside in isHoverReload = inside }
-            .buttonStyle(.accessoryBar)
-            .disabled(isFetching || isCoolingDown)
+            .buttonStyle(.borderless)
+            .tint(.secondary)
             .focusEffectDisabled()
+            .disabled(isFetching || isCoolingDown)
 
             Spacer()
 
@@ -50,12 +51,10 @@ struct Actions: View {
                 }
                 .onHover { inside in isHoverHeadlineToggle = inside }
                 .toggleStyle(.button)
-                .buttonStyle(.accessoryBar)
+                .buttonStyle(.borderless)
                 .contentShape(.capsule)
                 .clipShape(.capsule)
                 .clipped(antialiased: true)
-                .tint(.gray)
-                .focusEffectDisabled()
 
             Spacer()
 
@@ -71,7 +70,6 @@ struct Actions: View {
                 }
             } label: {
                 Image(systemName: "arrow.up.and.down.text.horizontal")
-                    .tint(.secondary)
             }
             .popover(
                 isPresented: $isHoverSortMenu,
@@ -83,10 +81,14 @@ struct Actions: View {
             }
             .onHover { inside in isHoverSortMenu = inside }
             .menuStyle(.borderlessButton)
-            .buttonStyle(.accessoryBar)
+            .buttonStyle(.borderless)
+            .tint(.secondary)
             .menuIndicator(.hidden)
             .focusEffectDisabled()
         }
+        .padding(.leading, 12)
+        .padding(.trailing, 10)
+        .focusEffectDisabled()
         .onChange(of: isFetching) { _, isNowFetching in
             if isNowFetching {
                 isCoolingDown = false
@@ -108,7 +110,7 @@ struct Actions: View {
                     blurRadius = 0.0
                 } else {
                     opacity = 0.5
-                    blurRadius = 0.5
+                    blurRadius = 1.0
                 }
             }
         }
@@ -125,14 +127,10 @@ struct Spinner: View {
     private let reloadSymbol = "arrow.trianglehead.2.clockwise"
 
     @State private var rotation: Double = 0.0
-    @State private var opacity: Double = 0.75
     @State private var animationTask: Task<Void, Never>?
 
     var body: some View {
         Image(systemName: reloadSymbol)
-            .foregroundStyle(.secondary)
-            .opacity(opacity)
-            .tint(.secondary)
             .rotationEffect(.degrees(rotation))
             .onChange(of: isSpinning) { _, newValue in
                 updateAnimation(shouldSpin: newValue)
@@ -153,7 +151,6 @@ struct Spinner: View {
             animationTask = Task {
                 while !Task.isCancelled {
                     withAnimation(.easeInOut(duration: spinnerAnimationLength)) {
-                        opacity = 0.5
                         rotation += 180
                     }
 
@@ -165,7 +162,6 @@ struct Spinner: View {
             animationTask = nil
 
             withAnimation {
-                opacity = 0.75
                 rotation = 0.0
             }
         }

@@ -14,41 +14,43 @@ struct ContentView: App {
     @State private var sortKey = LocalDataSource.getSortKey()
     @State private var truncatedTitle: String? = LocalDataSource.getTitle()
     @State private var originalPostIDs: [Int] = LocalDataSource.getOriginalPostIDs()
-    @State private var searchText: String = ""
+    @State private var filterText: String = ""
     @State private var filteredPosts: [StoryFetchResponse] = []
-    @State private var searchTask: Task<Void, Never>? = nil
-    @State private var isSearchMode: Bool = false
-
-    @FocusState private var isSearchFocused: Bool
+    @State private var filterTask: Task<Void, Never>? = nil
+    @State private var isFilterMode: Bool = false
+    @FocusState private var isFilterFocused: Bool
 
     var body: some Scene {
         MenuBarExtra {
             VStack {
                 ZStack {
-                    if isSearchMode {
-                        Button(action: hideSearch) {
-                            Text("􀆙")
-                        }
-                        .hidden()
-                        .keyboardShortcut(.escape, modifiers: [])
-
-                        TextField("􀊫 Search", text: $searchText)
-                            .focused($isSearchFocused)
-                            .autocorrectionDisabled()
-                            .padding(.horizontal, 45)
-                            .padding(.vertical, 1)
-                    } else {
-                        Button(action: showSearch) {
+                    HStack {
+                        Button(action: startFilterMode) {
                             Text("􀊫")
                         }
-                        .hidden()
                         .keyboardShortcut("/", modifiers: [])
 
+                        Button(action: endFilterMode) {
+                            Text("􀆙")
+                        }
+                        .keyboardShortcut(.escape, modifiers: [])
+                    }
+                    .hidden()
+
+                    if isFilterMode {
+                        TextField("􀊫 Filter", text: $filterText)
+                            .focused($isFilterFocused)
+                            .onSubmit {
+                                isFilterFocused = false
+                            }
+                            .autocorrectionDisabled()
+                            .padding(.horizontal, 45)
+                    } else {
                         Actions(
                             onReload: reloadData,
                             showHeadline: $showHeadline,
                             sortKey: $sortKey,
-                            isFetching: $isFetching
+                            isFetching: $isFetching,
                         )
                     }
                 }
@@ -75,10 +77,10 @@ struct ContentView: App {
             LocalDataSource.savePosts(value: posts)
             LocalDataSource.saveOriginalPostIDs(value: originalPostIDs)
             LocalDataSource.saveTitle(value: truncatedTitle)
-            runSearch()
+            runFilter()
         }
-        .onChange(of: searchText) {
-            runSearch()
+        .onChange(of: filterText) {
+            runFilter()
         }
         .onChange(of: showHeadline) {
             adjustTitleForMenuBar()
@@ -105,7 +107,7 @@ struct ContentView: App {
     }
 
     private func startApp() {
-        runSearch()
+        runFilter()
         reloadData()
 
         Timer.scheduledTimer(
@@ -258,33 +260,33 @@ struct ContentView: App {
         }
     }
 
-    private func showSearch() {
-        isSearchMode = true
-        isSearchFocused = true
+    private func startFilterMode() {
+        isFilterMode = true
+        isFilterFocused = true
     }
 
-    private func hideSearch() {
-        searchText.removeAll(keepingCapacity: true)
-        isSearchFocused = false
-        isSearchMode = false
+    private func endFilterMode() {
+        filterText.removeAll(keepingCapacity: true)
+        isFilterFocused = false
+        isFilterMode = false
     }
 
-    private func runSearch() {
-        searchTask?.cancel()
+    private func runFilter() {
+        filterTask?.cancel()
 
-        searchTask = Task.detached(priority: .background) { [posts, searchText] in
+        filterTask = Task.detached(priority: .background) { [posts, filterText] in
             try? await Task.sleep(for: .milliseconds(150))
             try? Task.checkCancellation()
 
             let results: [StoryFetchResponse]
-            if searchText.isEmpty {
+            if filterText.isEmpty {
                 results = posts
             } else {
                 results = posts.filter { post in
-                    post.type.localizedCaseInsensitiveContains(searchText) ||
-                    (post.title?.localizedCaseInsensitiveContains(searchText) ?? false) ||
-                    (post.url?.localizedCaseInsensitiveContains(searchText) ?? false) ||
-                    (post.text?.localizedCaseInsensitiveContains(searchText) ?? false)
+                    post.type.localizedCaseInsensitiveContains(filterText) ||
+                    (post.title?.localizedCaseInsensitiveContains(filterText) ?? false) ||
+                    (post.url?.localizedCaseInsensitiveContains(filterText) ?? false) ||
+                    (post.text?.localizedCaseInsensitiveContains(filterText) ?? false)
                 }
             }
 
