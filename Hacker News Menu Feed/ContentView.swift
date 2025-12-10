@@ -74,11 +74,11 @@ struct ContentView: App {
         .menuBarExtraStyle(.window)
         .windowLevel(.floating)
         .onChange(of: posts) {
+            runFilter(textObserver.debouncedText)
             adjustTitleForMenuBar()
             LocalDataSource.savePosts(value: posts)
             LocalDataSource.saveOriginalPostIDs(value: originalPostIDs)
             LocalDataSource.saveTitle(value: truncatedTitle)
-            runFilter(textObserver.debouncedText)
         }
         .onChange(of: textObserver.debouncedText) {
             runFilter(textObserver.debouncedText)
@@ -108,7 +108,7 @@ struct ContentView: App {
     }
 
     private func startApp() {
-        runFilter(textObserver.debouncedText)
+        runFilter(textObserver.searchText)
         reloadData()
 
         Timer.scheduledTimer(
@@ -267,6 +267,7 @@ struct ContentView: App {
     }
 
     private func endFilterMode() {
+        textObserver.searchText.removeAll(keepingCapacity: true)
         textObserver.debouncedText.removeAll(keepingCapacity: true)
         isFilterFocused = false
         isFilterMode = false
