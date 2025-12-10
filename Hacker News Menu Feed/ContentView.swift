@@ -1,3 +1,4 @@
+import Combine
 import SwiftUI
 
 @available(macOS 26.0, *)
@@ -14,7 +15,7 @@ struct ContentView: App {
     @State private var sortKey = LocalDataSource.getSortKey()
     @State private var truncatedTitle: String? = LocalDataSource.getTitle()
     @State private var originalPostIDs: [Int] = LocalDataSource.getOriginalPostIDs()
-    @State private var filterText: String = ""
+    @StateObject var textObserver = TextFieldObserver()
     @State private var filteredPosts: [StoryFetchResponse] = []
     @State private var filterTask: Task<Void, Never>? = nil
     @State private var isFilterMode: Bool = false
@@ -38,7 +39,7 @@ struct ContentView: App {
                     .hidden()
 
                     if isFilterMode {
-                        TextField("􀊫 Filter", text: $filterText)
+                        TextField("􀊫 Filter", text: $textObserver.searchText)
                             .focused($isFilterFocused)
                             .onSubmit {
                                 isFilterFocused = false
@@ -77,10 +78,10 @@ struct ContentView: App {
             LocalDataSource.savePosts(value: posts)
             LocalDataSource.saveOriginalPostIDs(value: originalPostIDs)
             LocalDataSource.saveTitle(value: truncatedTitle)
-            runFilter()
+            runFilter(textObserver.debouncedText)
         }
-        .onChange(of: filterText) {
-            runFilter()
+        .onChange(of: textObserver.debouncedText) {
+            runFilter(textObserver.debouncedText)
         }
         .onChange(of: showHeadline) {
             adjustTitleForMenuBar()
@@ -107,7 +108,7 @@ struct ContentView: App {
     }
 
     private func startApp() {
-        runFilter()
+        runFilter(textObserver.debouncedText)
         reloadData()
 
         Timer.scheduledTimer(
@@ -266,16 +267,16 @@ struct ContentView: App {
     }
 
     private func endFilterMode() {
-        filterText.removeAll(keepingCapacity: true)
+        textObserver.debouncedText.removeAll(keepingCapacity: true)
         isFilterFocused = false
         isFilterMode = false
+        filterTask?.cancel()
     }
 
-    private func runFilter() {
+    private func runFilter(_ filterText: String) {
         filterTask?.cancel()
 
         filterTask = Task.detached(priority: .background) { [posts, filterText] in
-            try? await Task.sleep(for: .milliseconds(150))
             try? Task.checkCancellation()
 
             let results: [StoryFetchResponse]
@@ -340,5 +341,21 @@ extension Task where Failure == any Error {
         } onCancel: {
             operationTask.cancel()
         }
+    }
+}
+
+class TextFieldObserver : ObservableObject {
+    @Published var debouncedText = ""
+    @Published var searchText = ""
+
+    private var subscriptions = Set<AnyCancellable>()
+
+    init() {
+        $searchText
+            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] t in
+                self?.debouncedText = t
+            } )
+            .store(in: &subscriptions)
     }
 }
