@@ -27,7 +27,7 @@ struct ContentView: App {
                 ZStack {
                     HStack {
                         Button(action: startFilterMode) {
-                            Text("􀊫")
+                            Text("􀜓")
                         }
                         .keyboardShortcut("/", modifiers: [])
 
@@ -39,7 +39,7 @@ struct ContentView: App {
                     .hidden()
 
                     if isFilterMode {
-                        TextField("􀊫 Filter", text: $textObserver.searchText)
+                        TextField("􀜓 Filter", text: $textObserver.searchText)
                             .focused($isFilterFocused)
                             .onSubmit {
                                 isFilterFocused = false
