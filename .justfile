@@ -1,4 +1,4 @@
-app := 'Hacker News Menu Feed'
+app := 'Hacker Menu'
 
 run: build
     #!/usr/bin/env bash

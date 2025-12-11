@@ -27,7 +27,7 @@ struct Actions: View {
                 isPresented: $isHoverReload,
                 arrowEdge: .bottom,
             ) {
-                Text("􀂶 Reload feed")
+                Text("􀂶 Reload")
                     .foregroundStyle(.secondary)
                     .padding()
             }
@@ -45,7 +45,7 @@ struct Actions: View {
                     isPresented: $isHoverHeadlineToggle,
                     arrowEdge: .bottom,
                 ) {
-                    Text("􀂢 Toggle menu bar headline")
+                    Text("􀂢 Toggle headline")
                         .foregroundStyle(.secondary)
                         .padding()
                 }
@@ -75,7 +75,7 @@ struct Actions: View {
                 isPresented: $isHoverSortMenu,
                 arrowEdge: .bottom,
             ) {
-                Text("􀃊–􀃒 Sort by key")
+                Text("􀃊–􀃒 Sort by")
                     .foregroundStyle(.secondary)
                     .padding()
             }

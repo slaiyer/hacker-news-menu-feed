@@ -156,7 +156,7 @@ struct ContentView: App {
 
         Task {
             await Task.withTimeout(.seconds(60.0)) {
-                await fetchFeed()
+                await fetch()
             }
 
             applySort()
@@ -165,7 +165,7 @@ struct ContentView: App {
         }
     }
 
-    private func fetchFeed() async {
+    private func fetch() async {
         let postIds: [Int]
         do {
             postIds = try await fetchTopPostsIDs()
