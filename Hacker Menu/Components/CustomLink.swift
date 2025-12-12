@@ -20,5 +20,6 @@ struct CustomLink: View {
         )
         .onHover{ inside in isHovering = inside }
         .animation(.default, value: isHovering)
+        .focusable(false)
     }
 }

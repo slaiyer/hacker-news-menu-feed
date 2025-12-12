@@ -38,6 +38,7 @@ struct PostsListing: View {
                         .shadow(color: .accent, radius: isHoveringButton[idx] ?? false ? 1 : 0)
                 }
                 .buttonStyle(.glass)
+                .focusable(false)
                 .onAppear { isHoveringButton[idx] = false }
                 .onHover { inside in isHoveringButton[idx] = inside }
                 .foregroundStyle(isHoveringButton[idx] ?? false ? .accent : .secondary)
@@ -75,13 +76,15 @@ struct PostsListing: View {
                             }
                         }
                         .padding(.leading)
-                        
+                        .focusable(false)
+
                         Spacer()
                         
                         Link(destination: hnURL) {
                             Text("\(dateTimeFormatter.localizedString(for: postTime, relativeTo: .now))")
                                 .frame(alignment: .trailing)
                         }
+                        .focusable(false)
                     }
                     .font(.subheadline)
                     .foregroundStyle(.secondary)

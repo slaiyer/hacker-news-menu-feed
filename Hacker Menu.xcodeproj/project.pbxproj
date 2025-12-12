@@ -44,8 +44,8 @@
 			children = (
 				1FB71E0D2EEAC6EE0006886C /* Actions.swift */,
 				1FB71E0E2EEAC6EE0006886C /* AppMenu.swift */,
-				1FB71E0F2EEAC6EE0006886C /* CustomLink.swift */,
 				1FB71E102EEAC6EE0006886C /* PostsListing.swift */,
+				1FB71E0F2EEAC6EE0006886C /* CustomLink.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -61,12 +61,12 @@
 		1FB71E182EEAC6EE0006886C /* Hacker Menu */ = {
 			isa = PBXGroup;
 			children = (
+				1FB71E152EEAC6EE0006886C /* ContentView.swift */,
 				1FB71E112EEAC6EE0006886C /* Components */,
 				1FB71E132EEAC6EE0006886C /* DTO */,
-				1FB71E142EEAC6EE0006886C /* Assets.xcassets */,
-				1FB71E152EEAC6EE0006886C /* ContentView.swift */,
-				1FB71E162EEAC6EE0006886C /* Hacker_Menu.entitlements */,
 				1FB71E172EEAC6EE0006886C /* LocalDataSource.swift */,
+				1FB71E142EEAC6EE0006886C /* Assets.xcassets */,
+				1FB71E162EEAC6EE0006886C /* Hacker_Menu.entitlements */,
 			);
 			path = "Hacker Menu";
 			sourceTree = "<group>";

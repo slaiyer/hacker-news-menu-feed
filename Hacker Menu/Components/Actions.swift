@@ -34,7 +34,7 @@ struct Actions: View {
             .onHover { inside in isHoverReload = inside }
             .buttonStyle(.borderless)
             .tint(.secondary)
-            .focusEffectDisabled()
+            .focusable(false)
             .disabled(isFetching || isCoolingDown)
 
             Spacer()
@@ -55,6 +55,7 @@ struct Actions: View {
                 .contentShape(.capsule)
                 .clipShape(.capsule)
                 .clipped(antialiased: true)
+                .focusable(false)
 
             Spacer()
 
@@ -84,7 +85,7 @@ struct Actions: View {
             .buttonStyle(.borderless)
             .tint(.secondary)
             .menuIndicator(.hidden)
-            .focusEffectDisabled()
+            .focusable(false)
         }
         .padding(.leading, 12)
         .padding(.trailing, 10)
