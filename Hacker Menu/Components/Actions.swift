@@ -2,7 +2,7 @@ import SwiftUI
 
 @available(macOS 26.0, *)
 struct Actions: View {
-    let onReload: () -> Void
+    let reload: () -> Void
 
     @Binding var showHeadline: Bool
     @Binding var sortKey: SortKey
@@ -17,7 +17,7 @@ struct Actions: View {
 
     var body: some View {
         HStack {
-            Button(action: onReload, label: {
+            Button(action: reload, label: {
                 Image(systemName: "arrow.trianglehead.2.clockwise")
                     .symbolEffect(
                         .rotate.wholeSymbol,

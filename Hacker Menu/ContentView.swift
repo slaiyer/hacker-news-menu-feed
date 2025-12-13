@@ -48,7 +48,7 @@ struct ContentView: App {
                             .padding(.horizontal, 45)
                     } else {
                         Actions(
-                            onReload: reloadData,
+                            reload: reload,
                             showHeadline: $showHeadline,
                             sortKey: $sortKey,
                             isFetching: $isFetching,
@@ -109,13 +109,13 @@ struct ContentView: App {
 
     private func startApp() {
         runFilter(textObserver.searchText)
-        reloadData()
+        reload()
 
         Timer.scheduledTimer(
             withTimeInterval: reloadRate, repeats: true,
             block: { _ in
                 Task { @MainActor in
-                    reloadData()
+                    reload()
                 }
             }
         )
@@ -147,7 +147,7 @@ struct ContentView: App {
         return truncatedString + "…"
     }
 
-    private func reloadData() {
+    private func reload() {
         if isFetching {
             return
         }
