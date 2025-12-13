@@ -1,4 +1,3 @@
-import Foundation
 import SwiftUI
 
 @available(macOS 26.0, *)
@@ -9,7 +8,6 @@ struct Actions: View {
     @Binding var sortKey: SortKey
     @Binding var isFetching: Bool
 
-    @State private var isCoolingDown: Bool = false
     @State private var opacity: Double = 0.5
     @State private var blurRadius: Double = 1.0
 
@@ -19,9 +17,14 @@ struct Actions: View {
 
     var body: some View {
         HStack {
-            Button(action: onReload) {
-                Spinner(isSpinning: isFetching)
-            }
+            Button(action: onReload, label: {
+                Image(systemName: "arrow.trianglehead.2.clockwise")
+                    .symbolEffect(
+                        .rotate.wholeSymbol,
+                        options: .repeat(.continuous),
+                        isActive: isFetching,
+                    )
+            })
             .keyboardShortcut("r", modifiers: [])
             .popover(
                 isPresented: $isHoverReload,
@@ -35,7 +38,7 @@ struct Actions: View {
             .buttonStyle(.borderless)
             .tint(.secondary)
             .focusable(false)
-            .disabled(isFetching || isCoolingDown)
+            .disabled(isFetching)
 
             Spacer()
 
@@ -90,18 +93,6 @@ struct Actions: View {
         .padding(.leading, 12)
         .padding(.trailing, 10)
         .focusEffectDisabled()
-        .onChange(of: isFetching) { _, isNowFetching in
-            if isNowFetching {
-                isCoolingDown = false
-            } else {
-                isCoolingDown = true
-                Task {
-                    withAnimation {
-                        isCoolingDown = false
-                    }
-                }
-            }
-        }
         .opacity(opacity)
         .blur(radius: blurRadius)
         .onHover { hovering in
@@ -113,57 +104,6 @@ struct Actions: View {
                     opacity = 0.5
                     blurRadius = 1.0
                 }
-            }
-        }
-    }
-}
-
-let spinnerAnimationLength = 1.0
-let spinnerAnimationDuration = Duration.seconds(spinnerAnimationLength)
-
-@available(macOS 26.0, *)
-struct Spinner: View {
-    var isSpinning: Bool
-
-    private let reloadSymbol = "arrow.trianglehead.2.clockwise"
-
-    @State private var rotation: Double = 0.0
-    @State private var animationTask: Task<Void, Never>?
-
-    var body: some View {
-        Image(systemName: reloadSymbol)
-            .rotationEffect(.degrees(rotation))
-            .onChange(of: isSpinning) { _, newValue in
-                updateAnimation(shouldSpin: newValue)
-            }
-            .onAppear {
-                updateAnimation(shouldSpin: isSpinning)
-            }
-            .onDisappear {
-                animationTask?.cancel()
-                animationTask = nil
-            }
-    }
-
-    private func updateAnimation(shouldSpin: Bool) {
-        if shouldSpin {
-            guard animationTask == nil else { return }
-
-            animationTask = Task {
-                while !Task.isCancelled {
-                    withAnimation(.easeInOut(duration: spinnerAnimationLength)) {
-                        rotation += 180
-                    }
-
-                    try? await Task.sleep(for: spinnerAnimationDuration)
-                }
-            }
-        } else {
-            animationTask?.cancel()
-            animationTask = nil
-
-            withAnimation {
-                rotation = 0.0
             }
         }
     }

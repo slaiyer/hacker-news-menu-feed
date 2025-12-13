@@ -1,6 +1,4 @@
-import Foundation
 import SwiftUI
-import AppKit
 
 @available(macOS 26.0, *)
 struct PostsListing: View {

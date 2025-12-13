@@ -1,4 +1,3 @@
-import Foundation
 import SwiftUI
 
 @available(macOS 26.0, *)
