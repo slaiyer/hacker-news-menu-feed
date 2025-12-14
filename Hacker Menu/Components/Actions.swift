@@ -8,9 +8,6 @@ struct Actions: View {
     @Binding var sortKey: SortKey
 
     @State private var isHoverRow: Bool = false
-    @State private var isHoverReload: Bool = false
-    @State private var isHoverHeadlineToggle: Bool = false
-    @State private var isHoverSortMenu: Bool = false
 
     var body: some View {
         HStack {
@@ -23,15 +20,7 @@ struct Actions: View {
                     )
             })
             .keyboardShortcut("r", modifiers: [])
-            .popover(
-                isPresented: $isHoverReload,
-                arrowEdge: .bottom,
-            ) {
-                Text("􀂶 Reload")
-                    .foregroundStyle(.secondary)
-                    .padding()
-            }
-            .onHover { hovering in isHoverReload = hovering }
+            .help("􀂶 Reload")
             .buttonStyle(.borderless)
             .tint(.secondary)
             .focusable(false)
@@ -41,15 +30,7 @@ struct Actions: View {
 
             Toggle("ℏ", isOn: $showHeadline)
                 .keyboardShortcut("h", modifiers: [])
-                .popover(
-                    isPresented: $isHoverHeadlineToggle,
-                    arrowEdge: .bottom,
-                ) {
-                    Text("􀂢 Toggle headline")
-                        .foregroundStyle(.secondary)
-                        .padding()
-                }
-                .onHover { hovering in isHoverHeadlineToggle = hovering }
+                .help("􀂢 Toggle headline")
                 .toggleStyle(.button)
                 .buttonStyle(.borderless)
                 .contentShape(.capsule)
@@ -72,15 +53,7 @@ struct Actions: View {
             } label: {
                 Image(systemName: "arrow.up.and.down.text.horizontal")
             }
-            .popover(
-                isPresented: $isHoverSortMenu,
-                arrowEdge: .bottom,
-            ) {
-                Text("􀃊–􀃒 Sort by")
-                    .foregroundStyle(.secondary)
-                    .padding()
-            }
-            .onHover { hovering in isHoverSortMenu = hovering }
+            .help("􀃊–􀃒 Sort by")
             .menuStyle(.borderlessButton)
             .buttonStyle(.borderless)
             .tint(.secondary)
