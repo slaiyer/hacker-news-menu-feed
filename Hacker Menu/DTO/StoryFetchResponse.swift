@@ -1,4 +1,4 @@
-struct StoryFetchResponse: Codable, Hashable {
+struct StoryFetchResponse: Codable, Hashable, Identifiable {
     let id: Int
     let author: String
     let score: Int

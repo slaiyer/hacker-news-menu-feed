@@ -3,14 +3,11 @@ import SwiftUI
 @available(macOS 26.0, *)
 struct Actions: View {
     let reload: () -> Void
-
+    @Binding var isFetching: Bool
     @Binding var showHeadline: Bool
     @Binding var sortKey: SortKey
-    @Binding var isFetching: Bool
 
-    @State private var opacity: Double = 0.5
-    @State private var blurRadius: Double = 1.0
-
+    @State private var isHoverRow: Bool = false
     @State private var isHoverReload: Bool = false
     @State private var isHoverHeadlineToggle: Bool = false
     @State private var isHoverSortMenu: Bool = false
@@ -34,7 +31,7 @@ struct Actions: View {
                     .foregroundStyle(.secondary)
                     .padding()
             }
-            .onHover { inside in isHoverReload = inside }
+            .onHover { hovering in isHoverReload = hovering }
             .buttonStyle(.borderless)
             .tint(.secondary)
             .focusable(false)
@@ -52,7 +49,7 @@ struct Actions: View {
                         .foregroundStyle(.secondary)
                         .padding()
                 }
-                .onHover { inside in isHoverHeadlineToggle = inside }
+                .onHover { hovering in isHoverHeadlineToggle = hovering }
                 .toggleStyle(.button)
                 .buttonStyle(.borderless)
                 .contentShape(.capsule)
@@ -83,7 +80,7 @@ struct Actions: View {
                     .foregroundStyle(.secondary)
                     .padding()
             }
-            .onHover { inside in isHoverSortMenu = inside }
+            .onHover { hovering in isHoverSortMenu = hovering }
             .menuStyle(.borderlessButton)
             .buttonStyle(.borderless)
             .tint(.secondary)
@@ -93,17 +90,11 @@ struct Actions: View {
         .padding(.leading, 12)
         .padding(.trailing, 10)
         .focusEffectDisabled()
-        .opacity(opacity)
-        .blur(radius: blurRadius)
+        .opacity(isHoverRow ? 1.0 : 0.5)
+        .blur(radius: isHoverRow ? 0.0: 1.0)
         .onHover { hovering in
             withAnimation {
-                if hovering {
-                    opacity = 1.0
-                    blurRadius = 0.0
-                } else {
-                    opacity = 0.5
-                    blurRadius = 1.0
-                }
+                isHoverRow = hovering
             }
         }
     }

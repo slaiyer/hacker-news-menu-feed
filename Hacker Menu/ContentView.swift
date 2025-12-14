@@ -49,9 +49,9 @@ struct ContentView: App {
                     } else {
                         Actions(
                             reload: reload,
+                            isFetching: $isFetching,
                             showHeadline: $showHeadline,
                             sortKey: $sortKey,
-                            isFetching: $isFetching,
                         )
                     }
                 }
@@ -326,7 +326,10 @@ enum SortKey: Int, Codable, CaseIterable, Identifiable {
 }
 
 extension Task where Failure == any Error {
-    static func withTimeout(_ duration: Duration, operation: @Sendable @escaping () async throws -> Success) async rethrows -> Success {
+    static func withTimeout(
+        _ duration: Duration,
+        operation: @Sendable @escaping () async throws -> Success,
+    ) async rethrows -> Success {
         let operationTask = Task.detached {
             try await operation()
         }
