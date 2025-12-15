@@ -5,7 +5,7 @@ struct AppMenu: View {
     @Binding var posts: [StoryFetchResponse]
     
     var body: some View {
-        if posts.count > 0 {
+        if !posts.isEmpty {
             LazyVStack {
                 PostsListing(posts: posts)
             }
