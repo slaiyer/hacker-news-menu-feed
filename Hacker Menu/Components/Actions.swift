@@ -25,6 +25,7 @@ struct Actions: View {
             .tint(.secondary)
             .focusable(false)
             .disabled(isFetching)
+            .animation(.default, value: isFetching)
 
             Spacer()
 
@@ -65,10 +66,7 @@ struct Actions: View {
         .focusEffectDisabled()
         .opacity(isHoverRow ? 1.0 : 0.5)
         .blur(radius: isHoverRow ? 0.0: 1.0)
-        .onHover { hovering in
-            withAnimation {
-                isHoverRow = hovering
-            }
-        }
+        .onHover { hovering in isHoverRow = hovering }
+        .animation(.default, value: isHoverRow)
     }
 }

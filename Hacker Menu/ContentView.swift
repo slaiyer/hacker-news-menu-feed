@@ -230,33 +230,31 @@ struct ContentView: App {
 
     private func applySort(reverse: Bool = false) {
         Task {
-            withAnimation {
-                if reverse {
-                    if sortKey == .original {
-                        return
-                    }
-
-                    posts.reverse()
+            if reverse {
+                if sortKey == .original {
                     return
                 }
 
-                switch sortKey {
-                    case .original:
-                        let order = Dictionary(
-                            uniqueKeysWithValues: originalPostIDs.enumerated().map { ($1, $0) }
-                        )
-                        posts.sort {
-                            (order[$0.id] ?? Int.max) < (order[$1.id] ?? Int.max)
-                        }
-                    case .time:
-                        posts.sort { $0.time > $1.time }
-                    case .score:
-                        posts.sort { $0.score > $1.score }
-                    case .comments:
-                        posts.sort { ($0.comments ?? 0) > ($1.comments ?? 0) }
-                    case .type:
-                        posts.sort { $0.type < $1.type }
-                }
+                posts.reverse()
+                return
+            }
+
+            switch sortKey {
+                case .original:
+                    let order = Dictionary(
+                        uniqueKeysWithValues: originalPostIDs.enumerated().map { ($1, $0) }
+                    )
+                    posts.sort {
+                        (order[$0.id] ?? Int.max) < (order[$1.id] ?? Int.max)
+                    }
+                case .time:
+                    posts.sort { $0.time > $1.time }
+                case .score:
+                    posts.sort { $0.score > $1.score }
+                case .comments:
+                    posts.sort { ($0.comments ?? 0) > ($1.comments ?? 0) }
+                case .type:
+                    posts.sort { $0.type < $1.type }
             }
         }
     }
@@ -295,9 +293,7 @@ struct ContentView: App {
             try? Task.checkCancellation()
 
             await MainActor.run {
-                withAnimation {
-                    self.filteredPosts = results
-                }
+                self.filteredPosts = results
             }
         }
     }

@@ -6,24 +6,21 @@ struct PostsListing: View {
 
     var body: some View {
         ForEach(posts) { post in
-            PostRow(
-                post: post,
-                hnURL: URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!,
-                postTime: Date(timeIntervalSince1970: TimeInterval(post.time)),
-            )
+            PostRow(post: post)
         }
     }
 }
 
 struct PostRow: View {
     let post: StoryFetchResponse
-    let hnURL: URL
-    let postTime: Date
 
     @State private var hoverTimer: Timer? = nil
     @State private var showTipRow: Bool = false
 
     var body: some View {
+        let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
+        let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
+
         HStack {
             PostButton(postURL: post.url, hnURL: hnURL)
 
@@ -108,6 +105,7 @@ struct PostButton: View {
             if let raw = postURL, let extURL = URL(string: raw) {
                 NSWorkspace.shared.open(extURL)
             }
+
             NSWorkspace.shared.open(hnURL)
         } label: {
             Text("􀉣")

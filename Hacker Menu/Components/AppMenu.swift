@@ -9,6 +9,7 @@ struct AppMenu: View {
             LazyVStack {
                 PostsListing(posts: posts)
             }
+            .animation(.default, value: posts)
             .padding(.leading, 1)
             .padding(.trailing, 14)
         } else {
