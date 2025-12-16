@@ -15,6 +15,7 @@ struct PostRow: View {
     let post: StoryFetchResponse
 
     @State private var hoverTimer: Timer? = nil
+    @State private var isHoveringRow: Bool = false
     @State private var showTipRow: Bool = false
 
     var body: some View {
@@ -23,6 +24,8 @@ struct PostRow: View {
 
         HStack {
             PostButton(postURL: post.url, hnURL: hnURL)
+                .padding(2)
+                .shadow(color: isHoveringRow ? .accent : .clear, radius: 2)
 
             VStack(alignment: .leading) {
                 let title = post.title ?? "􀉣"
@@ -39,7 +42,6 @@ struct PostRow: View {
 
                 PostInfo(post: post, hnURL: hnURL, postTime: postTime)
             }
-            .contentShape(.rect)
             .onHover { hovering in
                 hoverTimer?.invalidate()
 
@@ -54,6 +56,9 @@ struct PostRow: View {
                 }
             }
         }
+        .contentShape(.rect)
+        .onHover { hovering in isHoveringRow = hovering }
+        .animation(.default, value: isHoveringRow)
         .popover(isPresented: $showTipRow, arrowEdge: .leading) {
             VStack(alignment: .leading) {
                 if let title = post.title {
@@ -117,11 +122,10 @@ struct PostButton: View {
         .focusable(false)
         .onAppear { isHovering = false }
         .onHover { inside in isHovering = inside }
-        .foregroundStyle(isHovering ? .accent : .secondary)
+        .foregroundStyle(isHovering ? .accent : .secondary.opacity(0.5))
         .contentShape(.capsule)
         .clipShape(.capsule)
         .clipped(antialiased: true)
-        .opacity(isHovering ? 1.0 : 0.5)
         .blur(radius: isHovering ? 0.0 : 0.5)
         .animation(.default, value: isHovering)
     }
