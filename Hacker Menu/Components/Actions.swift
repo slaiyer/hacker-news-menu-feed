@@ -14,8 +14,8 @@ struct Actions: View {
             Button(action: reload, label: {
                 Image(systemName: "arrow.trianglehead.2.clockwise")
                     .symbolEffect(
-                        .rotate.wholeSymbol,
-                        options: .repeat(.continuous),
+                        .rotate,
+                        options: .repeat(.periodic(delay: 0)),
                         isActive: isFetching,
                     )
             })
