@@ -24,8 +24,8 @@ struct PostRow: View {
 
         HStack {
             PostButton(postURL: post.url, hnURL: hnURL)
-                .padding([.leading, .top, .bottom], 2)
-                .shadow(color: isHoveringRow ? .accent : .clear, radius: 2)
+                .padding([.leading, .top, .bottom], 1)
+                .shadow(color: isHoveringRow ? .accent : .clear, radius: 1)
 
             VStack(alignment: .leading) {
                 let title = post.title ?? "􀉣"

@@ -61,7 +61,7 @@ struct Actions: View {
             .menuIndicator(.hidden)
             .focusable(false)
         }
-        .padding(.leading, 14)
+        .padding(.leading, 13)
         .padding(.trailing, 10)
         .focusEffectDisabled()
         .opacity(isHoverRow ? 1.0 : 0.5)
