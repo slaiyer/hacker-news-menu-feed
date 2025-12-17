@@ -4,17 +4,22 @@ import SwiftUI
 struct PostsListing: View {
     let posts: [StoryFetchResponse]
 
+    @State private var hoverTimer: Timer? = nil
+
     var body: some View {
         ForEach(posts) { post in
-            PostRow(post: post)
+            PostRow(
+                post: post,
+                hoverTimer: $hoverTimer,
+            )
         }
     }
 }
 
 struct PostRow: View {
     let post: StoryFetchResponse
+    @Binding var hoverTimer: Timer?
 
-    @State private var hoverTimer: Timer? = nil
     @State private var isHoveringRow: Bool = false
     @State private var showTipRow: Bool = false
 
@@ -58,13 +63,7 @@ struct PostRow: View {
         }
         .contentShape(.rect)
         .onHover { hovering in isHoveringRow = hovering }
-        .gesture(
-            LongPressGesture(minimumDuration: 0.5)
-                .onEnded { _ in
-                    showTipRow = true
-                },
-            including: .gesture,
-        )
+        .gesture(LongPressGesture(minimumDuration: 0.5).onEnded { _ in showTipRow = true })
         .animation(.easeIn(duration: 0.5), value: isHoveringRow)
         .popover(isPresented: $showTipRow, arrowEdge: .leading) {
             VStack(alignment: .leading) {
