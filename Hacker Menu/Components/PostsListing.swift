@@ -63,7 +63,7 @@ struct PostRow: View {
         }
         .contentShape(.rect)
         .onHover { hovering in isHoveringRow = hovering }
-        .gesture(LongPressGesture(minimumDuration: 0.5).onEnded { _ in showTipRow = true })
+        .gesture(LongPressGesture().onEnded { _ in showTipRow = true })
         .animation(.easeIn(duration: 0.5), value: isHoveringRow)
         .popover(isPresented: $showTipRow, arrowEdge: .leading) {
             VStack(alignment: .leading) {
@@ -133,7 +133,7 @@ struct PostButton: View {
         .clipShape(.capsule)
         .clipped(antialiased: true)
         .blur(radius: isHovering ? 0.0 : 0.5)
-        .animation(.default, value: isHovering)
+        .animation(.easeInOut(duration: 0.5), value: isHovering)
     }
 }
 
