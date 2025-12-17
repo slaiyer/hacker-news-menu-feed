@@ -3,6 +3,7 @@ import SwiftUI
 @available(macOS 26.0, *)
 struct AppMenu: View {
     @Binding var posts: [StoryFetchResponse]
+    @Binding var isFetching: Bool
 
     var body: some View {
         if !posts.isEmpty {
@@ -21,7 +22,7 @@ struct AppMenu: View {
                     .symbolEffect(
                         .variableColor.iterative.dimInactiveLayers.reversing,
                         options: .repeat(.continuous),
-                        isActive: posts.isEmpty
+                        isActive: isFetching,
                     )
                     .foregroundStyle(.tertiary)
             }

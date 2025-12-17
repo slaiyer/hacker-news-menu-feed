@@ -104,6 +104,7 @@ struct HackerMenu: App {
             ScrollView {
                 AppMenu(
                     posts: $filteredPosts,
+                    isFetching: $isFetching,
                 )
             }
         }
