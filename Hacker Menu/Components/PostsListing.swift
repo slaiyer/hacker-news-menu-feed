@@ -26,6 +26,19 @@ struct PostRow: View {
             PostButton(postURL: post.url, hnURL: hnURL)
                 .padding([.leading, .top, .bottom], 1)
                 .shadow(color: isHoveringRow ? .accent : .clear, radius: 1)
+                .onHover { hovering in
+                    hoverTimer?.invalidate()
+
+                    if hovering {
+                        hoverTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
+                            Task { @MainActor in
+                                showTipRow = true
+                            }
+                        }
+                    } else {
+                        showTipRow = false
+                    }
+                }
 
             VStack(alignment: .leading) {
                 let title = post.title ?? "􀉣"
@@ -42,23 +55,16 @@ struct PostRow: View {
 
                 PostInfo(post: post, hnURL: hnURL, postTime: postTime)
             }
-            .onHover { hovering in
-                hoverTimer?.invalidate()
-
-                if hovering {
-                    hoverTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
-                        Task { @MainActor in
-                            showTipRow = true
-                        }
-                    }
-                } else {
-                    showTipRow = false
-                }
-            }
-            .animation(.default, value: showTipRow)
         }
         .contentShape(.rect)
         .onHover { hovering in isHoveringRow = hovering }
+        .gesture(
+            LongPressGesture(minimumDuration: 0.5)
+                .onEnded { _ in
+                    showTipRow = true
+                },
+            including: .gesture,
+        )
         .animation(.easeIn(duration: 0.5), value: isHoveringRow)
         .popover(isPresented: $showTipRow, arrowEdge: .leading) {
             VStack(alignment: .leading) {
