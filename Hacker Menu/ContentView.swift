@@ -3,7 +3,7 @@ import SwiftUI
 
 @available(macOS 26.0, *)
 @main
-struct ContentView: App {
+struct HackerMenu: App {
     private static let numPosts = 500
     private let maxMenuBarWidth: CGFloat = 250
     private let reloadRate = 3600.0
@@ -23,48 +23,7 @@ struct ContentView: App {
 
     var body: some Scene {
         MenuBarExtra {
-            VStack {
-                ZStack {
-                    HStack {
-                        Button(action: startFilterMode) {
-                            Text("􀜓")
-                        }
-                        .keyboardShortcut("/", modifiers: [])
-
-                        Button(action: endFilterMode) {
-                            Text("􀆙")
-                        }
-                        .keyboardShortcut(.escape, modifiers: [])
-                    }
-                    .hidden()
-
-                    if isFilterMode {
-                        TextField("􀜓 Filter", text: $textObserver.searchText)
-                            .focused($isFilterFocused)
-                            .onSubmit {
-                                isFilterFocused = false
-                            }
-                            .autocorrectionDisabled()
-                            .padding(.horizontal, 45)
-                    } else {
-                        Actions(
-                            reload: reload,
-                            isFetching: $isFetching,
-                            showHeadline: $showHeadline,
-                            sortKey: $sortKey,
-                        )
-                    }
-                }
-
-                // TODO: vim-like j/k navigation
-                ScrollView {
-                    AppMenu(
-                        posts: $filteredPosts,
-                    )
-                }
-            }
-            .padding()
-            .frame(minWidth: 500, minHeight: 400)
+            ContentView()
         } label: {
             Text(showHeadline ? truncatedTitle ?? "Reading HN…" : "ℏ")
                 .onAppear {
@@ -105,6 +64,51 @@ struct ContentView: App {
                 }
             }
         }
+    }
+
+    fileprivate func ContentView() -> some View {
+        return VStack {
+            ZStack {
+                HStack {
+                    Button(action: startFilterMode) {
+                        Text("􀜓")
+                    }
+                    .keyboardShortcut("/", modifiers: [])
+
+                    Button(action: endFilterMode) {
+                        Text("􀆙")
+                    }
+                    .keyboardShortcut(.escape, modifiers: [])
+                }
+                .hidden()
+
+                if isFilterMode {
+                    TextField("􀜓 Filter", text: $textObserver.searchText)
+                        .focused($isFilterFocused)
+                        .onSubmit {
+                            isFilterFocused = false
+                        }
+                        .autocorrectionDisabled()
+                        .padding(.horizontal, 45)
+                } else {
+                    Actions(
+                        reload: reload,
+                        isFetching: $isFetching,
+                        showHeadline: $showHeadline,
+                        sortKey: $sortKey,
+                    )
+                }
+            }
+
+            // TODO: vim-like j/k navigation
+            ScrollView {
+                AppMenu(
+                    posts: $filteredPosts,
+                )
+            }
+        }
+        .padding()
+        .frame(minWidth: 500, minHeight: 400)
     }
 
     private func startApp() {
@@ -216,7 +220,7 @@ struct ContentView: App {
         let (data, _) = try await URLSession.shared.data(from: url)
         let response = try JSONDecoder().decode([Int].self, from: data)
 
-        return Array(response.prefix(ContentView.numPosts))
+        return Array(response.prefix(HackerMenu.numPosts))
     }
 
     private func fetchPostById(postId: Int) async throws -> StoryFetchResponse {
@@ -297,6 +301,10 @@ struct ContentView: App {
             }
         }
     }
+}
+
+#Preview {
+    HackerMenu().ContentView()
 }
 
 enum SortKey: Int, Codable, CaseIterable, Identifiable {
