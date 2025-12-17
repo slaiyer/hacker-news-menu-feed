@@ -10,6 +10,7 @@ struct AppMenu: View {
                 PostsListing(posts: posts)
             }
             .animation(.default, value: posts)
+            .padding(.top, 1)
             .padding(.leading, 1)
             .padding(.trailing, 14)
         } else {
