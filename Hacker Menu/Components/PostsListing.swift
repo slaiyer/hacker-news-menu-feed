@@ -4,21 +4,15 @@ import SwiftUI
 struct PostsListing: View {
     let posts: [StoryFetchResponse]
 
-    @State private var hoverTimer: Timer? = nil
-
     var body: some View {
         ForEach(posts) { post in
-            PostRow(
-                post: post,
-                hoverTimer: $hoverTimer,
-            )
+            PostRow(post: post)
         }
     }
 }
 
 struct PostRow: View {
     let post: StoryFetchResponse
-    @Binding var hoverTimer: Timer?
 
     @State private var isHoveringRow: Bool = false
     @State private var showTipRow: Bool = false
@@ -31,16 +25,9 @@ struct PostRow: View {
             PostButton(postURL: post.url, hnURL: hnURL)
                 .padding([.leading, .top, .bottom], 1)
                 .shadow(color: isHoveringRow ? .accent : .clear, radius: 1)
+                .highPriorityGesture(LongPressGesture().onEnded { _ in showTipRow = true })
                 .onHover { hovering in
-                    hoverTimer?.invalidate()
-
-                    if hovering {
-                        hoverTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
-                            Task { @MainActor in
-                                showTipRow = true
-                            }
-                        }
-                    } else {
+                    if !hovering {
                         showTipRow = false
                     }
                 }
@@ -64,6 +51,7 @@ struct PostRow: View {
         .contentShape(.rect)
         .onHover { hovering in isHoveringRow = hovering }
         .gesture(LongPressGesture().onEnded { _ in showTipRow = true })
+        .allowsWindowActivationEvents()
         .animation(.easeIn(duration: 0.5), value: isHoveringRow)
         .popover(isPresented: $showTipRow, arrowEdge: .leading) {
             VStack(alignment: .leading) {
