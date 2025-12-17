@@ -10,25 +10,7 @@ struct Actions: View {
     @State private var isHoverRow: Bool = false
 
     var body: some View {
-        HStack {
-            Button(action: reload, label: {
-                Image(systemName: "arrow.trianglehead.2.clockwise")
-                    .symbolEffect(
-                        .rotate,
-                        options: .repeat(.periodic(delay: 0)),
-                        isActive: isFetching,
-                    )
-            })
-            .keyboardShortcut("r", modifiers: [])
-            .help("􀂶 Reload")
-            .buttonStyle(.borderless)
-            .tint(.secondary)
-            .focusable(false)
-            .disabled(isFetching)
-            .animation(.default, value: isFetching)
-
-            Spacer()
-
+        ZStack {
             Toggle("ℏ", isOn: $showHeadline)
                 .keyboardShortcut("h", modifiers: [])
                 .help("􀂢 Toggle headline")
@@ -39,30 +21,48 @@ struct Actions: View {
                 .clipped(antialiased: true)
                 .focusable(false)
 
-            Spacer()
+            HStack {
+                Button(action: reload, label: {
+                    Image(systemName: "arrow.trianglehead.2.clockwise")
+                        .symbolEffect(
+                            .rotate,
+                            options: .repeat(.periodic(delay: 0)),
+                            isActive: isFetching,
+                        )
+                })
+                .keyboardShortcut("r", modifiers: [])
+                .help("􀂶 Reload")
+                .buttonStyle(.borderless)
+                .tint(.secondary)
+                .focusable(false)
+                .disabled(isFetching)
+                .animation(.default, value: isFetching)
 
-            Menu {
-                ForEach(SortKey.allCases) { key in
-                    Button {
-                        sortKey = key
-                    } label: {
-                        Label(key.label, systemImage: sortKey == key ? "checkmark" : "")
+                Spacer()
+
+                Menu {
+                    ForEach(SortKey.allCases) { key in
+                        Button {
+                            sortKey = key
+                        } label: {
+                            Label(key.label, systemImage: sortKey == key ? "checkmark" : "")
+                        }
+                        // TODO: maintain sync with ContentView commands; this is here only for the Menu symbols in the UI
+                        .keyboardShortcut(KeyEquivalent(key.cut), modifiers: [])
                     }
-                    // TODO: maintain sync with ContentView commands; this is here only for the Menu symbols in the UI
-                    .keyboardShortcut(KeyEquivalent(key.cut), modifiers: [])
+                } label: {
+                    Image(systemName: "arrow.up.and.down.text.horizontal")
                 }
-            } label: {
-                Image(systemName: "arrow.up.and.down.text.horizontal")
+                .help("􀃊–􀃒 Sort by")
+                .menuStyle(.borderlessButton)
+                .buttonStyle(.borderless)
+                .tint(.secondary)
+                .menuIndicator(.hidden)
+                .focusable(false)
             }
-            .help("􀃊–􀃒 Sort by")
-            .menuStyle(.borderlessButton)
-            .buttonStyle(.borderless)
-            .tint(.secondary)
-            .menuIndicator(.hidden)
-            .focusable(false)
+            .padding(.leading, 13)
+            .padding(.trailing, 10)
         }
-        .padding(.leading, 13)
-        .padding(.trailing, 10)
         .focusEffectDisabled()
         .opacity(isHoverRow ? 1.0 : 0.5)
         .blur(radius: isHoverRow ? 0.0: 1.0)

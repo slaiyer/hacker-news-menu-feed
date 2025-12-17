@@ -3,7 +3,7 @@ import SwiftUI
 @available(macOS 26.0, *)
 struct AppMenu: View {
     @Binding var posts: [StoryFetchResponse]
-    
+
     var body: some View {
         if !posts.isEmpty {
             LazyVStack {
@@ -13,10 +13,17 @@ struct AppMenu: View {
             .padding(.leading, 1)
             .padding(.trailing, 14)
         } else {
-            Text("…")
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding()
-                .foregroundStyle(.tertiary)
+            ZStack {
+                Spacer().containerRelativeFrame([.horizontal, .vertical])
+
+                Image(systemName: "ellipsis")
+                    .symbolEffect(
+                        .variableColor.iterative.dimInactiveLayers.reversing,
+                        options: .repeat(.continuous),
+                        isActive: posts.isEmpty
+                    )
+                    .foregroundStyle(.tertiary)
+            }
         }
     }
 }
