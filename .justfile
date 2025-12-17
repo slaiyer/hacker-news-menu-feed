@@ -17,8 +17,8 @@ run: build
     open 'build/Build/Products/Release/{{app}}.app'
     echo ' done.'
 
-build:
-    @xcrun xcodebuild build analyze \
+@build:
+    xcrun xcodebuild build analyze \
         -project '{{app}}.xcodeproj' \
         -scheme '{{app}}' \
         -arch arm64 \
@@ -29,8 +29,8 @@ build:
         CODE_SIGN_IDENTITY='' \
         DEVELOPMENT_TEAM=''
 
-    @du -hs 'build/Build/Products/Release/{{app}}.app'
+    du -hs 'build/Build/Products/Release/{{app}}.app'
 
-clean:
-  @rm -rf build
-  @xcrun xcodebuild clean
+@clean:
+  rm -rf build
+  xcrun xcodebuild clean
