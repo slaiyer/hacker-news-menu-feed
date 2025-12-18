@@ -28,7 +28,6 @@ struct PostRow: View {
         HStack {
             TwinLink(extURL: extURL, hnURL: hnURL)
                 .padding([.leading, .top, .bottom], 2)
-                .shadow(color: isHoveringRow ? .accent : .clear, radius: 1)
                 .shadow(color: isHoveringRow ? .accent : .clear, radius: 2)
                 .highPriorityGesture(LongPressGesture().onEnded { _ in showTipRow = true })
                 .onHover { hovering in
@@ -123,6 +122,7 @@ struct TwinLink: View {
         .buttonStyle(.glass)
         .focusable(false)
         .onHover { inside in isHovering = inside }
+        .shadow(color: isHovering ? .accent : .clear, radius: 1)
         .foregroundStyle(isHovering ? .accent : .secondary.opacity(0.5))
         .contentShape(.capsule)
         .clipShape(.capsule)
