@@ -27,8 +27,9 @@ struct PostRow: View {
 
         HStack {
             TwinLink(extURL: extURL, hnURL: hnURL)
-                .padding([.leading, .top, .bottom], 1)
+                .padding([.leading, .top, .bottom], 2)
                 .shadow(color: isHoveringRow ? .accent : .clear, radius: 1)
+                .shadow(color: isHoveringRow ? .accent : .clear, radius: 2)
                 .highPriorityGesture(LongPressGesture().onEnded { _ in showTipRow = true })
                 .onHover { hovering in
                     if !hovering {
