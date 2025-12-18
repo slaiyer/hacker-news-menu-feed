@@ -59,7 +59,7 @@ struct Actions: View {
                 .menuIndicator(.hidden)
                 .focusable(false)
             }
-            .padding(.leading, 13)
+            .padding(.leading, 14)
             .padding(.trailing, 10)
         }
         .focusEffectDisabled()
