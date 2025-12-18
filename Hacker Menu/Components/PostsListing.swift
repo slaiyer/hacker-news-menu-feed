@@ -3,15 +3,25 @@ import SwiftUI
 struct PostsListing: View {
     let posts: [StoryFetchResponse]
 
+    private let dateTimeFormatter = RelativeDateTimeFormatter()
+
     var body: some View {
         ForEach(posts) { post in
-            PostRow(post: post)
+            let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
+
+            PostRow(
+                post: post,
+                postTime: postTime,
+                timestamp: dateTimeFormatter.localizedString(for: postTime, relativeTo: .now),
+            )
         }
     }
 }
 
 struct PostRow: View {
     let post: StoryFetchResponse
+    let postTime: Date
+    let timestamp: String
 
     @State private var isHoveringRow: Bool = false
     @State private var showTipRow: Bool = false
@@ -23,7 +33,6 @@ struct PostRow: View {
             nil
         }
         let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
-        let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
 
         HStack {
             TwinLink(extURL: extURL, hnURL: hnURL)
@@ -49,7 +58,11 @@ struct PostRow: View {
                         .foregroundStyle(.secondary)
                 }
 
-                PostInfo(post: post, hnURL: hnURL, postTime: postTime)
+                PostInfo(
+                    post: post,
+                    hnURL: hnURL,
+                    timestamp: timestamp,
+                )
             }
             .onHover { hovering in
                 if !hovering {
@@ -134,7 +147,7 @@ struct TwinLink: View {
 struct PostInfo: View {
     let post: StoryFetchResponse
     let hnURL: URL
-    let postTime: Date
+    let timestamp: String
 
     @State private var isHoveringHnUrl: Bool = false
 
@@ -159,7 +172,7 @@ struct PostInfo: View {
             Spacer()
 
             Link(destination: hnURL) {
-                Text("\(RelativeDateTimeFormatter().localizedString(for: postTime, relativeTo: .now))")
+                Text(timestamp)
                     .frame(alignment: .trailing)
             }
             .focusable(false)
