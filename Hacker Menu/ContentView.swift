@@ -107,6 +107,7 @@ struct HackerMenu: App {
         }
         .padding()
         .frame(minWidth: 500, minHeight: 400)
+        .allowsWindowActivationEvents()
         .allowsTightening(true)
     }
 
