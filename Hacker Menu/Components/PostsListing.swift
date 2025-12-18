@@ -122,7 +122,6 @@ struct TwinLink: View {
         .buttonStyle(.glass)
         .focusable(false)
         .onHover { inside in isHovering = inside }
-        .shadow(color: isHovering ? .accent : .clear, radius: 1)
         .foregroundStyle(isHovering ? .accent : .secondary.opacity(0.5))
         .contentShape(.capsule)
         .clipShape(.capsule)
