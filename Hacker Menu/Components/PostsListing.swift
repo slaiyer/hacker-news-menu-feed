@@ -166,6 +166,7 @@ struct PostInfo: View {
             }
             .focusable(false)
         }
+        .padding(.leading)
         .font(.subheadline)
         .foregroundStyle(.secondary)
         .onAppear { isHoveringHnUrl = false }
