@@ -25,7 +25,7 @@ struct HackerMenu: App {
             ContentView()
         } label: {
             Text(showHeadline ? truncatedTitle ?? "Reading HN…" : "ℏ")
-                .onAppear { startApp() }
+                .onAppear(perform: startApp)
         }
         .menuBarExtraStyle(.window)
         .windowLevel(.floating)
@@ -75,7 +75,7 @@ struct HackerMenu: App {
                     Button(action: endFilterMode) {
                         Text("􀆙")
                     }
-                    .keyboardShortcut(.escape, modifiers: [])
+                    .keyboardShortcut(.cancelAction)
                 }
                 .hidden()
 
