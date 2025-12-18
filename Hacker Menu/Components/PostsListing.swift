@@ -87,13 +87,13 @@ struct PostRow: View {
                     Text(hnURL.standardized.absoluteString)
                 }
                 .font(.subheadline)
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(.secondary)
 
                 Divider()
 
                 Text("\(postTime)")
                     .font(.subheadline)
-                    .foregroundStyle(.tertiary)
+                    .foregroundStyle(.secondary)
             }
             .frame(maxWidth: 350, alignment: .leading)
             .fixedSize(horizontal: false, vertical: true)
@@ -119,7 +119,6 @@ struct TwinLink: View {
             Text("􀉣")
                 .font(.subheadline)
                 .frame(maxHeight: .infinity)
-                .shadow(color: .accent, radius: isHovering ? 1 : 0)
         }
         .buttonStyle(.glass)
         .focusable(false)
