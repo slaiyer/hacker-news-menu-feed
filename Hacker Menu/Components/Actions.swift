@@ -12,7 +12,7 @@ struct Actions: View {
         ZStack {
             Toggle("ℏ", isOn: $showHeadline)
                 .keyboardShortcut("h", modifiers: [])
-                .help("􀂢 Toggle headline")
+                .help("􀂢 Headline")
                 .toggleStyle(.button)
                 .buttonStyle(.borderless)
                 .contentShape(.capsule)
@@ -52,7 +52,7 @@ struct Actions: View {
                 } label: {
                     Image(systemName: "arrow.up.and.down.text.horizontal")
                 }
-                .help("􀃊–􀃒 Sort by")
+                .help("􀃊–􀃒 Sort")
                 .menuStyle(.borderlessButton)
                 .buttonStyle(.borderless)
                 .tint(.secondary)
