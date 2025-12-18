@@ -17,11 +17,16 @@ struct PostRow: View {
     @State private var showTipRow: Bool = false
 
     var body: some View {
+        let extURL: URL? = if let url = post.url, let extURL = URL(string: url) {
+            extURL
+        } else {
+            nil
+        }
         let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
         let postTime = Date(timeIntervalSince1970: TimeInterval(post.time))
 
         HStack {
-            PostButton(postURL: post.url, hnURL: hnURL)
+            TwinLink(extURL: extURL, hnURL: hnURL)
                 .padding([.leading, .top, .bottom], 1)
                 .shadow(color: isHoveringRow ? .accent : .clear, radius: 1)
                 .highPriorityGesture(LongPressGesture().onEnded { _ in showTipRow = true })
@@ -34,7 +39,7 @@ struct PostRow: View {
             VStack(alignment: .leading) {
                 let title = post.title ?? "􀉣"
 
-                if let raw = post.url, let extURL = URL(string: raw) {
+                if let extURL {
                     ExternalLink(title: title, link: extURL)
                         .foregroundStyle(.primary)
                 } else {
@@ -55,14 +60,14 @@ struct PostRow: View {
         .contentShape(.rect)
         .onHover { hovering in isHoveringRow = hovering }
         .gesture(LongPressGesture().onEnded { _ in showTipRow = true })
-        .animation(.easeIn(duration: 0.5), value: isHoveringRow)
+        .animation(.easeIn, value: isHoveringRow)
         .popover(isPresented: $showTipRow, arrowEdge: .leading) {
             VStack(alignment: .leading) {
                 if let title = post.title {
                     Text(title)
                 }
 
-                if let raw = post.url, let extURL = URL(string: raw) {
+                if let extURL {
                     Spacer()
 
                     Text(extURL.standardized.absoluteString)
@@ -96,15 +101,15 @@ struct PostRow: View {
     }
 }
 
-struct PostButton: View {
-    let postURL: String?
+struct TwinLink: View {
+    let extURL: URL?
     let hnURL: URL
 
     @State private var isHovering: Bool = false
 
     var body: some View {
         Button {
-            if let raw = postURL, let extURL = URL(string: raw) {
+            if let extURL {
                 NSWorkspace.shared.open(extURL)
             }
 
@@ -124,7 +129,7 @@ struct PostButton: View {
         .clipShape(.capsule)
         .clipped(antialiased: true)
         .blur(radius: isHovering ? 0.0 : 0.5)
-        .animation(.easeInOut(duration: 0.5), value: isHovering)
+        .animation(.default, value: isHovering)
     }
 }
 
