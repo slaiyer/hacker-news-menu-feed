@@ -1,7 +1,6 @@
 import Combine
 import SwiftUI
 
-@available(macOS 26.0, *)
 @main
 struct HackerMenu: App {
     private static let numPosts = 500

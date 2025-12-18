@@ -1,6 +1,5 @@
 import SwiftUI
 
-@available(macOS 26.0, *)
 struct AppMenu: View {
     @Binding var posts: [StoryFetchResponse]
     @Binding var isFetching: Bool

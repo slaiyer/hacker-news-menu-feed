@@ -1,6 +1,5 @@
 import SwiftUI
 
-@available(macOS 26.0, *)
 struct PostsListing: View {
     let posts: [StoryFetchResponse]
 
@@ -36,7 +35,7 @@ struct PostRow: View {
                 let title = post.title ?? "􀉣"
 
                 if let raw = post.url, let extURL = URL(string: raw) {
-                    CustomLink(title: title, link: extURL)
+                    ExternalLink(title: title, link: extURL)
                         .foregroundStyle(.primary)
                 } else {
                     Text(title)

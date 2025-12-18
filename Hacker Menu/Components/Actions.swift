@@ -1,6 +1,5 @@
 import SwiftUI
 
-@available(macOS 26.0, *)
 struct Actions: View {
     let reload: () -> Void
     @Binding var isFetching: Bool
