@@ -46,6 +46,11 @@ struct PostRow: View {
 
                 PostInfo(post: post, hnURL: hnURL, postTime: postTime)
             }
+            .onHover { hovering in
+                if !hovering {
+                    showTipRow = false
+                }
+            }
         }
         .contentShape(.rect)
         .onHover { hovering in isHoveringRow = hovering }
