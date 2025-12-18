@@ -25,9 +25,7 @@ struct HackerMenu: App {
             ContentView()
         } label: {
             Text(showHeadline ? truncatedTitle ?? "Reading HN…" : "ℏ")
-                .onAppear {
-                    startApp()
-                }
+                .onAppear { startApp() }
         }
         .menuBarExtraStyle(.window)
         .windowLevel(.floating)
@@ -117,7 +115,8 @@ struct HackerMenu: App {
         reload()
 
         Timer.scheduledTimer(
-            withTimeInterval: reloadRate, repeats: true,
+            withTimeInterval: reloadRate,
+            repeats: true,
             block: { _ in
                 Task { @MainActor in
                     reload()
@@ -131,7 +130,11 @@ struct HackerMenu: App {
             return
         }
 
-        truncatedTitle = truncateStringToFit(title)
+        if title.isEmpty {
+            truncatedTitle = "ℏ"
+        } else {
+            truncatedTitle = truncateStringToFit(title)
+        }
     }
 
     private func truncateStringToFit(_ string: String) -> String {
