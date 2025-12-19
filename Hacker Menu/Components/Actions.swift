@@ -22,7 +22,7 @@ struct Actions: View {
 
             HStack {
                 Button(action: reload, label: {
-                    Image(systemName: "arrow.trianglehead.2.clockwise")
+                    Image(systemName: "arrow.trianglehead.clockwise.rotate.90")
                         .symbolEffect(
                             .rotate,
                             options: .repeat(.periodic(delay: 0)),
