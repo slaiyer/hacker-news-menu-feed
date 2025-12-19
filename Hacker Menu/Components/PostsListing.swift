@@ -138,7 +138,7 @@ struct TwinLink: View {
         .buttonStyle(.glass)
         .focusable(false)
         .onHover { inside in isHovering = inside }
-        .foregroundStyle(isHovering ? .accent : .secondary.opacity(0.5))
+        .foregroundStyle(isHovering ? .accent.mix(with: .primary, by: 0.5) : .secondary.opacity(0.5))
         .contentShape(.circle)
         .clipShape(.circle)
         .clipped(antialiased: true)
@@ -182,10 +182,10 @@ struct PostInfo: View {
         }
         .padding(.leading)
         .font(.subheadline)
-        .foregroundStyle(.secondary)
+        .foregroundStyle(isHoveringHnUrl ? .accent.mix(with: .primary, by: 0.5) : .secondary)
         .onHover { hovering in isHoveringHnUrl = hovering }
         .opacity(isHoveringHnUrl ? 1.0 : 0.5)
-        .shadow(color: .accent, radius: isHoveringHnUrl ? 1 : 2)
+        .shadow(color: .accent, radius: isHoveringHnUrl ? 0.5 : 1)
         .animation(.default, value: isHoveringHnUrl)
     }
 
