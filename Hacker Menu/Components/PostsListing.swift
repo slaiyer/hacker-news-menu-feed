@@ -51,11 +51,13 @@ struct PostRow: View {
                 if let extURL {
                     ExternalLink(title: title, link: extURL)
                         .foregroundStyle(.primary)
+                        .shadow(color: .accent, radius: isHoveringRow ? 0.75 : 0)
                 } else {
                     Text(title)
                         .lineLimit(1)
                         .truncationMode(.middle)
                         .foregroundStyle(.secondary)
+                        .shadow(color: .accent, radius: isHoveringRow ? 0.5 : 0)
                 }
 
                 PostInfo(
@@ -130,6 +132,7 @@ struct TwinLink: View {
         } label: {
             Text("􀉣")
                 .font(.subheadline)
+                .shadow(color: .accent, radius: 0)
                 .frame(maxHeight: .infinity)
         }
         .buttonStyle(.glass)

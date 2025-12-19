@@ -13,7 +13,6 @@ struct ExternalLink: View {
                 .lineLimit(1)
                 .truncationMode(.middle)
                 .opacity(isHovering ? 1.0 : 0.8)
-                .shadow(color: .accent, radius: isHovering ? 0.75 : 0)
         }
         .buttonStyle(.borderless)
         .onHover{ inside in isHovering = inside }

@@ -64,6 +64,7 @@ struct Actions: View {
         }
         .focusEffectDisabled()
         .opacity(isHoverRow ? 1.0 : 0.5)
+        .shadow(color: .accent, radius: 0)
         .blur(radius: isHoverRow ? 0.0: 1.0)
         .onHover { hovering in isHoverRow = hovering }
         .animation(.default, value: isHoverRow)
