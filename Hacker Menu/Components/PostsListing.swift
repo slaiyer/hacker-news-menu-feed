@@ -38,7 +38,6 @@ struct PostRow: View {
             TwinLink(extURL: extURL, hnURL: hnURL)
                 .padding(.leading, 2)
                 .shadow(color: isHoveringRow ? .accent.mix(with: .primary, by: 0.5) : .clear, radius: 2)
-                .highPriorityGesture(LongPressGesture().onEnded { _ in showTipRow = true })
                 .onHover { hovering in
                     if !hovering {
                         showTipRow = false
@@ -74,7 +73,7 @@ struct PostRow: View {
         }
         .contentShape(.rect)
         .onHover { hovering in isHoveringRow = hovering }
-        .gesture(LongPressGesture().onEnded { _ in showTipRow = true })
+        .onLongPressGesture { showTipRow = true }
         .animation(.easeIn, value: isHoveringRow)
         .popover(isPresented: $showTipRow, arrowEdge: .leading) {
             VStack(alignment: .leading) {
