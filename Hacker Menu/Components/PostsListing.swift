@@ -111,6 +111,7 @@ struct PostRow: View {
             }
             .frame(maxWidth: 350, alignment: .leading)
             .fixedSize(horizontal: false, vertical: true)
+            .shadow(color: .accent, radius: 0)
             .padding()
         }
     }
