@@ -34,45 +34,88 @@ struct PostRow: View {
         }
         let hnURL = URL(string: "https://news.ycombinator.com/item?id=\(post.id)")!
 
-        HStack {
-            TwinLink(extURL: extURL, hnURL: hnURL)
-                .padding(.leading, 2)
-                .shadow(color: isHoveringRow ? .accent.mix(with: .primary, by: 0.5) : .clear, radius: 2)
-                .highPriorityGesture(
-                    LongPressGesture(minimumDuration: 0.3)
-                        .onEnded { _ in showTipRow = true }
-                        .sequenced(before:
-                            TapGesture()
+        VStack {
+            HStack {
+                TwinLink(extURL: extURL, hnURL: hnURL)
+                    .padding(.leading, 2)
+                    .shadow(color: isHoveringRow ? .accent.mix(with: .primary, by: 0.5) : .clear, radius: 2)
+                    .highPriorityGesture(
+                        LongPressGesture(minimumDuration: 0.3)
+                            .onEnded { _ in showTipRow = true }
+                            .sequenced(before:
+                                        TapGesture()
                                 .onEnded { showTipRow = false }
-                        )
-                )
+                                      )
+                    )
 
-            VStack(alignment: .leading) {
-                let title = post.title ?? "􀉣"
+                VStack(alignment: .leading) {
+                    let title = post.title ?? "􀉣"
 
-                if let extURL {
-                    ExternalLink(title: title, link: extURL)
-                        .foregroundStyle(.primary)
-                        .shadow(color: .accent, radius: isHoveringRow ? 0.75 : 0)
-                } else {
-                    Text(title)
-                        .lineLimit(1)
-                        .truncationMode(.middle)
+                    if let extURL {
+                        ExternalLink(title: title, link: extURL)
+                            .foregroundStyle(.primary)
+                            .shadow(color: .accent, radius: isHoveringRow ? 0.75 : 0)
+                    } else {
+                        Text(title)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                            .foregroundStyle(.secondary)
+                            .shadow(color: .accent, radius: isHoveringRow ? 0.5 : 0)
+                    }
+
+                    PostInfo(
+                        post: post,
+                        hnURL: hnURL,
+                        timestamp: timestamp,
+                    )
+                }
+                .onHover { hovering in
+                    if !hovering {
+                        showTipRow = false
+                    }
+                }
+            }
+            .animation(.easeIn, value: isHoveringRow)
+            .popover(isPresented: $showTipRow, arrowEdge: .leading) {
+                VStack(alignment: .leading) {
+                    if let title = post.title {
+                        Text(title)
+                    }
+
+                    if let extURL {
+                        Spacer()
+
+                        Text(extURL.standardized.absoluteString)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    Divider()
+
+                    HStack {
+                        Text(post.type)
+                            .textCase(.uppercase)
+
+                        Divider()
+
+                        Text(hnURL.standardized.absoluteString)
+                    }
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+
+                    Divider()
+
+                    Text("\(postTime)")
+                        .font(.subheadline)
                         .foregroundStyle(.secondary)
-                        .shadow(color: .accent, radius: isHoveringRow ? 0.5 : 0)
                 }
+                .frame(maxWidth: 350, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
+                .shadow(color: .accent, radius: 0)
+                .padding()
+            }
 
-                PostInfo(
-                    post: post,
-                    hnURL: hnURL,
-                    timestamp: timestamp,
-                )
-            }
-            .onHover { hovering in
-                if !hovering {
-                    showTipRow = false
-                }
-            }
+            Spacer()
         }
         .contentShape(.rect)
         .onHover { hovering in isHoveringRow = hovering }
@@ -81,45 +124,6 @@ struct PostRow: View {
             perform: { showTipRow = true },
             onPressingChanged: { _ in showTipRow = false },
         )
-        .animation(.easeIn, value: isHoveringRow)
-        .popover(isPresented: $showTipRow, arrowEdge: .leading) {
-            VStack(alignment: .leading) {
-                if let title = post.title {
-                    Text(title)
-                }
-
-                if let extURL {
-                    Spacer()
-
-                    Text(extURL.standardized.absoluteString)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
-
-                Divider()
-
-                HStack {
-                    Text(post.type)
-                        .textCase(.uppercase)
-
-                    Divider()
-
-                    Text(hnURL.standardized.absoluteString)
-                }
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-
-                Divider()
-
-                Text("\(postTime)")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
-            .frame(maxWidth: 350, alignment: .leading)
-            .fixedSize(horizontal: false, vertical: true)
-            .shadow(color: .accent, radius: 0)
-            .padding()
-        }
     }
 }
 

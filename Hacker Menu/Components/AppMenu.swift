@@ -6,7 +6,7 @@ struct AppMenu: View {
 
     var body: some View {
         if !posts.isEmpty {
-            LazyVStack {
+            LazyVStack(spacing: 0) {
                 PostsListing(posts: posts)
             }
             .animation(.default, value: posts)
