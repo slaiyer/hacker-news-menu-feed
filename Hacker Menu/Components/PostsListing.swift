@@ -39,7 +39,7 @@ struct PostRow: View {
                 .padding(.leading, 2)
                 .shadow(color: isHoveringRow ? .accent.mix(with: .primary, by: 0.5) : .clear, radius: 2)
                 .highPriorityGesture(
-                    LongPressGesture()
+                    LongPressGesture(minimumDuration: 0.3)
                         .onEnded { _ in showTipRow = true }
                         .sequenced(before:
                             TapGesture()
@@ -77,6 +77,7 @@ struct PostRow: View {
         .contentShape(.rect)
         .onHover { hovering in isHoveringRow = hovering }
         .onLongPressGesture(
+            minimumDuration: 0.3,
             perform: { showTipRow = true },
             onPressingChanged: { _ in showTipRow = false },
         )
