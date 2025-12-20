@@ -15,6 +15,7 @@ struct Actions: View {
                 .help("􀂢 Headline")
                 .tint(.accent.mix(with: .primary, by: 0.5))
                 .toggleStyle(.button)
+                .buttonStyle(.borderless)
                 .contentShape(.capsule)
                 .clipShape(.capsule)
                 .clipped(antialiased: true)
