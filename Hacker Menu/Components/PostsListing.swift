@@ -74,7 +74,10 @@ struct PostRow: View {
         }
         .contentShape(.rect)
         .onHover { hovering in isHoveringRow = hovering }
-        .onLongPressGesture { showTipRow = true }
+        .onLongPressGesture(
+            perform: { showTipRow = true },
+            onPressingChanged: { _ in showTipRow = false },
+        )
         .animation(.easeIn, value: isHoveringRow)
         .popover(isPresented: $showTipRow, arrowEdge: .leading) {
             VStack(alignment: .leading) {
