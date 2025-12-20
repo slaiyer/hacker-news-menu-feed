@@ -38,7 +38,14 @@ struct PostRow: View {
             TwinLink(extURL: extURL, hnURL: hnURL)
                 .padding(.leading, 2)
                 .shadow(color: isHoveringRow ? .accent.mix(with: .primary, by: 0.5) : .clear, radius: 2)
-                .simultaneousGesture(LongPressGesture().onEnded { _ in showTipRow = true } )
+                .highPriorityGesture(
+                    LongPressGesture()
+                        .onEnded { _ in showTipRow = true }
+                        .sequenced(before:
+                            TapGesture()
+                                .onEnded { showTipRow = false }
+                        )
+                )
 
             VStack(alignment: .leading) {
                 let title = post.title ?? "􀉣"
