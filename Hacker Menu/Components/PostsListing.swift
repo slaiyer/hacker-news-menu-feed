@@ -39,11 +39,6 @@ struct PostRow: View {
                 .padding(.leading, 2)
                 .shadow(color: isHoveringRow ? .accent.mix(with: .primary, by: 0.5) : .clear, radius: 2)
                 .simultaneousGesture(LongPressGesture().onEnded { _ in showTipRow = true } )
-                .onHover { hovering in
-                    if !hovering {
-                        showTipRow = false
-                    }
-                }
 
             VStack(alignment: .leading) {
                 let title = post.title ?? "􀉣"
