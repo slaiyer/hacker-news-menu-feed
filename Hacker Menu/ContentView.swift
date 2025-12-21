@@ -63,6 +63,7 @@ struct HackerMenu: App {
         }
     }
 
+    @State private var passion = false
     fileprivate func ContentView() -> some View {
         return VStack {
             ZStack {
@@ -71,6 +72,11 @@ struct HackerMenu: App {
                         Text("􀜓")
                     }
                     .keyboardShortcut("/", modifiers: [])
+
+                    Button(action: { passion.toggle() }) {
+                        Text("􀊹")
+                    }
+                    .keyboardShortcut("!", modifiers: [])
 
                     Button(action: endFilterMode) {
                         Text("􀆙")
@@ -97,12 +103,16 @@ struct HackerMenu: App {
                 }
             }
 
-            // TODO: vim-like j/k navigation
-            ScrollView {
-                AppMenu(
-                    posts: $filteredPosts,
-                    isFetching: $isFetching,
-                )
+            if !passion {
+                // TODO: vim-like j/k navigation
+                ScrollView {
+                    AppMenu(
+                        posts: $filteredPosts,
+                        isFetching: $isFetching,
+                    )
+                }
+            } else {
+                Image(.graphicDesignIsMyPassion)
             }
         }
         .padding()
