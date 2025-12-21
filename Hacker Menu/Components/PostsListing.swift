@@ -39,6 +39,7 @@ struct PostRow: View {
                 TwinLink(extURL: extURL, hnURL: hnURL)
                     .padding(.leading, 2)
                     .shadow(color: isHoveringRow ? .accent.mix(with: .primary, by: 0.5) : .clear, radius: 2)
+                    .blur(radius: isHoveringRow ? 0 : 1)
                     .highPriorityGesture(
                         LongPressGesture(minimumDuration: 0.3).onEnded { _ in showTipRow = true }
                             .sequenced(before: TapGesture().onEnded { showTipRow = false })
