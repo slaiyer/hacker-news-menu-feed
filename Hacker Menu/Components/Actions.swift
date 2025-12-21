@@ -27,7 +27,7 @@ struct Actions: View {
                     Image(systemName: "arrow.trianglehead.clockwise.rotate.90")
                         .symbolEffect(
                             .rotate,
-                            options: .repeat(.periodic(delay: 0)),
+                            options: .repeat(.continuous),
                             isActive: isFetching,
                         )
                 })
