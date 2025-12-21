@@ -56,8 +56,7 @@ struct PostRow: View {
                         Text(title)
                             .lineLimit(1)
                             .truncationMode(.middle)
-                            .foregroundStyle(.secondary)
-                            .shadow(color: .accent, radius: isHoveringRow ? 0.5 : 0)
+                            .shadow(color: .accent, radius: 0)
                     }
 
                     PostInfo(
