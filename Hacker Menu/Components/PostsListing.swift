@@ -2,6 +2,11 @@ import SwiftUI
 
 struct PostsListing: View {
     let posts: [StoryFetchResponse]
+    let openConfig = {
+        let conf = NSWorkspace.OpenConfiguration()
+        conf.activates = false
+        return conf
+    }()
 
     private let dateTimeFormatter = RelativeDateTimeFormatter()
 
@@ -13,6 +18,7 @@ struct PostsListing: View {
                 post: post,
                 postTime: postTime,
                 timestamp: dateTimeFormatter.localizedString(for: postTime, relativeTo: .now),
+                openConfig: openConfig,
             )
         }
     }
@@ -22,6 +28,7 @@ struct PostRow: View {
     let post: StoryFetchResponse
     let postTime: Date
     let timestamp: String
+    let openConfig: NSWorkspace.OpenConfiguration
 
     @State private var isHoveringRow: Bool = false
     @State private var showTipRow: Bool = false
@@ -36,7 +43,7 @@ struct PostRow: View {
 
         VStack {
             HStack {
-                TwinLink(extURL: extURL, hnURL: hnURL)
+                TwinLink(extURL: extURL, hnURL: hnURL, openConfig: openConfig)
                     .padding(.leading, 2)
                     .shadow(color: isHoveringRow ? .accent.mix(with: .primary, by: 0.5) : .clear, radius: 2)
                     .blur(radius: isHoveringRow ? 0 : 2)
@@ -49,7 +56,7 @@ struct PostRow: View {
                     let title = post.title ?? "􀉣"
 
                     if let extURL {
-                        ExternalLink(title: title, link: extURL)
+                        ExternalLink(title: title, link: extURL, openConfig: openConfig)
                             .foregroundStyle(.primary)
                             .shadow(color: .accent, radius: isHoveringRow ? 0.75 : 0)
                     } else {
@@ -63,6 +70,7 @@ struct PostRow: View {
                         post: post,
                         hnURL: hnURL,
                         timestamp: timestamp,
+                        openConfig: openConfig,
                     )
                 }
                 .onHover { hovering in
@@ -126,16 +134,17 @@ struct PostRow: View {
 struct TwinLink: View {
     let extURL: URL?
     let hnURL: URL
+    let openConfig: NSWorkspace.OpenConfiguration
 
     @State private var isHovering: Bool = false
 
     var body: some View {
         Button {
             if let extURL {
-                NSWorkspace.shared.open(extURL)
+                NSWorkspace.shared.open(extURL, configuration: openConfig)
             }
 
-            NSWorkspace.shared.open(hnURL)
+            NSWorkspace.shared.open(hnURL, configuration: openConfig)
         } label: {
             Text("􀉣")
                 .font(.subheadline)
@@ -158,33 +167,42 @@ struct PostInfo: View {
     let post: StoryFetchResponse
     let hnURL: URL
     let timestamp: String
+    let openConfig: NSWorkspace.OpenConfiguration
 
     @State private var isHoveringHnUrl: Bool = false
 
     var body: some View {
         HStack {
-            Link(destination: hnURL) {
-                Text("􀆇 \(abbreviateNumber(post.score))")
-                    .frame(minWidth: 50, alignment: .leading)
+            Button(
+                action: { NSWorkspace.shared.open(hnURL, configuration: openConfig) },
+                label: {
+                    Text("􀆇 \(abbreviateNumber(post.score))")
+                        .frame(minWidth: 50, alignment: .leading)
 
-                Text("􀌲 \(abbreviateNumber(post.comments))")
-                    .frame(minWidth: 50, alignment: .leading)
+                    Text("􀌲 \(abbreviateNumber(post.comments))")
+                        .frame(minWidth: 50, alignment: .leading)
 
-                if post.type != "story" {
-                    Text("􀈕 \(post.type)")
-                        .textCase(.uppercase)
-                        .frame(alignment: .leading)
+                    if post.type != "story" {
+                        Text("􀈕 \(post.type)")
+                            .textCase(.uppercase)
+                            .frame(alignment: .leading)
+                    }
                 }
-            }
+            )
+            .buttonStyle(.borderless)
             .padding(.leading)
             .focusable(false)
 
             Spacer()
 
-            Link(destination: hnURL) {
-                Text(timestamp)
-                    .frame(alignment: .trailing)
-            }
+            Button(
+                action: { NSWorkspace.shared.open(hnURL, configuration: openConfig) },
+                label: {
+                    Text(timestamp)
+                        .frame(alignment: .trailing)
+                }
+            )
+            .buttonStyle(.borderless)
             .focusable(false)
         }
         .padding(.leading)

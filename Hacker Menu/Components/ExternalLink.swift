@@ -3,12 +3,13 @@ import SwiftUI
 struct ExternalLink: View {
     let title: String
     let link: URL
+    let openConfig: NSWorkspace.OpenConfiguration
 
     @State private var isHovering = false
 
     var body: some View {
-        Link(
-            destination: link,
+        Button(
+            action: { NSWorkspace.shared.open(link, configuration: openConfig) },
             label: {
                 Text(title)
                     .lineLimit(1)
