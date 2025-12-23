@@ -61,6 +61,7 @@ struct PostRow: View {
                             .shadow(color: .accent, radius: isHoveringRow ? 0.75 : 0)
                     } else {
                         Text(title)
+                            .foregroundStyle(.accent.mix(with: .primary, by: 0.5))
                             .lineLimit(1)
                             .truncationMode(.middle)
                             .shadow(color: .accent, radius: 0)
