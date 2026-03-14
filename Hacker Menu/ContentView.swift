@@ -35,9 +35,9 @@ struct HackerMenu: App {
             Text(showHeadline ? truncatedTitle ?? "Reading HN…" : "ℏ")
                 .onAppear(perform: startApp)
         }
+        .menuBarExtraAccess(isPresented: $manager.isMenuPresented)
         .menuBarExtraStyle(.window)
         .windowLevel(.floating)
-        .menuBarExtraAccess(isPresented: $manager.isMenuPresented)
         .onChange(of: posts) {
             runFilter(textObserver.debouncedText)
             adjustTitleForMenuBar()
