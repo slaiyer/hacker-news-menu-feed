@@ -176,11 +176,11 @@ struct TwinLink: View {
 
     var body: some View {
         Button {
+            NSWorkspace.shared.open(hnURL, configuration: openConfig)
+
             if let extURL {
                 NSWorkspace.shared.open(extURL, configuration: openConfig)
             }
-
-            NSWorkspace.shared.open(hnURL, configuration: openConfig)
         } label: {
             Text("􀉣")
                 .font(.footnote)
