@@ -13,8 +13,8 @@ run: build
     export -f kill_wait
 
     echo 'Restarting {{app}}...'
-    timeout 5 bash -c "kill_wait '{{app}}'"
-    open 'build/Build/Products/Release/{{app}}.app'
+    timeout 5 bash -c "kill_wait '{{app}}'" \
+        && open 'build/Build/Products/Release/{{app}}.app'
 
 @trace: sign
   xcrun xctrace record \
