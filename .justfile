@@ -12,7 +12,7 @@ run: build
     }
     export -f kill_wait
 
-    echo 'Restarting {{app}}...'
+    echo 'Launching {{app}}...'
     timeout 5 bash -c "kill_wait '{{app}}'" \
         && open 'build/Build/Products/Release/{{app}}.app'
 
