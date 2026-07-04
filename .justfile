@@ -7,15 +7,14 @@ run: build
     kill_wait() {
         while pgrep "${1}" >/dev/null; do
             killall "${1}"
-            sleep 0.1
+            sleep 1
         done
     }
     export -f kill_wait
 
-    printf 'Restarting {{app}}...'
+    echo 'Restarting {{app}}...'
     timeout 5 bash -c "kill_wait '{{app}}'"
     open 'build/Build/Products/Release/{{app}}.app'
-    echo ' done.'
 
 @trace: sign
   xcrun xctrace record \
