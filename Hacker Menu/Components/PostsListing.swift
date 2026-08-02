@@ -189,7 +189,17 @@ struct TwinLink: View {
         }
         .buttonStyle(.glass)
         .focusable(false)
-        .onHover { inside in isHovering = inside }
+        .onHover { inside in
+            isHovering = inside
+
+            DispatchQueue.main.async {
+                if (isHovering) {
+                    NSCursor.pointingHand.push()
+                } else {
+                    NSCursor.pop()
+                }
+            }
+        }
         .foregroundStyle(isHovering ? .accent.mix(with: .primary, by: 0.5) : .secondary.opacity(0.5))
         .contentShape(.circle)
         .clipShape(.circle)
@@ -227,6 +237,15 @@ struct PostInfo: View {
             .buttonStyle(.borderless)
             .focusable(false)
             .padding(.leading)
+            .onHover { hovering in
+                DispatchQueue.main.async {
+                    if (hovering) {
+                        NSCursor.pointingHand.push()
+                    } else {
+                        NSCursor.pop()
+                    }
+                }
+            }
 
             Spacer()
 
@@ -239,6 +258,15 @@ struct PostInfo: View {
             )
             .buttonStyle(.borderless)
             .focusable(false)
+            .onHover { hovering in
+                DispatchQueue.main.async {
+                    if (hovering) {
+                        NSCursor.pointingHand.push()
+                    } else {
+                        NSCursor.pop()
+                    }
+                }
+            }
         }
         .font(.subheadline)
         .fontWeight(.thin)

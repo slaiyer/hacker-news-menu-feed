@@ -39,6 +39,15 @@ struct Actions: View {
                 .focusable(false)
                 .disabled(isFetching)
                 .animation(.default, value: isFetching)
+                .onHover { hovering in
+                    DispatchQueue.main.async {
+                        if (!isFetching && hovering) {
+                            NSCursor.pointingHand.push()
+                        } else {
+                            NSCursor.pop()
+                        }
+                    }
+                }
 
                 Spacer()
 

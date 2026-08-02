@@ -19,7 +19,17 @@ struct ExternalLink: View {
         )
         .buttonStyle(.borderless)
         .focusable(false)
-        .onHover{ inside in isHovering = inside }
+        .onHover{ inside in
+            isHovering = inside
+
+            DispatchQueue.main.async {
+                if (isHovering) {
+                    NSCursor.pointingHand.push()
+                } else {
+                    NSCursor.pop()
+                }
+            }
+        }
         .animation(.default, value: isHovering)
     }
 }
