@@ -32,7 +32,7 @@ struct HackerMenu: App {
                 .fontWidth(.condensed)
                 .fontWeight(.light)
         } label: {
-            Text(showHeadline ? truncatedTitle ?? "Reading HN…" : "ℏ")
+            Text(showHeadline ? truncatedTitle ?? "Reading HN…" : isFetching ? "ℎ" : "ℏ")
                 .onAppear(perform: startApp)
         }
         .menuBarExtraAccess(isPresented: $manager.isMenuPresented)
