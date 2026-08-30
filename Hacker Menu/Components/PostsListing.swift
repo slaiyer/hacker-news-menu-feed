@@ -59,7 +59,6 @@ struct PostRow: View {
                     if let extURL {
                         ExternalLink(title: title, link: extURL, openConfig: openConfig)
                             .foregroundStyle(.primary)
-                            .shadow(color: .accent, radius: isHoverRow ? 0.5 : 0)
                     } else {
                         Text(title)
                             .foregroundStyle(.accent.mix(with: .primary, by: 0.5))
@@ -274,7 +273,7 @@ struct PostInfo: View {
         .foregroundStyle(isHoveringHnUrl ? .accent.mix(with: .primary, by: 0.5) : .secondary)
         .onHover { hovering in isHoveringHnUrl = hovering }
         .opacity(isHoveringHnUrl ? 1.0 : 0.5)
-        .shadow(color: .accent, radius: isHoveringHnUrl ? 0 : 0.5)
+        .shadow(color: .accent, radius: isHoveringHnUrl ? 5 : 0)
         .animation(.default, value: isHoveringHnUrl)
     }
 
