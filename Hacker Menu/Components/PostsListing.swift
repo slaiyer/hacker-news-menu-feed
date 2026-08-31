@@ -50,7 +50,7 @@ struct PostRow: View {
             HStack {
                 TwinLink(extURL: extURL, hnURL: hnURL, openConfig: openConfig)
                     .padding(.leading, 2)
-                    .shadow(color: isHoverRow ? .accent.mix(with: .primary, by: 0.5) : .clear, radius: 2)
+                    .shadow(color: isHoverRow ? .accent.mix(with: .primary, by: 0.5) : .clear, radius: 1)
                     .blur(radius: isHoverRow ? 0 : 0.5)
 
                 VStack(alignment: .leading) {
@@ -183,7 +183,7 @@ struct TwinLink: View {
         } label: {
             Text("􀉣")
                 .font(.footnote)
-                .shadow(color: .accent, radius: 0)
+                .shadow(color: .accent, radius: isHovering ? 5 : 0)
                 .frame(maxHeight: .infinity)
         }
         .buttonStyle(.glass)

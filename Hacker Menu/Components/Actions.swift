@@ -22,6 +22,8 @@ struct Actions: View {
                 .clipped(antialiased: true)
                 .blur(radius: isHoverRow ? 0 : 2)
                 .focusable(false)
+                .shadow(color: .accent, radius: isHoverRow ? 5 : 0)
+                .animation(.default, value: isHoverRow)
 
             HStack {
                 Button(action: reload, label: {
