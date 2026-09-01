@@ -5,8 +5,6 @@ struct ExternalLink: View {
     let link: URL
     let openConfig: NSWorkspace.OpenConfiguration
 
-    @State private var isHoverRow = false
-
     var body: some View {
         HStack {
             Button(
@@ -31,9 +29,5 @@ struct ExternalLink: View {
 
             Spacer()
         }
-        .onHover { inside in isHoverRow = inside }
-        .opacity(isHoverRow ? 1.0 : 0.75)
-        .shadow(color: .accent, radius: isHoverRow ? 5 : 0)
-        .animation(.default, value: isHoverRow)
     }
 }

@@ -59,12 +59,14 @@ struct PostRow: View {
                     if let extURL {
                         ExternalLink(title: title, link: extURL, openConfig: openConfig)
                             .foregroundStyle(.primary)
+                            .shadow(color: .accent, radius: isHoverRow ? 5 : 0)
+                            .opacity(isHoverRow ? 1.0 : 0.75)
                     } else {
                         Text(title)
                             .foregroundStyle(.accent.mix(with: .primary, by: 0.5))
                             .lineLimit(1)
                             .truncationMode(.middle)
-                            .shadow(color: .accent, radius: 0)
+                            .shadow(color: .accent, radius: isHoverRow ? 5 : 0)
                     }
 
                     PostInfo(
@@ -73,6 +75,9 @@ struct PostRow: View {
                         timestamp: timestamp,
                         openConfig: openConfig,
                     )
+                    .foregroundStyle(isHoverRow ? .accent.mix(with: .primary, by: 0.5) : .secondary)
+                    .shadow(color: .accent, radius: isHoverRow ? 5 : 0)
+                    .opacity(isHoverRow ? 1.0 : 0.5)
                 }
                 .onHover { hovering in
                     if !hovering {
@@ -124,7 +129,7 @@ struct PostRow: View {
             Spacer()
         }
         .contentShape(.rect)
-        .animation(.easeIn, value: isHoverRow)
+        .animation(.default, value: isHoverRow)
         .onHover { hovering in
             isHoverRow = hovering
 
@@ -213,8 +218,6 @@ struct PostInfo: View {
     let timestamp: String
     let openConfig: NSWorkspace.OpenConfiguration
 
-    @State private var isHoveringHnUrl: Bool = false
-
     var body: some View {
         HStack {
             Button(
@@ -270,11 +273,6 @@ struct PostInfo: View {
         .font(.subheadline)
         .fontWeight(.thin)
         .padding(.leading)
-        .foregroundStyle(isHoveringHnUrl ? .accent.mix(with: .primary, by: 0.5) : .secondary)
-        .onHover { hovering in isHoveringHnUrl = hovering }
-        .opacity(isHoveringHnUrl ? 1.0 : 0.5)
-        .shadow(color: .accent, radius: isHoveringHnUrl ? 5 : 0)
-        .animation(.default, value: isHoveringHnUrl)
     }
 
     private func abbreviateNumber(_ number: Int?) -> String {
