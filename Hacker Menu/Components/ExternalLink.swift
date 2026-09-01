@@ -17,9 +17,9 @@ struct ExternalLink: View {
             )
             .buttonStyle(.borderless)
             .focusable(false)
-            .onHover { isHovering in
+            .onHover { hovering in
                 DispatchQueue.main.async {
-                    if (isHovering) {
+                    if (hovering) {
                         NSCursor.pointingHand.push()
                     } else {
                         NSCursor.pop()

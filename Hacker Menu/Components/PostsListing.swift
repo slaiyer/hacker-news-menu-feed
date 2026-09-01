@@ -41,6 +41,7 @@ struct PostRow: View {
 
     @State private var isHoverRow: Bool = false
     @State private var showTipRow: Bool = false
+    @State private var isHoverExtLink: Bool = false
 
     var body: some View {
         let extURL: URL? = if let url = post.url, let extURL = URL(string: url) { extURL } else { nil }
@@ -59,14 +60,15 @@ struct PostRow: View {
                     if let extURL {
                         ExternalLink(title: title, link: extURL, openConfig: openConfig)
                             .foregroundStyle(.primary)
-                            .shadow(color: .accent, radius: isHoverRow ? 5 : 0)
                             .opacity(isHoverRow ? 1.0 : 0.75)
+                            .onHover { hovering in isHoverExtLink = hovering }
+                            .shadow(color: .accent, radius: isHoverExtLink ? 5 : 0)
+                            .animation(.default, value: isHoverExtLink)
                     } else {
                         Text(title)
                             .foregroundStyle(.accent.mix(with: .primary, by: 0.5))
                             .lineLimit(1)
                             .truncationMode(.middle)
-                            .shadow(color: .accent, radius: isHoverRow ? 5 : 0)
                     }
 
                     PostInfo(
@@ -76,7 +78,6 @@ struct PostRow: View {
                         openConfig: openConfig,
                     )
                     .foregroundStyle(isHoverRow ? .accent.mix(with: .primary, by: 0.5) : .secondary)
-                    .shadow(color: .accent, radius: isHoverRow ? 5 : 0)
                     .opacity(isHoverRow ? 1.0 : 0.5)
                 }
                 .onHover { hovering in
@@ -218,6 +219,8 @@ struct PostInfo: View {
     let timestamp: String
     let openConfig: NSWorkspace.OpenConfiguration
 
+    @State private var isHover: Bool = false
+
     var body: some View {
         HStack {
             Button(
@@ -273,6 +276,9 @@ struct PostInfo: View {
         .font(.subheadline)
         .fontWeight(.thin)
         .padding(.leading)
+        .onHover { hovering in isHover = hovering}
+        .shadow(color: isHover ? .accent : .primary, radius: isHover ? 5 : 0)
+        .animation(.default, value: isHover)
     }
 
     private func abbreviateNumber(_ number: Int?) -> String {
