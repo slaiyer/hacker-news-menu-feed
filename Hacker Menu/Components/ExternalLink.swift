@@ -5,6 +5,8 @@ struct ExternalLink: View {
     let link: URL
     let openConfig: NSWorkspace.OpenConfiguration
 
+    @State private var isHover: Bool = false
+
     var body: some View {
         HStack {
             Button(
@@ -17,15 +19,8 @@ struct ExternalLink: View {
             )
             .buttonStyle(.borderless)
             .focusable(false)
-            .onHover { hovering in
-                DispatchQueue.main.async {
-                    if (hovering) {
-                        NSCursor.pointingHand.push()
-                    } else {
-                        NSCursor.pop()
-                    }
-                }
-            }
+            .onHover { hovering in isHover = hovering}
+            .shadow(color: .accent, radius: isHover ? 5 : 0)
 
             Spacer()
         }

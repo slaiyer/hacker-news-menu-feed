@@ -14,16 +14,16 @@ struct Actions: View {
                 .fontWeight(.thin)
                 .keyboardShortcut("h", modifiers: [])
                 .help("􀂢 Headline")
-                .tint(.accent.mix(with: .primary, by: 0.5))
                 .toggleStyle(.button)
                 .buttonStyle(.borderless)
                 .contentShape(.capsule)
                 .clipShape(.capsule)
                 .clipped(antialiased: true)
+                .opacity(isHoverRow ? 1 : 0.1)
                 .blur(radius: isHoverRow ? 0 : 2)
                 .focusable(false)
                 .shadow(color: .accent, radius: isHoverRow ? 5 : 0)
-                .animation(.default, value: isHoverRow)
+                .animation(.default, value: showHeadline)
 
             HStack {
                 Button(action: reload, label: {
@@ -37,19 +37,10 @@ struct Actions: View {
                 .keyboardShortcut("r", modifiers: [])
                 .help("􀂶 Reload")
                 .buttonStyle(.borderless)
-                .tint(.secondary)
                 .focusable(false)
                 .disabled(isFetching)
+                .opacity(isHoverRow || isFetching ? 1 : 0)
                 .animation(.default, value: isFetching)
-                .onHover { hovering in
-                    DispatchQueue.main.async {
-                        if (!isFetching && hovering) {
-                            NSCursor.pointingHand.push()
-                        } else {
-                            NSCursor.pop()
-                        }
-                    }
-                }
 
                 Spacer()
 
@@ -70,16 +61,16 @@ struct Actions: View {
                 .help("􀃊–􀃒 Sort")
                 .menuStyle(.borderlessButton)
                 .buttonStyle(.borderless)
-                .tint(.secondary)
                 .menuIndicator(.hidden)
                 .focusable(false)
+                .opacity(isHoverRow || sortKey != .original ? 1 : 0)
+                .animation(.default, value: sortKey)
             }
             .padding(.leading, 14)
             .padding(.trailing, 10)
         }
         .controlSize(.small)
-        .opacity(isHoverRow ? 1 : 0.5)
-        .blur(radius: isHoverRow ? 0 : 1)
+        .tint(.accent.mix(with: .primary, by: 0.5))
         .onHover { hovering in isHoverRow = hovering }
         .shadow(color: .primary, radius: 0)
         .animation(.default, value: isHoverRow)

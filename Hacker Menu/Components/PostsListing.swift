@@ -51,7 +51,6 @@ struct PostRow: View {
             HStack {
                 TwinLink(extURL: extURL, hnURL: hnURL, openConfig: openConfig)
                     .padding(.leading, 2)
-                    .shadow(color: isHoverRow ? .accent.mix(with: .primary, by: 0.5) : .clear, radius: 1)
                     .blur(radius: isHoverRow ? 0 : 0.5)
 
                 VStack(alignment: .leading) {
@@ -62,7 +61,6 @@ struct PostRow: View {
                             .foregroundStyle(.primary)
                             .opacity(isHoverRow ? 1.0 : 0.75)
                             .onHover { hovering in isHoverExtLink = hovering }
-                            .shadow(color: .accent, radius: isHoverExtLink ? 5 : 0)
                             .animation(.default, value: isHoverExtLink)
                     } else {
                         Text(title)
@@ -194,17 +192,7 @@ struct TwinLink: View {
         }
         .buttonStyle(.glass)
         .focusable(false)
-        .onHover { inside in
-            isHovering = inside
-
-            DispatchQueue.main.async {
-                if (isHovering) {
-                    NSCursor.pointingHand.push()
-                } else {
-                    NSCursor.pop()
-                }
-            }
-        }
+        .onHover { hovering in isHovering = hovering }
         .foregroundStyle(isHovering ? .accent.mix(with: .primary, by: 0.5) : .secondary.opacity(0.5))
         .contentShape(.circle)
         .clipShape(.circle)
@@ -242,15 +230,7 @@ struct PostInfo: View {
             .buttonStyle(.borderless)
             .focusable(false)
             .padding(.leading)
-            .onHover { hovering in
-                DispatchQueue.main.async {
-                    if (hovering) {
-                        NSCursor.pointingHand.push()
-                    } else {
-                        NSCursor.pop()
-                    }
-                }
-            }
+            .onHover { hovering in isHover = hovering}
 
             Spacer()
 
@@ -263,20 +243,11 @@ struct PostInfo: View {
             )
             .buttonStyle(.borderless)
             .focusable(false)
-            .onHover { hovering in
-                DispatchQueue.main.async {
-                    if (hovering) {
-                        NSCursor.pointingHand.push()
-                    } else {
-                        NSCursor.pop()
-                    }
-                }
-            }
+            .onHover { hovering in isHover = hovering}
         }
         .font(.subheadline)
         .fontWeight(.thin)
         .padding(.leading)
-        .onHover { hovering in isHover = hovering}
         .shadow(color: isHover ? .accent : .primary, radius: isHover ? 5 : 0)
         .animation(.default, value: isHover)
     }
