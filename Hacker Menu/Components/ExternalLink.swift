@@ -21,6 +21,7 @@ struct ExternalLink: View {
             .focusable(false)
             .onHover { hovering in isHover = hovering}
             .shadow(color: .accent, radius: isHover ? 5 : 0)
+            .animation(.default, value: isHover)
 
             Spacer()
         }
