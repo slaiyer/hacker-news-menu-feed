@@ -10,7 +10,7 @@ struct Actions: View {
 
     var body: some View {
         ZStack {
-            Toggle("ℏ", isOn: $showHeadline)
+            Toggle(isHoverRow ? "ℏ" : "·", isOn: $showHeadline)
                 .fontWeight(.thin)
                 .keyboardShortcut("h", modifiers: [])
                 .help("􀂢 Headline")
@@ -19,10 +19,9 @@ struct Actions: View {
                 .contentShape(.capsule)
                 .clipShape(.capsule)
                 .clipped(antialiased: true)
-                .opacity(isHoverRow ? 1 : 0.1)
-                .blur(radius: isHoverRow ? 0 : 2)
+                .blur(radius: isHoverRow || showHeadline ? 0 : 1)
                 .focusable(false)
-                .shadow(color: .accent, radius: isHoverRow ? 5 : 0)
+                .shadow(color: .accent, radius: isHoverRow || showHeadline ? 5 : 1)
                 .animation(.default, value: showHeadline)
 
             HStack {
