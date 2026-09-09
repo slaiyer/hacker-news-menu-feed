@@ -19,9 +19,10 @@ struct Actions: View {
                 .contentShape(.capsule)
                 .clipShape(.capsule)
                 .clipped(antialiased: true)
-                .blur(radius: isHoverRow || showHeadline ? 0 : 1)
                 .focusable(false)
-                .shadow(color: .accent, radius: isHoverRow || showHeadline ? 5 : 1)
+                .foregroundStyle(showHeadline ? .accent.mix(with: .primary, by: 0.5) : .secondary)
+                .shadow(color: showHeadline ? .accent : .secondary, radius: isHoverRow ? 5 : 0)
+                .blur(radius: isHoverRow ? 0 : showHeadline ? 0.5 : 2)
                 .animation(.default, value: showHeadline)
 
             HStack {
